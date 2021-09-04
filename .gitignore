@@ -11,6 +11,5 @@
 !README.md
 
 #Source files
-!source/commandhandler/*
-!source/screens/*
-!source/*.cpp
+!source
+source/*.exe
