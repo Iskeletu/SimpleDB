@@ -1,15 +1,15 @@
 #include <iostream>
-#include <windows.h>
 
 
-//
+//Header File
 #include "screens.h"
 
 
+//No other namespace will be used in this file
 using namespace std;
 
 
-void PrintLogo()
+void PrintStartupScreen()
 {
     cout<<" ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________  "<<endl;
     cout<<"|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"<<endl;
@@ -28,7 +28,7 @@ void PrintLogo()
 }
 
 
-void PrintMainMenu()
+void PrintDefaultScreen()
 {
     cout<<"+-------------------------------------+"<<endl;
     cout<<"|  Digite help para mais informações  |"<<endl;
@@ -37,7 +37,8 @@ void PrintMainMenu()
     cout<<"> ";
 }
 
-void PrintUnknown()
+
+void PrintUnknownCommandScreen()
 {
     cout<<"Comando não reconhecido, digite help para mais informações."<<endl<<endl;
     cout<<"> ";

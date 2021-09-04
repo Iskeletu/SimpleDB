@@ -6,18 +6,30 @@
 
 int main()
 {
+    //variable definition
+    string input;
+    bool exit_flag = false;
+
+    //not important, delete after converting to linux
     SetConsoleOutputCP(65001);
 
-    PrintLogo();
+
+//=================SimpleDB startup=================
+    PrintStartupScreen();
+    //do load stuff here
     system("pause"); system("cls");
+//==================================================
 
-    int menu;
+    //Calls for default screen
+    PrintDefaultScreen();
 
-    PrintMainMenu();
 
-    scanf("%d", &menu);
-
-    PrintUnknown();
+//=====================Main loop====================
+    while(!exit_flag)
+    {
+        std::cin>>input;
+    }
+//==================================================
 
     return 0;
 }
