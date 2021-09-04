@@ -11,4 +11,5 @@
 !README.md
 
 #Source folder
-!source/
+!source/screens/*
+!source/main.cpp
