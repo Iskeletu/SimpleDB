@@ -9,7 +9,7 @@
 using namespace std;
 
 
-void printlogo()
+void PrintLogo()
 {
     cout<<" ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________  "<<endl;
     cout<<"|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"<<endl;
@@ -28,15 +28,17 @@ void printlogo()
 }
 
 
-void printmainmenu()
+void PrintMainMenu()
 {
     cout<<"+-------------------------------------+"<<endl;
-    cout<<"|   1 - TODO                          |"<<endl;
-    cout<<"|   2 - TODO                          |"<<endl;
-    cout<<"|   3 - Compactar Database            |"<<endl;
-    cout<<"|   0 - Sair                          |"<<endl;
+    cout<<"|  Digite help para mais informações  |"<<endl;
     cout<<"+-------------------------------------+"<<endl<<endl;
 
-    printf("Escolha uma opção:\n");
+    cout<<"> ";
+}
+
+void PrintUnknown()
+{
+    cout<<"Comando não reconhecido, digite help para mais informações."<<endl<<endl;
     cout<<"> ";
 }
