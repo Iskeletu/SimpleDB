@@ -10,6 +10,6 @@
 !LICENSE
 !README.md
 
-#Source folder
+#Source files
 !source/screens/*
 !source/main.cpp
