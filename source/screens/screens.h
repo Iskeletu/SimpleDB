@@ -4,8 +4,9 @@
 #include "screens.cpp"
 
 //==========Functions==========
-void printlogo();
-void printmainmenu();
+void PrintLogo();
+void PrintMainMenu();
+void PrintUnknown();
 //=============================
 
 
