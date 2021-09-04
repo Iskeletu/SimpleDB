@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+//delete this header after linux conversion
 #include <windows.h>
 
 #include "screens\screens.h"
