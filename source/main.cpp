@@ -1,9 +1,8 @@
 #include <iostream>
 #include <windows.h>
 
-void printmenu()
+void printlogoscreen()
 {
-    SetConsoleOutputCP(65001);
     std::cout<<" ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________  "<<std::endl;
     std::cout<<"|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"<<std::endl;
     std::cout<<"\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________|"<<std::endl<<std::endl;
@@ -18,13 +17,15 @@ void printmenu()
     std::cout<<" ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________  "<<std::endl;
     std::cout<<"|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"<<std::endl;
     std::cout<<"\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________|"<<std::endl<<std::endl<<std::endl;
+}
 
-    system("pause"); system("cls");
-
+void printmenu()
+{
     std::cout<<"+-------------------------------------+"<<std::endl;
     std::cout<<"|   1 - TODO                          |"<<std::endl;
     std::cout<<"|   2 - TODO                          |"<<std::endl;
     std::cout<<"|   3 - Compactar Database            |"<<std::endl;
+    std::cout<<"|   0 - Sair                          |"<<std::endl;
     std::cout<<"+-------------------------------------+"<<std::endl<<std::endl;
 
     printf("Escolha uma opção:\n");
@@ -33,8 +34,37 @@ void printmenu()
 
 int main()
 {
-    printmenu();
-    system("pause");
+    SetConsoleOutputCP(65001);
 
-    return 0;
+    printlogoscreen();
+    system("pause"); system("cls");
+
+    int menu;
+    do
+    {
+        printmenu();
+        std::cin>>menu;
+        system("cls");
+
+        if(menu < 0 || menu > 3)
+        {
+            printf("Opção Inválida!\n\n");
+        }
+    }while(menu < 0 || menu > 3);
+
+    switch(menu)
+    {
+        case 0:
+            return 0;
+            break;
+
+        case 1:
+            break;
+
+        case 2:
+            break;
+
+        case 3:
+            break;
+    }
 }
