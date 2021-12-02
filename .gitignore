@@ -1,15 +1,1 @@
-# Exclude all
 /*
-
-# Except what I want to keep
-
-#GitHub
-!.gitignore
-
-#Important files
-!LICENSE
-!README.md
-
-#Source files
-!Source/*
-/Source/simpledb
