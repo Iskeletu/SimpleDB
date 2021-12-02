@@ -9,6 +9,7 @@
 #Important files
 !LICENSE
 !README.md
+!CMakeLists.txt
 
 #Source files
 !Include/
