@@ -4,7 +4,7 @@
 //Header inclusion
 #include "screens.h"
 #include "commandhandler.h"
-//#include "dbhandler.h"
+#include "dbhandler.h"
 
 
 int main()
