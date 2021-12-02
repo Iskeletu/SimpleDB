@@ -11,5 +11,6 @@
 !README.md
 
 #Source files
-!source/
-source/*.exe
+!source/commandahndler/*
+!source/screens/*
+!source/simpledb.cpp

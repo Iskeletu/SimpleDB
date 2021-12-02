@@ -33,13 +33,10 @@ void PrintDefaultScreen()
     cout<<"+-------------------------------------+"<<endl;
     cout<<"|  Digite help para mais informações  |"<<endl;
     cout<<"+-------------------------------------+"<<endl<<endl;
-
-    cout<<"> ";
 }
 
 
 void PrintUnknownCommandScreen()
 {
-    cout<<"Comando não reconhecido, digite help para mais informações."<<endl<<endl;
-    cout<<"> ";
+    cout<<"Comando não reconhecido, digite 'help' para mais informações."<<endl<<endl;
 }

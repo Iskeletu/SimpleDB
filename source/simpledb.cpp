@@ -1,25 +1,24 @@
 #include <iostream>
+#include <stdlib.h>
 #include <string>
-//delete this header after linux conversion
-#include <windows.h>
 
-#include "screens\screens.h"
+//Header inclusion
+#include "./screens/screens.h"
+#include "./commandhandler/commandhandler.h"
 
 int main()
 {
     //variable definition
-    string input;
+    std::string input;
     bool exit_flag = false;
-
-    //not important, delete after converting to linux
-    SetConsoleOutputCP(65001);
 
 
 //=================SimpleDB startup=================
     PrintStartupScreen();
     //do load stuff here
-    system("pause"); system("cls");
+    std::cout<<"Pressione a tecla enter para proseguir!"<<std::endl; getchar(); system("clear");
 //==================================================
+
 
     //Calls for default screen
     PrintDefaultScreen();
@@ -28,7 +27,19 @@ int main()
 //=====================Main loop====================
     while(!exit_flag)
     {
+        std::cout<<"SimpleDB > ";
         std::cin>>input;
+
+        if(input == "exit")
+        {
+            //Save and exit sequence.
+
+            exit_flag = true;
+        }
+        else
+        {
+            //do stuff with command
+        }
     }
 //==================================================
 
