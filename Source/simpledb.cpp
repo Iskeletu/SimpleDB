@@ -29,7 +29,7 @@ int main()
     while(!exit_flag)
     {
         std::cout<<"SimpleDB Terminal > ";
-        std::cin>>input;
+        std::getline(std::cin, input);
 
         if(input == "exit")
         {

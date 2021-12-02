@@ -52,6 +52,34 @@ void PrintHelpScreen()
 }
 
 
+void PrintArgumentHelp(string argument)
+{
+    if(argument == "help")
+    {
+
+    }
+    else if(argument == "simpledb")
+    {
+
+    }
+    else if(argument == "exit")
+    {
+        
+    }
+    else
+    {
+        PrintInvalidHelp(argument);
+    }
+}
+
+
+void PrintInvalidHelp(string command)
+{
+    cout<<"Nenhuma informação localizada para o comando '"<<command<<"'."<<endl;
+    cout<<"Use 'help' sem argumentos para ver a lisca de comandos disponíveis."<<endl<<endl;
+}
+
+
 void PrintUnknownCommandScreen(string command)
 {
     cout<<"Comando '"<<command<<"' não reconhecido, digite 'help' para mais informações."<<endl<<endl;
