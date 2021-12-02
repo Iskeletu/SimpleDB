@@ -2,9 +2,9 @@
 
 
 //Header inclusion
-#include "./Screens/screens.h"
-#include "./CommandHandler/commandhandler.h"
-//#include "./DBHandler/dbhandler.h"
+#include "screens.h"
+#include "commandhandler.h"
+//#include "dbhandler.h"
 
 
 int main()
