@@ -9,10 +9,13 @@
 #Important files
 !LICENSE
 !README.md
-!CMakeLists.txt
+
+#CMake Files
+!CMake/
 
 #Source files
 !Include/
 
 !Source/
+Source/Build
 Source/simpledb
