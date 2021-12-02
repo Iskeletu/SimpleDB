@@ -7,8 +7,8 @@
 !.gitignore
 
 #Important files
-!LICENSE
-!README.md
+LICENSE
+README.md
 
 #Source files
 !Source/
