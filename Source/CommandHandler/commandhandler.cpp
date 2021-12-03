@@ -2,7 +2,7 @@
 This file is responsible for command processing.
 It formats raw data inputed by the user as commands that the
 rest of the functions can understand, it's the user's bridge
-the to the database.
+to the database.
 */
 
 //Libraries
