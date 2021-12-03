@@ -9,8 +9,9 @@
 using namespace std;
 
 
+//==================Startup Screen==================
 void PrintStartupScreen()
-{
+{ //Startup screens, it's only use is to have something to look at when the program is loading (shoudln't take long at all).
     cout<<" ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________  "<<endl;
     cout<<"|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"<<endl;
     cout<<"\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________|"<<endl<<endl;
@@ -26,17 +27,22 @@ void PrintStartupScreen()
     cout<<"|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"<<endl;
     cout<<"\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________|"<<endl<<endl<<endl;
 }
+//==================================================
 
 
+//==================Default Screen==================
 void PrintDefaultScreen()
-{
+{ //Informational screen show when the program finished startup sequence and aloows user to use the terminal.
     cout<<"+----------------------------------------------+"<<endl;
     cout<<"|     Digite 'help' para mais informações.     |"<<endl;
     cout<<"+----------------------------------------------+"<<endl<<endl;
 }
+//==================================================
 
+
+//================Help Command Screen===============
 void PrintHelpScreen()
-{
+{ //Screen for 'help' command.
     cout<<"+----------------------------------------------+"<<endl;
     cout<<"|  '->' = Uso do comando.                      |"<<endl;
     cout<<"|  '*'  = Argumento dinsponível.               |"<<endl;
@@ -60,10 +66,12 @@ void PrintHelpScreen()
     cout<<"|  Use 'help [comando]' para mais informações. |"<<endl;
     cout<<"+----------------------------------------------+"<<endl<<endl;
 }
+//==================================================
 
 
+//==========Argumented Help Command Screen==========
 void PrintArgumentHelpScreen(string argument)
-{
+{ //Has one screen for each of the commands that can be used as argument for 'help' command.
     if(argument == "help")
     {
         cout<<"+----------------------------------------------+"<<endl;
@@ -112,31 +120,40 @@ void PrintArgumentHelpScreen(string argument)
         PrintInvalidHelpScreen(argument);
     }
 }
+//==================================================
 
 
+//============Invalid Help Command Screen===========
 void PrintInvalidHelpScreen(string command)
-{
+{ //Default message for invalid 'help' command usage.
     cout<<"Nenhuma informação localizada para o comando '"<<command<<"'."<<endl;
     cout<<"Use 'help' sem argumentos para ver a lisca de comandos disponíveis."<<endl<<endl;
 }
+//==================================================
 
 
+//===============Unknow Command Screen==============
 void PrintUnknownCommandScreen(string command)
-{
+{ //Default message for unknown commands.
     cout<<"Comando '"<<command<<"' não reconhecido, digite 'help' para mais informações."<<endl<<endl;
 }
+//==================================================
 
 
+//==============Unknow Argument Screen==============
 void PrintUnknownArgumentScreen(string command, string argument)
-{
+{ //Default message for unknown arguments.
     cout<<"Argumento '"<<argument<<"' desconhecido para o comando '"<<command<<"'."<<endl;
     cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
 }
+//==================================================
 
 
+//===============Clear Command Screen===============
 void ClearScreen()
-{
+{ //Completely aesthetical choice to undo the last command clearing from the terminal.
     system("clear");
     cout<<"SimpleDB Terminal > clear"<<endl;
     cout<<"Concluído."<<endl<<endl;
 }
+//==================================================
