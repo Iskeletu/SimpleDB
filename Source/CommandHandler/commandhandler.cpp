@@ -40,6 +40,11 @@ vector<string> FormatInput(std::string input)
 //=================Command Processor================
 bool ReadCommand(string user_input)
 { //Reads raw input from user as command and calls for functions related.
+    if(user_input.empty())
+    { //Does nothing if input is blank.
+        return false;
+    }
+    
     vector<string> formatted_input = FormatInput(user_input);
     string command = formatted_input[0]; //Takes the first group of characters before a white space as the main command.
 
