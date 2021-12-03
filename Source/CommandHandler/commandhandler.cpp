@@ -22,7 +22,7 @@ using namespace std;
 
 
 //=================Command Formatter================
-vector<string> InputFormatter(std::string input)
+vector<string> InputFormatter(string input)
 { //Creates a string vector divided by whitespaces from the raw user input.
     vector<string> formatted_input;
     string temp;
@@ -40,11 +40,17 @@ vector<string> InputFormatter(std::string input)
 
 
 //=================Command Formatter================
-string ArgumentFormatter(std::string input)
+string ArgumentFormatter(string input, int type)
 { //Separates expression for argument.
     string expression;
     
-    //TODO
+    switch type
+    {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+    }
 
     return expression;
 }
@@ -93,19 +99,23 @@ bool ReadCommand(string user_input)
 
             if(argument.rfind("--insert", 0) == 0)
             {
-
+                argument = "--insert";
+                string expression = ArgumentFormatter(argument, 1);
             }
             else if(argument.rfind("--remove", 0) == 0)
             {
-
+                argument = "--remove";
+                string expression = ArgumentFormatter(argument, 2);
             }
             else if(argument.rfind("--search", 0) == 0)
             {
-
+                argument = "--search";
+                string expression = ArgumentFormatter(argument, 3);
             }
             else if(argument.rfind("--update", 0) == 0)
             {
-
+                argument = "--update";
+                string expression = ArgumentFormatter(argument, 3);
             }
             else if(argument.rfind("--list", 0) == 0)
             {
@@ -117,11 +127,13 @@ bool ReadCommand(string user_input)
             }
             else if(argument.rfind("--compress", 0) == 0)
             {
-
+                argument = "--compress";
+                string expression = ArgumentFormatter(argument, 4);
             }
             else if(argument.rfind("--decompress", 0) == 0)
             {
-
+                argument = "--decompress";
+                string expression = ArgumentFormatter(argument, 4);
             }
             else
             {
