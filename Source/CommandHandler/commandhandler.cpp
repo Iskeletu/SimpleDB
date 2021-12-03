@@ -126,7 +126,7 @@ bool ReadCommand(string user_input)
                 else
                 {
                     string expression = argument.erase(0, 5);
-                    PrintUnknownExpressionScrees(command, "--list", expression);
+                    PrintUnknownExpressionScreen(command, "--list", expression);
                 }
             }
             else if(argument.rfind("--reverse-list", 0) == 0)
@@ -138,7 +138,7 @@ bool ReadCommand(string user_input)
                 else
                 {
                     string expression = argument.erase(0, 13);
-                    PrintUnknownExpressionScrees(command, "--reverse-list", expression);
+                    PrintUnknownExpressionScreen(command, "--reverse-list", expression);
                 }
             }
             else if(argument.rfind("--compress", 0) == 0)
