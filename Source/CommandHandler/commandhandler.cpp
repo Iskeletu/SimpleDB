@@ -21,6 +21,16 @@ to the database.
 using namespace std;
 
 
+//================Expression Verifyer===============
+bool VerifyExpression(string expression, int type)
+{ //Analyzes expression and returns true if it is valid.
+    //TODO
+
+    return true;
+}
+//==================================================
+
+
 //=================Command Formatter================
 vector<string> InputFormatter(string input)
 { //Creates a string vector divided by whitespaces from the raw user input.
@@ -39,27 +49,45 @@ vector<string> InputFormatter(string input)
 //==================================================
 
 
-//=================Command Formatter================
-string ArgumentFormatter(string input, int type)
+//=================Argument Formatter================
+bool ArgumentFormatter(string *argument, string *expression, int type)
 { //Separates expression for argument.
-    string expression;
-    
+    string temp = *argument;
+
     switch(type)
     {
         case 1:
+            *expression = temp.erase(0, 8);
+            *argument = "--insert";
             break;
 
         case 2:
+            expression = &argument->erase(0, 8);
+            *argument = "--remove";
             break;
 
         case 3:
+            expression = &argument->erase(0, 8);
+            *argument = "--search";
             break;
 
         case 4:
+            expression = &argument->erase(0, 8);
+            *argument = "--update";
+            break;
+        
+        case 5:
+            expression = &argument->erase(0, 10);
+            *argument = "--compress";
+            break;
+
+        case 6:
+            expression = &argument->erase(0, 12);
+            *argument = "--decompress";
             break;
     }
 
-    return expression;
+    return VerifyExpression(*expression, type);
 }
 //==================================================
 
@@ -72,10 +100,13 @@ bool ReadCommand(string user_input)
         return false;
     }
     
+
     vector<string> formatted_input = InputFormatter(user_input);
     string command = formatted_input[0]; //Takes the first group of characters before a white space as the main command.
     int command_size = formatted_input.size();
 
+
+    //Be prepared for a big if-else block.
     if(command == "help") //'help' command.
     {
         if(command_size == 1)
@@ -102,27 +133,57 @@ bool ReadCommand(string user_input)
         }
         else if(command_size == 2)
         {
+            string expression;
+            bool valid_expression = false;
             string argument = formatted_input[1];
 
             if(argument.rfind("--insert", 0) == 0)
             {
-                argument = "--insert";
-                string expression = ArgumentFormatter(argument, 1);
+                valid_expression = ArgumentFormatter(&argument, &expression, 1);
+                if (valid_expression)
+                {
+                    //proceed
+                }
+                else
+                {
+                    PrintUnknownExpressionScreen(command, argument, expression);
+                }
             }
             else if(argument.rfind("--remove", 0) == 0)
             {
-                argument = "--remove";
-                string expression = ArgumentFormatter(argument, 2);
+                valid_expression = ArgumentFormatter(&argument, &expression, 2);
+                if (valid_expression)
+                {
+                    //proceed
+                }
+                else
+                {
+                    PrintUnknownExpressionScreen(command, argument, expression);
+                }
             }
             else if(argument.rfind("--search", 0) == 0)
             {
-                argument = "--search";
-                string expression = ArgumentFormatter(argument, 3);
+                valid_expression = ArgumentFormatter(&argument, &expression, 3);
+                if (valid_expression)
+                {
+                    //proceed
+                }
+                else
+                {
+                    PrintUnknownExpressionScreen(command, argument, expression);
+                }
             }
             else if(argument.rfind("--update", 0) == 0)
             {
-                argument = "--update";
-                string expression = ArgumentFormatter(argument, 3);
+                valid_expression = ArgumentFormatter(&argument, &expression, 4);
+                if (valid_expression)
+                {
+                    //proceed
+                }
+                else
+                {
+                    PrintUnknownExpressionScreen(command, argument, expression);
+                }
             }
             else if(argument.rfind("--list", 0) == 0)
             {
@@ -150,13 +211,27 @@ bool ReadCommand(string user_input)
             }
             else if(argument.rfind("--compress", 0) == 0)
             {
-                argument = "--compress";
-                string expression = ArgumentFormatter(argument, 4);
+                valid_expression = ArgumentFormatter(&argument, &expression, 5);
+                if (valid_expression)
+                {
+                    //proceed
+                }
+                else
+                {
+                    PrintUnknownExpressionScreen(command, argument, expression);
+                }
             }
             else if(argument.rfind("--decompress", 0) == 0)
             {
-                argument = "--decompress";
-                string expression = ArgumentFormatter(argument, 4);
+                valid_expression = ArgumentFormatter(&argument, &expression, 5);
+                if (valid_expression)
+                {
+                    //proceed
+                }
+                else
+                {
+                    PrintUnknownExpressionScreen(command, argument, expression);
+                }
             }
             else
             {
