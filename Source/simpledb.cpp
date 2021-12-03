@@ -1,6 +1,6 @@
 /*
-    Main file.
-    Mainly calls for functions from other files and provides raw user input.
+Main file.
+Mainly calls for functions from other files and provides raw user input.
 */
 
 
