@@ -22,7 +22,7 @@ using namespace std;
 
 
 //================Expression Verifier===============
-bool VerifyExpression(string expression, int type)
+bool ExpressionVerifier(string expression, int type)
 { //Analyzes expression and returns true if it is valid.
     //TODO
 
@@ -87,7 +87,7 @@ bool ArgumentFormatter(string *argument, string *expression, int type)
             break;
     }
 
-    return VerifyExpression(*expression, type);
+    return ExpressionVerifier(*expression, type);
 }
 //==================================================
 
