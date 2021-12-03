@@ -44,7 +44,7 @@ string ArgumentFormatter(string input, int type)
 { //Separates expression for argument.
     string expression;
     
-    switch type
+    switch(type)
     {
         case 1:
         case 2:
