@@ -119,11 +119,27 @@ bool ReadCommand(string user_input)
             }
             else if(argument.rfind("--list", 0) == 0)
             {
-
+                if(argument == "--list")
+                {
+                    //proceed
+                }
+                else
+                {
+                    string expression = argument.erase(0, 5);
+                    PrintUnknownExpressionScrees(command, "--list", expression);
+                }
             }
             else if(argument.rfind("--reverse-list", 0) == 0)
             {
-
+                if(argument == "--reverse-list")
+                {
+                    //proceed
+                }
+                else
+                {
+                    string expression = argument.erase(0, 13);
+                    PrintUnknownExpressionScrees(command, "--reverse-list", expression);
+                }
             }
             else if(argument.rfind("--compress", 0) == 0)
             {

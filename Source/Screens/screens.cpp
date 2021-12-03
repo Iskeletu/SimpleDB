@@ -167,7 +167,7 @@ void PrintInsufficientArgumentScreen(string command)
 
 
 //=============Unknown Expression Screen=============
-void PrintUnknownArgumentScreen(string command, string argument, string expression)
+void PrintUnknownExpressionScreen(string command, string argument, string expression)
 { //Default message for unknown arguments.
     cout<<"Expressão '"<<expression<<"' inválida para o argumento '"<<argument<<"'."<<endl;
     cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
