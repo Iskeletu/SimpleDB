@@ -132,7 +132,7 @@ bool ReadCommand(string user_input)
                 }
                 else
                 {
-                    string expression = argument.erase(0, 5);
+                    string expression = argument.erase(0, 6);
                     PrintUnknownExpressionScreen(command, "--list", expression);
                 }
             }
@@ -144,7 +144,7 @@ bool ReadCommand(string user_input)
                 }
                 else
                 {
-                    string expression = argument.erase(0, 13);
+                    string expression = argument.erase(0, 14);
                     PrintUnknownExpressionScreen(command, "--reverse-list", expression);
                 }
             }
