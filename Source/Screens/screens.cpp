@@ -60,12 +60,12 @@ void PrintHelpScreen()
     cout<<"|    * simpledb                                |"<<endl;
     cout<<"|    * clear                                   |"<<endl;
     cout<<"|    * exit                                    |"<<endl;
-    cout<<"|  SIMPLEDB  ->  TODO.                         |"<<endl;
+    cout<<"|  SIMPLEDB  ->  Realiza operações no BD.      |"<<endl;
     cout<<"|    * --insert                                |"<<endl;
     cout<<"|    * --remove                                |"<<endl;
     cout<<"|    * --search                                |"<<endl;
     cout<<"|    * --update                                |"<<endl;
-    cout<<"|    * --list                                  |"<<endl;
+    cout<<"|    * --list / --revese-list                  |"<<endl;
     cout<<"|    * --compress                              |"<<endl;
     cout<<"|    * --decompress                            |"<<endl;
     cout<<"|  CLEAR  ->  Limpa o histórico de mensagens.  |"<<endl;
