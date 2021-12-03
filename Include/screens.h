@@ -11,9 +11,11 @@ using namespace std;
 void PrintStartupScreen();
 void PrintDefaultScreen();
 void PrintHelpScreen();
-void PrintArgumentHelp(string argument);
-void PrintInvalidHelp(string command);
+void PrintArgumentHelpScreen(string argument);
+void PrintInvalidHelpScreen(string command);
 void PrintUnknownCommandScreen(string command);
+void PrintUnknownArgumentScreen(string command, string argument);
+void ClearScreen();
 //=============================
 
 

@@ -2,7 +2,7 @@
 #define commandhandler_h_
 
 //==========Functions==========
-void ReadCommand(std::string user_input);
+bool ReadCommand(std::string user_input);
 //=============================
 
 

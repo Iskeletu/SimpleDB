@@ -31,18 +31,12 @@ int main()
         std::cout<<"SimpleDB Terminal > ";
         std::getline(std::cin, input);
 
-        if(input == "exit")
-        {
-            //Save and exit sequence.
-            exit_flag = true;
-        }
-        else
-        {
-            ReadCommand(input);
-        }
+        exit_flag = ReadCommand(input);
     }
 //==================================================
 
+
+//save and exit sequence
 
     return 0;
 }
