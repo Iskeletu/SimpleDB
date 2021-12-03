@@ -17,7 +17,7 @@ void PrintInvalidHelpScreen(string command);
 void PrintUnknownCommandScreen(string command);
 void PrintUnknownArgumentScreen(string command, string argument);
 void PrintInsufficientArgumentScreen(string command);
-void PrintUnknownArgumentScreen(string command, string argument, string expression);
+void PrintUnknownExpressionScreen(string command, string argument, string expression);
 void ClearScreen();
 //=============================
 
