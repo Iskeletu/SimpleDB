@@ -21,7 +21,7 @@ to the database.
 using namespace std;
 
 
-//================Expression Verifyer===============
+//================Expression Verifier===============
 bool VerifyExpression(string expression, int type)
 { //Analyzes expression and returns true if it is valid.
     //TODO
