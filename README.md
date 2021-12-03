@@ -1,6 +1,7 @@
 # SimpleDB
 
-TODO: README.md
+SimpleDB is a simple C++ key-value database that work as following:
+TODO
 
 ## License
 
