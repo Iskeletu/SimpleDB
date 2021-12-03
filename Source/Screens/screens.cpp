@@ -140,7 +140,7 @@ void PrintInvalidHelpScreen(string command)
 //==================================================
 
 
-//===============Unknow Command Screen==============
+//==============Unknown Command Screen==============
 void PrintUnknownCommandScreen(string command)
 { //Default message for unknown commands.
     cout<<"Comando '"<<command<<"' não reconhecido, digite 'help' para mais informações."<<endl<<endl;
@@ -148,7 +148,7 @@ void PrintUnknownCommandScreen(string command)
 //==================================================
 
 
-//==============Unknow Argument Screen==============
+//==============Unknown Argument Screen=============
 void PrintUnknownArgumentScreen(string command, string argument)
 { //Default message for unknown arguments.
     cout<<"Argumento '"<<argument<<"' desconhecido para o comando '"<<command<<"'."<<endl;
@@ -161,6 +161,15 @@ void PrintUnknownArgumentScreen(string command, string argument)
 void PrintInsufficientArgumentScreen(string command)
 {
     cout<<"Argumentos insuficientes para o comando '"<<command<<"'."<<endl;
+    cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
+}
+//==================================================
+
+
+//=============Unknown Expression Screen=============
+void PrintUnknownArgumentScreen(string command, string argument, string expression)
+{ //Default message for unknown arguments.
+    cout<<"Expressão '"<<expression<<"' inválida para o argumento '"<<argument<<"'."<<endl;
     cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
 }
 //==================================================
