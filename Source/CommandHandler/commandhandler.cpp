@@ -6,6 +6,8 @@ to the database.
 */
 
 //Libraries
+//#include <string>
+//#include <string_view>
 #include <vector>
 #include <sstream>
 
@@ -20,7 +22,7 @@ using namespace std;
 
 
 //=================Command Formatter================
-vector<string> FormatInput(std::string input)
+vector<string> InputFormatter(std::string input)
 { //Creates a string vector divided by whitespaces from the raw user input.
     vector<string> formatted_input;
     string temp;
@@ -37,6 +39,18 @@ vector<string> FormatInput(std::string input)
 //==================================================
 
 
+//=================Command Formatter================
+string ArgumentFormatter(std::string input)
+{ //Separates expression for argument.
+    string expression;
+    
+    //TODO
+
+    return expression;
+}
+//==================================================
+
+
 //=================Command Processor================
 bool ReadCommand(string user_input)
 { //Reads raw input from user as command and calls for functions related.
@@ -45,7 +59,7 @@ bool ReadCommand(string user_input)
         return false;
     }
     
-    vector<string> formatted_input = FormatInput(user_input);
+    vector<string> formatted_input = InputFormatter(user_input);
     string command = formatted_input[0]; //Takes the first group of characters before a white space as the main command.
     int command_size = formatted_input.size();
 
@@ -75,7 +89,44 @@ bool ReadCommand(string user_input)
         }
         else if(command_size == 2)
         {
-            //Proceed with command
+            string argument = formatted_input[1];
+
+            if(argument.rfind("--insert", 0) == 0)
+            {
+
+            }
+            else if(argument.rfind("--remove", 0) == 0)
+            {
+
+            }
+            else if(argument.rfind("--search", 0) == 0)
+            {
+
+            }
+            else if(argument.rfind("--update", 0) == 0)
+            {
+
+            }
+            else if(argument.rfind("--list", 0) == 0)
+            {
+
+            }
+            else if(argument.rfind("--reverse-list", 0) == 0)
+            {
+
+            }
+            else if(argument.rfind("--compress", 0) == 0)
+            {
+
+            }
+            else if(argument.rfind("--decompress", 0) == 0)
+            {
+
+            }
+            else
+            {
+                PrintUnknownArgumentScreen(command, argument);
+            }
         }
         else
         {
