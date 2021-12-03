@@ -1,8 +1,16 @@
+/*
+This file is responsible for command processing.
+It formats raw data inputed by the user as commands that the
+rest of the functions can understand, it's the user's bridge
+the to the database.
+*/
+
+//Libraries
 #include <vector>
 #include <sstream>
 
 
-//Header files
+//Header Files
 #include "commandhandler.h"
 #include "screens.h"
 
@@ -53,9 +61,9 @@ bool ReadCommand(string user_input)
             PrintInvalidHelpScreen(argument);
         }
     }
-    else if(command == "simpledb")
+    else if(command == "simpledb") //'simpledb' command.
     {
-        //do stuff
+        //TODO
     }
     else if(command == "clear") //'clear' command.
     {
