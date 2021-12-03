@@ -1,42 +1,47 @@
+/*
+    Main file.
+    Mainly calls for functions from other files and provides raw user input.
+*/
+
+
+//Libraries
 #include <iostream>
 
 
-//Header inclusion
+//Header Files
 #include "screens.h"
 #include "commandhandler.h"
 #include "dbhandler.h"
 
 
+//===================Main Function==================
 int main()
 {
-    //variable definition
-    std::string input;
-    bool exit_flag = false;
+    //Variable definition.
+    std::string input; //Raw user input.
+    bool exit_flag = false; //Main loop exit flag.
 
 
-//=================SimpleDB startup=================
+    //=================SimpleDB Startup=================
     PrintStartupScreen();
-    //do load stuff here
+    //TODO load stuff
     std::cout<<"Pressione a tecla enter para proseguir!"<<std::endl; getchar(); system("clear");
-//==================================================
-
-
-    //Calls for default screen
     PrintDefaultScreen();
+    //==================================================
 
 
-//=====================Main loop====================
+    //=====================Main loop====================
     while(!exit_flag)
     {
-        std::cout<<"SimpleDB Terminal > ";
-        std::getline(std::cin, input);
+        std::cout<<"SimpleDB Terminal > "; //Deafult text.
+        std::getline(std::cin, input); //Reads user input.
 
-        exit_flag = ReadCommand(input);
+        exit_flag = ReadCommand(input); //Checks for exit flag.
     }
-//==================================================
+    //==================================================
 
 
-//save and exit sequence
-
+    //TODO save and exit sequence
     return 0;
 }
+//==================================================
