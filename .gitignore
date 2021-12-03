@@ -10,11 +10,13 @@
 !LICENSE
 !README.md
 
-#CMake Files
-!CMake/
-
 #Source files
 !Include/
-
 !Source/
 Source/simpledb
+
+#Database Files
+!Database/
+
+#CMake Files
+!CMake/
