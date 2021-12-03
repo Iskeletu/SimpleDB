@@ -157,6 +157,15 @@ void PrintUnknownArgumentScreen(string command, string argument)
 //==================================================
 
 
+//===========Insufficient Argument Screen===========
+void PrintInsufficientArgumentScreen(string command)
+{
+    cout<<"Argumentos insuficientes para o comando '"<<command<<"'."<<endl;
+    cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
+}
+//==================================================
+
+
 //===============Clear Command Screen===============
 void ClearScreen()
 { //Completely aesthetical choice to undo the last command clearing from the terminal.
