@@ -47,14 +47,15 @@ bool ReadCommand(string user_input)
     
     vector<string> formatted_input = FormatInput(user_input);
     string command = formatted_input[0]; //Takes the first group of characters before a white space as the main command.
+    int command_size = formatted_input.size();
 
     if(command == "help") //'help' command.
     {
-        if(formatted_input.size() == 1)
+        if(command_size == 1)
         {
             PrintHelpScreen();
         }
-        else if(formatted_input.size() == 2)
+        else if(command_size == 2)
         {
             PrintArgumentHelpScreen(formatted_input[1]);
 
@@ -68,11 +69,24 @@ bool ReadCommand(string user_input)
     }
     else if(command == "simpledb") //'simpledb' command.
     {
-        //TODO
+        if(command_size == 1)
+        {
+            PrintInsufficientArgumentScreen(command);
+        }
+        else if(command_size == 2)
+        {
+            //Proceed with command
+        }
+        else
+        {
+            string argument = user_input;
+            argument.erase(0, (command.size()+1));
+            PrintUnknownArgumentScreen(command, argument);
+        }
     }
     else if(command == "clear") //'clear' command.
     {
-        if(formatted_input.size() == 1)
+        if(command_size == 1)
         {
             ClearScreen();
         }
@@ -85,7 +99,7 @@ bool ReadCommand(string user_input)
     }
     else if(command == "exit") //'exit command.
     {
-        if(formatted_input.size() == 1)
+        if(command_size == 1)
         {
             return true; //Breaks main loop.
         }
