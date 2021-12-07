@@ -9,7 +9,8 @@
 
 
 //==========Functions==========
-
+bool compress();
+bool decompress();
 //=============================
 
 
