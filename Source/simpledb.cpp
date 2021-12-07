@@ -9,9 +9,7 @@ Mainly calls for functions from other files and provides raw user input.
 
 
 //Header Files
-#include "screens.h"
 #include "commandhandler.h"
-#include "dbhandler.h"
 
 
 //===================Main Function==================
@@ -26,7 +24,7 @@ int main()
     PrintStartupScreen();
 
     //TODO load stuff
-    
+
     std::cout<<"Pressione a tecla enter para proseguir!"<<std::endl;
     getchar(); system("clear");
     PrintDefaultScreen();

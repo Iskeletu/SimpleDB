@@ -3,6 +3,10 @@
 #define commandhandler_h_
 
 
+//Everything that includes this file also include screens.h by default
+#include "screens.h"
+
+
 //==========Namespace==========
 using namespace std;
 //=============================
