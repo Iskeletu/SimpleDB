@@ -24,7 +24,9 @@ int main()
 
     //=================SimpleDB Startup=================
     PrintStartupScreen();
+
     //TODO load stuff
+    
     std::cout<<"Pressione a tecla enter para proseguir!"<<std::endl;
     getchar(); system("clear");
     PrintDefaultScreen();

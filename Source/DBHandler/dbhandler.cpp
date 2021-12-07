@@ -6,5 +6,11 @@ File in work.
 //Libraries
 
 
-//Header File
+//Header Files
 #include "dbhandler.h"
+#include "huffman.h"
+#include "lzw.h"
+
+
+//=======================TODO=======================
+//==================================================
