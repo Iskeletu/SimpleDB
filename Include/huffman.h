@@ -9,8 +9,11 @@
 
 
 //=====================Functions====================
-bool compress();
-bool decompress();
+namespace huffman
+{
+    bool compress();
+    bool decompress();
+}
 //==================================================
 
 

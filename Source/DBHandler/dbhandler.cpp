@@ -14,6 +14,6 @@ File in work.
 
 
 //==================Database Crator=================
-database CreateDatabase(std::string dbname)
-return database;
+//database CreateDatabase(std::string dbname)
+//return database;
 //==================================================

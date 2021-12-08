@@ -9,8 +9,11 @@
 
 
 //=====================Functions====================
-bool compress();
-bool decompress();
+namespace lzw
+{
+    bool compress();
+    bool decompress();
+}
 //==================================================
 
 

@@ -14,7 +14,7 @@
 
 
 //=====================Functions====================
-database CreateDatabase(std::string dbname);
+//database CreateDatabase(std::string dbname);
 //==================================================
 
 
