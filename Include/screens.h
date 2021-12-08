@@ -15,16 +15,16 @@ using namespace std;
 //=====================Functions====================
 namespace screens
 {
-    void PrintStartupScreen();
-    void PrintDefaultScreen();
-    void PrintHelpScreen();
+    void PrintStartupScreen(void);
+    void PrintDefaultScreen(void);
+    void PrintHelpScreen(void);
     void PrintArgumentHelpScreen(string argument);
     void PrintInvalidHelpScreen(string command);
     void PrintUnknownCommandScreen(string command);
     void PrintUnknownArgumentScreen(string command, string argument);
     void PrintInsufficientArgumentScreen(string command);
     void PrintUnknownExpressionScreen(string command, string argument, string expression);
-    void ClearScreen();
+    void ClearScreen(void);
 };
 //==================================================
 

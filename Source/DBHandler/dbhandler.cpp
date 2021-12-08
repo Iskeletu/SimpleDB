@@ -52,9 +52,24 @@ Database Database::CreateDatabase(string dbname)
 
 
 //=================Get Path Function================
-string Database::GetDirectory(void)
+string Database::GetDirectory()
 { //This functions returns the full path of the database file
     return member_path;
 }
 //==================================================
 
+
+//=================Insert Key-Value=================
+void Database::InsertKeyValue(string key, string value)
+{
+    ;
+}
+//==================================================
+
+
+//=================Search Key-Value=================
+string Database::SearchKeyValue(string key)
+{
+    return "wrong_value";
+}
+//==================================================

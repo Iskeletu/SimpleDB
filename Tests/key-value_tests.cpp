@@ -1,9 +1,9 @@
 //Libraries
+#include <string>
 
 
-//Header file
-#include "catch.hpp"
-#include "dbhandler.h"
+//Header files
+#include "tests.h"
 
 
 //=====================Namespace====================
@@ -25,7 +25,7 @@ TEST_CASE("Store and retrive a value", "[setKeyValue,getKeyValue]")
         string value("defined_value");
 
         db.InsertKeyValue(key, value);
-        REQUIRE(value == db.SearchKeyValue(key))
+        REQUIRE(value == db.SearchKeyValue(key));
     }
 }
 //==================================================

@@ -18,6 +18,8 @@ class Database
     public:
         Database(string dbname, string path);
         string GetDirectory(void);
+        void InsertKeyValue(string key, string value);
+        string SearchKeyValue(string key);
 
     static Database CreateDatabase(string dbname);
 
@@ -29,7 +31,10 @@ class Database
 
 
 //=====================Functions====================
+namespace dbh //Short for database handler
+{
 
+};
 //==================================================
 
 

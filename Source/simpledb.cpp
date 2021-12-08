@@ -35,6 +35,7 @@ int main()
 
     //Load sequence
 
+
     cout<<"Pressione a tecla enter para proseguir!"<<endl;
     getchar(); system("clear");
     PrintDefaultScreen();
