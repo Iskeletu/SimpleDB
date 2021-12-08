@@ -20,6 +20,10 @@ class Database
         string GetDirectory(void);
 
     static Database CreateDatabase(string dbname);
+
+    protected:
+        string member_name;
+        string member_path;
 };
 //==================================================
 

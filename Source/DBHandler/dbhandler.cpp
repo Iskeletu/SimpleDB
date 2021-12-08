@@ -4,6 +4,8 @@ File in work.
 
 
 //Libraries
+#include <iostream>
+#include <fstream>
 #include <filesystem>
 
 
@@ -19,10 +21,11 @@ namespace fs = std::filesystem;
 //==================================================
 
 
-//=======================TODO=======================
+//====================Initializer====================
 Database::Database(string dbname, string path)
+    : member_name(dbname), member_path(path)
 {
-
+    ;
 }
 //==================================================
 
@@ -30,13 +33,28 @@ Database::Database(string dbname, string path)
 //==================Database Crator=================
 Database Database::CreateDatabase(string dbname)
 {
-    return Database("test", "test");
+    string basedir("../Data");
+    string dbfolder(basedir + "/" + dbname); //will not work on windows, must fix
+
+    if(!fs::exists(basedir))
+    {
+        fs::create_directory(basedir);
+    }
+
+    if(!fs::exists(dbfolder))
+    {
+        fs::create_directory(dbfolder);
+    }
+
+    return Database(dbname, dbfolder);
 }
 //==================================================
 
 
+//=================Get Path Function================
 string Database::GetDirectory(void)
-{
-    return("test");
+{ //This functions returns the full path of the database file
+    return member_path;
 }
+//==================================================
 
