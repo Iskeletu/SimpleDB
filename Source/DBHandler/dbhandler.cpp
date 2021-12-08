@@ -4,6 +4,7 @@ File in work.
 
 
 //Libraries
+#include <filesystem>
 
 
 //Header Files
@@ -12,5 +13,7 @@ File in work.
 #include "lzw.h"
 
 
-//=======================TODO=======================
+//==================Database Crator=================
+database CreateDatabase(std::string dbname)
+return database;
 //==================================================

@@ -3,12 +3,12 @@
 #define screens_h_
 
 
-//==========Namespace==========
+//=====================Namespace====================
 using namespace std;
-//=============================
+//==================================================
 
 
-//==========Functions==========
+//=====================Functions====================
 void PrintStartupScreen();
 void PrintDefaultScreen();
 void PrintHelpScreen();
@@ -19,7 +19,7 @@ void PrintUnknownArgumentScreen(string command, string argument);
 void PrintInsufficientArgumentScreen(string command);
 void PrintUnknownExpressionScreen(string command, string argument, string expression);
 void ClearScreen();
-//=============================
+//==================================================
 
 
 #endif
