@@ -7,7 +7,6 @@
 
 //Dependencies
 #include "catch.hpp"
-#include "dbhandler.h"
 
 
 #endif

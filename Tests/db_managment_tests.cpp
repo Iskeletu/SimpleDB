@@ -8,8 +8,9 @@ File in work
 #include <string>
 
 
-//Header file
+//Header files
 #include "tests.h"
+#include "dbhandler.h"
 
 
 //=====================Namespace====================
@@ -38,5 +39,8 @@ TEST_CASE("db-create", "[createEmptyDB]")
         // 3. The database folder is empty (no database files yet)
         const auto& p = fs::directory_iterator(db.GetDirectory());
         REQUIRE(p == end(p)); // Should have an empty .indexes folder
+
+        db.Erase();
+        REQUIRE(!fs::exists(fs::status(db.GetDirectory())));
     }
 }

@@ -20,6 +20,7 @@ class Database
         string GetDirectory(void);
         void InsertKeyValue(string key, string value);
         string SearchKeyValue(string key);
+        void Erase(void);
 
     static Database CreateDatabase(string dbname);
 

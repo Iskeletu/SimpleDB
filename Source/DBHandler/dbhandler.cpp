@@ -88,3 +88,14 @@ string Database::SearchKeyValue(string key)
     return value;
 }
 //==================================================
+
+
+//==================Erase Database==================
+void Database::Erase()
+{
+    if (fs::exists(member_path))
+    {
+        fs::remove_all(member_path);
+    }
+}
+//==================================================
