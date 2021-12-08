@@ -13,10 +13,11 @@
 #Source files
 !Include/
 !Source/
-Source/simpledb
+Source/build
 
 #Tests files
 !Tests/
+Tests/build
 
 #Database Files
 !Database/

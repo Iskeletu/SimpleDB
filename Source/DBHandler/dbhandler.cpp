@@ -15,7 +15,7 @@ File in work.
 
 //=====================Namespace====================
 using namespace std;
-//namespace fs = std::filesystem;
+namespace fs = std::filesystem;
 //==================================================
 
 
@@ -33,4 +33,10 @@ Database Database::CreateDatabase(string dbname)
     return Database("test", "test");
 }
 //==================================================
+
+
+string Database::GetDirectory(void)
+{
+    return("test");
+}
 
