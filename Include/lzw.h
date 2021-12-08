@@ -13,7 +13,7 @@ namespace lzw
 {
     bool compress();
     bool decompress();
-}
+};
 //==================================================
 
 

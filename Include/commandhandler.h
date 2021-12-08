@@ -3,6 +3,10 @@
 #define commandhandler_h_
 
 
+//Libraries
+#include <string>
+
+
 #include "screens.h" //Every inclusion on commandhandler.h includes screen.h by default
 
 
@@ -12,7 +16,10 @@ using namespace std;
 
 
 //=====================Functions====================
-bool ReadCommand(std::string user_input);
+namespace cli //Short for "Command Line Interface"
+{
+    bool ReadCommand(string user_input);
+};
 //==================================================
 
 

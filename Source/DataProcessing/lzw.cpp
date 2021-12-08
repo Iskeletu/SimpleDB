@@ -10,8 +10,13 @@ File in work.
 #include "lzw.h"
 
 
+//=====================Namespace====================
+
+//==================================================
+
+
 //==================LZW Compression=================
-bool compress()
+bool lzw::compress()
 { //Return 1 if data compression was successful and 0 if it failed.
     bool status = false;
 
@@ -23,7 +28,7 @@ bool compress()
 
 
 //=================LZW Decompression================
-bool compress()
+bool lzw::decompress()
 { //Return 1 if data decompression was successful and 0 if it failed.
     bool status = false;
 

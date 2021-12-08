@@ -7,8 +7,7 @@ to the database.
 
 
 //Libraries
-//#include <string>
-//#include <string_view>
+#include <string_view>
 #include <vector>
 #include <sstream>
 
@@ -17,8 +16,10 @@ to the database.
 #include "commandhandler.h"
 
 
-//No other namespace will be used.
+//=====================Namespace====================
 using namespace std;
+using namespace screens;
+//==================================================
 
 
 //================Expression Verifier===============
@@ -93,7 +94,7 @@ bool ArgumentFormatter(string *argument, string *expression, int type)
 
 
 //=================Command Processor================
-bool ReadCommand(string user_input)
+bool cli::ReadCommand(string user_input)
 { //Reads raw input from user as command and calls for functions related.
     if(user_input.empty())
     { //Does nothing if input is blank.

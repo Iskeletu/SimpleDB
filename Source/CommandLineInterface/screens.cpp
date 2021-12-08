@@ -13,12 +13,13 @@ a text terminal can be.
 #include "screens.h"
 
 
-//No other namespace will be used in this file
+//=====================Namespace====================
 using namespace std;
+//==================================================
 
 
 //==================Startup Screen==================
-void PrintStartupScreen()
+void screens::PrintStartupScreen()
 { //Startup screens, it's only use is to have something to look at when the program is loading (shoudln't take long at all).
     cout<<" ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________  "<<endl;
     cout<<"|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"<<endl;
@@ -39,7 +40,7 @@ void PrintStartupScreen()
 
 
 //==================Default Screen==================
-void PrintDefaultScreen()
+void screens::PrintDefaultScreen()
 { //Informational screen show when the program finished startup sequence and aloows user to use the terminal.
     cout<<"+----------------------------------------------+"<<endl;
     cout<<"|     Digite 'help' para mais informações.     |"<<endl;
@@ -49,7 +50,7 @@ void PrintDefaultScreen()
 
 
 //================Help Command Screen===============
-void PrintHelpScreen()
+void screens::PrintHelpScreen()
 { //Screen for 'help' command.
     cout<<"+----------------------------------------------+"<<endl;
     cout<<"|  '->' = Uso do comando.                      |"<<endl;
@@ -78,7 +79,7 @@ void PrintHelpScreen()
 
 
 //==========Argumented Help Command Screen==========
-void PrintArgumentHelpScreen(string argument)
+void screens::PrintArgumentHelpScreen(string argument)
 { //Has one screen for each of the commands that can be used as argument for 'help' command.
     if(argument == "help")
     {
@@ -132,7 +133,7 @@ void PrintArgumentHelpScreen(string argument)
 
 
 //============Invalid Help Command Screen===========
-void PrintInvalidHelpScreen(string command)
+void screens::PrintInvalidHelpScreen(string command)
 { //Default message for invalid 'help' command usage.
     cout<<"Nenhuma informação localizada para o comando '"<<command<<"'."<<endl;
     cout<<"Use 'help' sem argumentos para ver a lisca de comandos disponíveis."<<endl<<endl;
@@ -141,7 +142,7 @@ void PrintInvalidHelpScreen(string command)
 
 
 //==============Unknown Command Screen==============
-void PrintUnknownCommandScreen(string command)
+void screens::PrintUnknownCommandScreen(string command)
 { //Default message for unknown commands.
     cout<<"Comando '"<<command<<"' não reconhecido, digite 'help' para mais informações."<<endl<<endl;
 }
@@ -149,7 +150,7 @@ void PrintUnknownCommandScreen(string command)
 
 
 //==============Unknown Argument Screen=============
-void PrintUnknownArgumentScreen(string command, string argument)
+void screens::PrintUnknownArgumentScreen(string command, string argument)
 { //Default message for unknown arguments.
     cout<<"Argumento '"<<argument<<"' desconhecido para o comando '"<<command<<"'."<<endl;
     cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
@@ -158,7 +159,7 @@ void PrintUnknownArgumentScreen(string command, string argument)
 
 
 //===========Insufficient Argument Screen===========
-void PrintInsufficientArgumentScreen(string command)
+void screens::PrintInsufficientArgumentScreen(string command)
 {
     cout<<"Argumentos insuficientes para o comando '"<<command<<"'."<<endl;
     cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
@@ -167,7 +168,7 @@ void PrintInsufficientArgumentScreen(string command)
 
 
 //=============Unknown Expression Screen=============
-void PrintUnknownExpressionScreen(string command, string argument, string expression)
+void screens::PrintUnknownExpressionScreen(string command, string argument, string expression)
 { //Default message for unknown arguments.
     cout<<"Expressão '"<<expression<<"' inválida para o argumento '"<<argument<<"'."<<endl;
     cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
@@ -176,7 +177,7 @@ void PrintUnknownExpressionScreen(string command, string argument, string expres
 
 
 //===============Clear Command Screen===============
-void ClearScreen()
+void screens::ClearScreen()
 { //Completely aesthetical choice to undo the last command clearing from the terminal.
     system("clear");
     cout<<"SimpleDB Terminal > clear"<<endl;

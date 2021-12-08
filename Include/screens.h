@@ -3,22 +3,29 @@
 #define screens_h_
 
 
+//Libraries
+#include <string>
+
+
 //=====================Namespace====================
 using namespace std;
 //==================================================
 
 
 //=====================Functions====================
-void PrintStartupScreen();
-void PrintDefaultScreen();
-void PrintHelpScreen();
-void PrintArgumentHelpScreen(string argument);
-void PrintInvalidHelpScreen(string command);
-void PrintUnknownCommandScreen(string command);
-void PrintUnknownArgumentScreen(string command, string argument);
-void PrintInsufficientArgumentScreen(string command);
-void PrintUnknownExpressionScreen(string command, string argument, string expression);
-void ClearScreen();
+namespace screens
+{
+    void PrintStartupScreen();
+    void PrintDefaultScreen();
+    void PrintHelpScreen();
+    void PrintArgumentHelpScreen(string argument);
+    void PrintInvalidHelpScreen(string command);
+    void PrintUnknownCommandScreen(string command);
+    void PrintUnknownArgumentScreen(string command, string argument);
+    void PrintInsufficientArgumentScreen(string command);
+    void PrintUnknownExpressionScreen(string command, string argument, string expression);
+    void ClearScreen();
+};
 //==================================================
 
 

@@ -13,7 +13,7 @@ namespace huffman
 {
     bool compress();
     bool decompress();
-}
+};
 //==================================================
 
 

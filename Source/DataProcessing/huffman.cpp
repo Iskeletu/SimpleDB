@@ -10,9 +10,14 @@ File in work.
 #include "huffman.h"
 
 
+//=====================Namespace====================
+
+//==================================================
+
+
 //================Huffman Compression===============
-bool compress()
-{ //Return 1 if data compression was successful and 0 if it failed.
+bool huffman::compress()
+{ //Returns 1 if data compression was successful and 0 if it failed.
     bool status = false;
 
     //TODO
@@ -23,8 +28,8 @@ bool compress()
 
 
 //===============Huffman Decompression==============
-bool compress()
-{ //Return 1 if data decompression was successful and 0 if it failed.
+bool huffman::decompress()
+{ //Returns 1 if data decompression was successful and 0 if it failed.
     bool status = false;
 
     //TODO

@@ -6,14 +6,18 @@ Mainly calls for functions from other files and provides raw user input.
 
 //Libraries
 #include <iostream>
+#include <string>
 
 
 //Header Files
 #include "commandhandler.h"
 
 
-//Namespace
-using namespace std; //No other namespace used
+//=====================Namespace====================
+using namespace std;
+using namespace screens;
+using namespace cli;
+//==================================================
 
 
 //===================Main Function==================
