@@ -8,7 +8,7 @@
 
 
 //=====================Namespace====================
-
+using namespace std;
 //==================================================
 
 
@@ -16,9 +16,9 @@
 class Database
 {
     public:
-        Database(std::string dbname, std::string path);
+        Database(string dbname, string path);
 
-    static Database CreateDatabase(std::string dbname);
+    static Database CreateDatabase(string dbname);
 };
 //==================================================
 

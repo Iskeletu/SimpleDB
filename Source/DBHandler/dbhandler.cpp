@@ -14,13 +14,13 @@ File in work.
 
 
 //=====================Namespace====================
-//namespace db = Database;
+using namespace std;
 //namespace fs = std::filesystem;
 //==================================================
 
 
 //=======================TODO=======================
-Database::Database(std::string dbname, std::string path)
+Database::Database(string dbname, string path)
 {
 
 }
@@ -28,7 +28,7 @@ Database::Database(std::string dbname, std::string path)
 
 
 //==================Database Crator=================
-Database Database::CreateDatabase(std::string dbname)
+Database Database::CreateDatabase(string dbname)
 {
     return Database("test", "test");
 }
