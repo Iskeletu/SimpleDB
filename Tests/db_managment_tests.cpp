@@ -28,18 +28,17 @@ TEST_CASE("db-create", "[createEmptyDB]")
         string dbname("myemptydb");
         Database db(Database::CreateDatabase(dbname));
 
-        // We know we have been successful when:-
-        // 1. We have a valid database reference returned
-        //   - No test -> The above would have errored
-        // 2. The DB has a folder that exists on the file system
-        cout<<"checking db directory"<<endl;
+        //We know we have been successful when:-
+        //1. We have a valid database reference returned.
+        //  - No test -> The above would have errored.
+        //2. The database has a folder that exists on the file system.
         REQUIRE(fs::is_directory(fs::status(db.GetDirectory())));
-        // C++17 Ref: https://en.cppreference.com/w/cpp/filesystem/is_directory
 
-        // 3. The database folder is empty (no database files yet)
-        const auto& p = fs::directory_iterator(db.GetDirectory());
-        REQUIRE(p == end(p)); // Should have an empty .indexes folder
+        //3. The database folder is empty (no database files yet).
+        const auto &path = fs::directory_iterator(db.GetDirectory());
+        REQUIRE(path == end(path));
 
+        //4. The database folde does not exist after getting deleted.
         db.Erase();
         REQUIRE(!fs::exists(fs::status(db.GetDirectory())));
     }

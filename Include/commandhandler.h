@@ -5,6 +5,7 @@
 
 //Libraries
 #include <string>
+#include <vector>
 
 
 //Dependencies
@@ -16,10 +17,26 @@ using namespace std;
 //==================================================
 
 
+//======================Classes=====================
+class Command
+{
+    public:
+        Command(string user_input);
+
+        string member_unformatted_command;
+        vector<string> member_full_command;
+        string member_main_command;
+        int member_command_size;
+
+    static vector<string> CommandFormatter(string user_input);
+};
+//==================================================
+
+
 //=====================Functions====================
 namespace cli //Short for "Command Line Interface"
 {
-    bool ReadCommand(string user_input);
+    bool ReadCommand(Command command);
 };
 //==================================================
 

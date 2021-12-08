@@ -21,7 +21,7 @@ namespace fs = std::filesystem;
 //==================================================
 
 
-//====================Initializer====================
+//====================Initializer===================
 Database::Database(string dbname, string path)
     : member_name(dbname), member_path(path)
 {

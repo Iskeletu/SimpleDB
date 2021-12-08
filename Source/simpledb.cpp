@@ -27,6 +27,7 @@ int main()
     //Variable definition.
     string input; //Raw user input.
     bool exit_flag = false; //Main loop exit flag.
+    Command command("null");
 
 
     //=================SimpleDB Startup=================
@@ -37,7 +38,7 @@ int main()
 
 
     cout<<"Pressione a tecla enter para proseguir!"<<endl;
-    getchar(); system("clear");
+    getline(cin, input); system("clear"); input.clear();
     PrintDefaultScreen();
     //==================================================
 
@@ -47,8 +48,9 @@ int main()
     {
         cout<<"SimpleDB Terminal > "; //Deafult text.
         getline(cin, input); //Reads user input.
+        command = (input);
 
-        exit_flag = ReadCommand(input); //Checks for exit flag.
+        exit_flag = ReadCommand(command); //Checks for exit flag.
     }
     //==================================================
 

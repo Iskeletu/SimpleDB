@@ -8,8 +8,8 @@ to the database.
 
 //Libraries
 #include <string_view>
-#include <vector>
 #include <sstream>
+#include <cstring>
 
 
 //Header Files
@@ -22,121 +22,189 @@ using namespace screens;
 //==================================================
 
 
-//================Expression Verifier===============
-bool ExpressionVerifier(string expression, int type)
-{ //Analyzes expression and returns true if it is valid.
-    //TODO
-
-    return true;
+//====================Initializer===================
+Command::Command(string user_input)
+    : member_unformatted_command(user_input), 
+    member_full_command(CommandFormatter(user_input)), 
+    member_main_command(member_full_command[0]), 
+    member_command_size(member_full_command.size())
+{
+    ;
 }
 //==================================================
 
 
 //=================Command Formatter================
-vector<string> InputFormatter(string input)
+vector<string> Command::CommandFormatter(string user_input)
 { //Creates a string vector divided by whitespaces from the raw user input.
-    vector<string> formatted_input;
-    string temp;
+    vector<string> formatted_command;
 
-    istringstream ss(input);
+    if(user_input.empty() || (user_input.rfind(" ", 0) == 0))
+    { //Returns a "null" string if user_input is blank or starts with a blank space.
+        formatted_command.push_back("null");
+        return formatted_command;
+    }
+
+    string temp;
+    istringstream ss(user_input);
 
     while(ss >> temp)
     {
-        formatted_input.push_back(temp);
+        formatted_command.push_back(temp);
     }
 
-    return formatted_input;
+    return formatted_command;
 }
 //==================================================
 
 
-//=================Argument Formatter================
+//================Expression Verifier===============
+bool ExpressionVerifier(string *expression, int type)
+{ //Analyzes expression and returns true if it is valid.
+    if(expression->rfind("=", 0) == 0)
+    {
+        expression->erase(0, 1);
+        string temp = *expression;
+
+        if(expression->length() > 2)
+        {
+            switch(type)
+            {
+                case 1:
+                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                    {
+                        expression->erase(0, 1);
+                        expression->pop_back();
+                        return true;
+                    }
+                break;
+
+                case 2:
+                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                    {
+                        expression->erase(0, 1);
+                        expression->pop_back();
+
+                        return true;
+                    }
+                break;
+
+                case 3:
+                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                    {
+                        expression->erase(0, 1);
+                        expression->pop_back();
+
+                        return true;
+                    }
+                break;
+
+                case 4:
+                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                    {
+                        expression->erase(0, 1);
+                        expression->pop_back();
+
+                        return true;
+                    }
+                break;
+
+                case 5:
+                    if(*expression == "huffman" || *expression == "lzw")
+                    {
+                        return true;
+                    }
+                break;
+            }
+        }
+    }
+
+    return false;
+}
+//==================================================
+
+
+//================Argument Formatter================
 bool ArgumentFormatter(string *argument, string *expression, int type)
 { //Separates expression for argument.
-    string temp = *argument;
-
     switch(type)
     {
         case 1:
-            *expression = temp.erase(0, 8);
+            *expression = argument->erase(0, 8);
             *argument = "--insert";
-            break;
+        break;
 
         case 2:
-            expression = &argument->erase(0, 8);
+            *expression = argument->erase(0, 8);
             *argument = "--remove";
-            break;
+        break;
 
         case 3:
-            expression = &argument->erase(0, 8);
+            *expression = argument->erase(0, 8);
             *argument = "--search";
-            break;
+        break;
 
         case 4:
-            expression = &argument->erase(0, 8);
+            *expression = argument->erase(0, 8);
             *argument = "--update";
-            break;
+        break;
         
         case 5:
-            expression = &argument->erase(0, 10);
+            *expression = argument->erase(0, 10);
             *argument = "--compress";
-            break;
+        break;
 
         case 6:
-            expression = &argument->erase(0, 12);
+            *expression = argument->erase(0, 12);
             *argument = "--decompress";
-            break;
+            type--;
+        break;
     }
 
-    return ExpressionVerifier(*expression, type);
+    return ExpressionVerifier(expression, type);
 }
 //==================================================
 
 
 //=================Command Processor================
-bool cli::ReadCommand(string user_input)
+bool cli::ReadCommand(Command command)
 { //Reads raw input from user as command and calls for functions related.
-    if(user_input.empty())
+    if(command.member_command_size == 1 && command.member_main_command == "null")
     { //Does nothing if input is blank.
         return false;
     }
-    
-
-    vector<string> formatted_input = InputFormatter(user_input);
-    string command = formatted_input[0]; //Takes the first group of characters before a white space as the main command.
-    int command_size = formatted_input.size();
 
 
     //Be prepared for a big if-else block.
-    if(command == "help") //'help' command.
+    if(command.member_main_command == "help") //'help' command.
     {
-        if(command_size == 1)
+        if(command.member_command_size == 1)
         {
             PrintHelpScreen();
         }
-        else if(command_size == 2)
+        else if(command.member_command_size == 2)
         {
-            PrintArgumentHelpScreen(formatted_input[1]);
+            PrintArgumentHelpScreen(command.member_full_command[1]);
 
         }
         else
         {
-            string argument = user_input;
-            argument.erase(0, (command.size()+1));
+            string argument = command.member_unformatted_command;
+            argument.erase(0, (command.member_main_command.size()+1));
             PrintInvalidHelpScreen(argument);
         }
     }
-    else if(command == "simpledb") //'simpledb' command.
+    else if(command.member_main_command == "simpledb") //'simpledb' command.
     {
-        if(command_size == 1)
+        if(command.member_command_size == 1)
         {
-            PrintInsufficientArgumentScreen(command);
+            PrintInsufficientArgumentScreen(command.member_main_command);
         }
-        else if(command_size == 2)
+        else if(command.member_command_size == 2)
         {
             string expression;
             bool valid_expression = false;
-            string argument = formatted_input[1];
+            string argument = command.member_full_command[1];
 
             if(argument.rfind("--insert", 0) == 0)
             {
@@ -147,7 +215,7 @@ bool cli::ReadCommand(string user_input)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command, argument, expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--remove", 0) == 0)
@@ -159,7 +227,7 @@ bool cli::ReadCommand(string user_input)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command, argument, expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--search", 0) == 0)
@@ -171,7 +239,7 @@ bool cli::ReadCommand(string user_input)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command, argument, expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--update", 0) == 0)
@@ -183,7 +251,7 @@ bool cli::ReadCommand(string user_input)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command, argument, expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--list", 0) == 0)
@@ -195,7 +263,7 @@ bool cli::ReadCommand(string user_input)
                 else
                 {
                     string expression = argument.erase(0, 6);
-                    PrintUnknownExpressionScreen(command, "--list", expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, "--list", expression);
                 }
             }
             else if(argument.rfind("--reverse-list", 0) == 0)
@@ -207,7 +275,7 @@ bool cli::ReadCommand(string user_input)
                 else
                 {
                     string expression = argument.erase(0, 14);
-                    PrintUnknownExpressionScreen(command, "--reverse-list", expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, "--reverse-list", expression);
                 }
             }
             else if(argument.rfind("--compress", 0) == 0)
@@ -219,62 +287,62 @@ bool cli::ReadCommand(string user_input)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command, argument, expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--decompress", 0) == 0)
             {
-                valid_expression = ArgumentFormatter(&argument, &expression, 5);
+                valid_expression = ArgumentFormatter(&argument, &expression, 6);
                 if (valid_expression)
                 {
                     //proceed
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command, argument, expression);
+                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else
             {
-                PrintUnknownArgumentScreen(command, argument);
+                PrintUnknownArgumentScreen(command.member_main_command, argument);
             }
         }
         else
         {
-            string argument = user_input;
-            argument.erase(0, (command.size()+1));
-            PrintUnknownArgumentScreen(command, argument);
+            string argument = command.member_unformatted_command;
+            argument.erase(0, (command.member_main_command.size()+1));
+            PrintUnknownArgumentScreen(command.member_main_command, argument);
         }
     }
-    else if(command == "clear") //'clear' command.
+    else if(command.member_main_command == "clear") //'clear' command.
     {
-        if(command_size == 1)
+        if(command.member_command_size == 1)
         {
             ClearScreen();
         }
         else
         {
-            string argument = user_input;
-            argument.erase(0, (command.size()+1));
-            PrintUnknownArgumentScreen(command, argument);
+            string argument = command.member_unformatted_command;
+            argument.erase(0, (command.member_main_command.size()+1));
+            PrintUnknownArgumentScreen(command.member_main_command, argument);
         }
     }
-    else if(command == "exit") //'exit command.
+    else if(command.member_main_command == "exit") //'exit command.
     {
-        if(command_size == 1)
+        if(command.member_command_size == 1)
         {
             return true; //Breaks main loop.
         }
         else
         {
-            string argument = user_input;
-            argument.erase(0, (command.size()+1));
-            PrintUnknownArgumentScreen(command, argument);
+            string argument = command.member_unformatted_command;
+            argument.erase(0, (command.member_main_command.size()+1));
+            PrintUnknownArgumentScreen(command.member_main_command, argument);
         }
     }
     else //Unknown command.
     {
-        PrintUnknownCommandScreen(command);
+        PrintUnknownCommandScreen(command.member_main_command);
     }
 
     return false; //Continues main loop.
