@@ -179,7 +179,7 @@ void screens::PrintUnknownExpressionScreen(string command, string argument, stri
 //===============Clear Command Screen===============
 void screens::ClearScreen()
 { //Completely aesthetical choice to undo the last command clearing from the terminal.
-    system("clear");
+    system("clear"); //This will not work on windows
     cout<<"SimpleDB Terminal > clear"<<endl;
     cout<<"Concluído."<<endl<<endl;
 }

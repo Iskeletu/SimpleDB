@@ -34,7 +34,7 @@ Database::Database(string dbname, string path)
 Database Database::CreateDatabase(string dbname)
 {
     string basedir("../Data");
-    string dbfolder(basedir + "/" + dbname); //will not work on windows, must fix
+    string dbfolder(basedir + "/" + dbname); //This will not work on windows
 
     if(!fs::exists(basedir))
     {
@@ -62,7 +62,10 @@ string Database::GetDirectory()
 //=================Insert Key-Value=================
 void Database::InsertKeyValue(string key, string value)
 {
-    ;
+    ofstream kvfile;
+    kvfile.open(member_path + "/" + key + "_string.kv", ios::out | ios::trunc); //This will not work on windows
+    kvfile<<value;
+    kvfile.close();
 }
 //==================================================
 
@@ -70,6 +73,18 @@ void Database::InsertKeyValue(string key, string value)
 //=================Search Key-Value=================
 string Database::SearchKeyValue(string key)
 {
-    return "wrong_value";
+    string value;
+
+    ifstream kvfile(member_path + "/" + key + "_string.kv");
+    kvfile.seekg(0, ios::end);
+    value.reserve(kvfile.tellg());
+    kvfile.seekg(0, ios::beg);
+
+    value.assign(
+        istreambuf_iterator<char>(kvfile),
+        istreambuf_iterator<char>()
+    );
+
+    return value;
 }
 //==================================================
