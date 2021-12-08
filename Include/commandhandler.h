@@ -8,7 +8,7 @@
 
 
 //Dependencies
-#include "screens.h" //Every inclusion on commandhandler.h includes screen.h by default
+#include "screens.h"
 
 
 //=====================Namespace====================

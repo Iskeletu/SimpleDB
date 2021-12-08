@@ -11,6 +11,7 @@ Mainly calls for functions from other files and provides raw user input.
 
 //Header Files
 #include "commandhandler.h"
+#include "dbhandler.h"
 
 
 //=====================Namespace====================
@@ -32,7 +33,7 @@ int main()
     PrintStartupScreen();
     cout<<"Carregando database..."<<endl;
 
-    
+    //Load sequence
 
     cout<<"Pressione a tecla enter para proseguir!"<<endl;
     getchar(); system("clear");

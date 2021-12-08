@@ -15,6 +15,9 @@
 !Source/
 Source/simpledb
 
+#Tests files
+!Tests/
+
 #Database Files
 !Database/
 

@@ -3,6 +3,13 @@
 #define lzw_h_
 
 
+//Libraries
+
+
+//Dependencies
+#include "dbhandler.h"
+
+
 //=====================Namespace====================
 using namespace std;
 //==================================================

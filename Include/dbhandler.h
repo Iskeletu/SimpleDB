@@ -17,6 +17,7 @@ class Database
 {
     public:
         Database(string dbname, string path);
+        string GetDirectory(void);
 
     static Database CreateDatabase(string dbname);
 };
