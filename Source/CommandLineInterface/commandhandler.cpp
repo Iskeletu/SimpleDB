@@ -58,9 +58,38 @@ vector<string> Command::CommandFormatter(string user_input)
 //==================================================
 
 
+//===============Expression Formatter===============
+bool ExpressionFormatter(string expression, vector<string>* formatted_expression)
+{ //Creates a string vector divided by commas from the raw expression.
+    bool is_valid = true;
+    stringstream  ss(expression);
+
+    while (ss.good())
+    {
+        string temp;
+        getline(ss, temp, ',');
+
+        if(!temp.empty())
+        {
+            formatted_expression->push_back(temp);
+        }
+        else
+        { //Insert a "null" into the current vector position if there is no data between commas.
+            is_valid = false;
+            formatted_expression->push_back("null");
+        }
+    }
+
+    return is_valid;
+}
+//==================================================
+
+
 //================Expression Verifier===============
-bool ExpressionVerifier(string *expression, int type)
+vector<string> ExpressionVerifier(string *expression, int type, bool* valid_flag)
 { //Analyzes expression and returns true if it is valid.
+    vector<string> formatted_expression;
+
     if(expression->rfind("=", 0) == 0)
     {
         expression->erase(0, 1);
@@ -75,7 +104,12 @@ bool ExpressionVerifier(string *expression, int type)
                     {
                         expression->erase(0, 1);
                         expression->pop_back();
-                        return true;
+                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+
+                        if(formatted_expression.size() != 2)
+                        {
+                            *valid_flag = false;
+                        }
                     }
                 break;
 
@@ -84,8 +118,12 @@ bool ExpressionVerifier(string *expression, int type)
                     {
                         expression->erase(0, 1);
                         expression->pop_back();
+                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
 
-                        return true;
+                        if(formatted_expression.size() != 1)
+                        {
+                            *valid_flag = false;
+                        }
                     }
                 break;
 
@@ -94,8 +132,12 @@ bool ExpressionVerifier(string *expression, int type)
                     {
                         expression->erase(0, 1);
                         expression->pop_back();
+                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
 
-                        return true;
+                        if(formatted_expression.size() != 1)
+                        {
+                            *valid_flag = false;
+                        }
                     }
                 break;
 
@@ -104,28 +146,37 @@ bool ExpressionVerifier(string *expression, int type)
                     {
                         expression->erase(0, 1);
                         expression->pop_back();
+                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
 
-                        return true;
+                        if(formatted_expression.size() != 3)
+                        {
+                            *valid_flag = false;
+                        }
                     }
                 break;
 
                 case 5:
                     if(*expression == "huffman" || *expression == "lzw")
                     {
-                        return true;
+                        *valid_flag = true;
+                        formatted_expression.push_back(*expression);
                     }
                 break;
             }
         }
     }
+    else if(expression->empty())
+    {
+        *expression = "null";
+    }
 
-    return false;
+    return formatted_expression;
 }
 //==================================================
 
 
 //================Argument Formatter================
-bool ArgumentFormatter(string *argument, string *expression, int type)
+vector<string> ArgumentFormatter(string *argument, string *expression, int type, bool* valid_flag)
 { //Separates expression for argument.
     switch(type)
     {
@@ -161,7 +212,7 @@ bool ArgumentFormatter(string *argument, string *expression, int type)
         break;
     }
 
-    return ExpressionVerifier(expression, type);
+    return ExpressionVerifier(expression, type, valid_flag);
 }
 //==================================================
 
@@ -205,10 +256,12 @@ bool cli::ReadCommand(Command command)
             string expression;
             bool valid_expression = false;
             string argument = command.member_full_command[1];
+            vector<string> formatted_expression;
 
             if(argument.rfind("--insert", 0) == 0)
             {
-                valid_expression = ArgumentFormatter(&argument, &expression, 1);
+                formatted_expression = ArgumentFormatter(&argument, &expression, 1, &valid_expression);
+
                 if (valid_expression)
                 {
                     //proceed
@@ -220,7 +273,7 @@ bool cli::ReadCommand(Command command)
             }
             else if(argument.rfind("--remove", 0) == 0)
             {
-                valid_expression = ArgumentFormatter(&argument, &expression, 2);
+                formatted_expression = ArgumentFormatter(&argument, &expression, 2, &valid_expression);
                 if (valid_expression)
                 {
                     //proceed
@@ -232,7 +285,7 @@ bool cli::ReadCommand(Command command)
             }
             else if(argument.rfind("--search", 0) == 0)
             {
-                valid_expression = ArgumentFormatter(&argument, &expression, 3);
+                formatted_expression = ArgumentFormatter(&argument, &expression, 3, &valid_expression);
                 if (valid_expression)
                 {
                     //proceed
@@ -244,7 +297,7 @@ bool cli::ReadCommand(Command command)
             }
             else if(argument.rfind("--update", 0) == 0)
             {
-                valid_expression = ArgumentFormatter(&argument, &expression, 4);
+                formatted_expression = ArgumentFormatter(&argument, &expression, 4, &valid_expression);
                 if (valid_expression)
                 {
                     //proceed
@@ -280,7 +333,7 @@ bool cli::ReadCommand(Command command)
             }
             else if(argument.rfind("--compress", 0) == 0)
             {
-                valid_expression = ArgumentFormatter(&argument, &expression, 5);
+                formatted_expression = ArgumentFormatter(&argument, &expression, 5, &valid_expression);
                 if (valid_expression)
                 {
                     //proceed
@@ -292,7 +345,7 @@ bool cli::ReadCommand(Command command)
             }
             else if(argument.rfind("--decompress", 0) == 0)
             {
-                valid_expression = ArgumentFormatter(&argument, &expression, 6);
+                formatted_expression = ArgumentFormatter(&argument, &expression, 6, &valid_expression);
                 if (valid_expression)
                 {
                     //proceed

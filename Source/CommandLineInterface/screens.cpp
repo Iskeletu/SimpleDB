@@ -170,8 +170,16 @@ void screens::PrintInsufficientArgumentScreen(string command)
 //=============Unknown Expression Screen=============
 void screens::PrintUnknownExpressionScreen(string command, string argument, string expression)
 { //Default message for unknown arguments.
-    cout<<"Expressão '"<<expression<<"' inválida para o argumento '"<<argument<<"'."<<endl;
-    cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
+    if(expression != "null")
+    { //Invalid Expression
+        cout<<"Expressão '"<<expression<<"' inválida para o argumento '"<<argument<<"'."<<endl;
+        cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
+    }
+    else
+    { //Missing Expression
+        cout<<"Expressão não pode estar em branco para o argumento '"<<argument<<"'."<<endl;
+        cout<<"Use 'help "<<command<<"' para mais informações."<<endl<<endl;
+    }
 }
 //==================================================
 
