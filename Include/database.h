@@ -7,28 +7,23 @@
 #include <string>
 
 
-//=====================Namespace====================
-using namespace std;
-//==================================================
-
-
 //======================Classes=====================
 class Database
 {
     public:
-        Database(string dbname, string path);
+        Database(std::string dbname, std::string path);
 
-        string GetDirectory(void);
-        void InsertKeyValue(string key, string value);
-        string SearchKeyValue(string key);
+        std::string GetDirectory(void);
+        void InsertKeyValue(std::string key, std::string value);
+        std::string SearchKeyValue(std::string key);
         void Erase(void);
 
-        static Database CreateDatabase(string dbname);
-        static Database LoadDatabase(string dbname);
+        static Database CreateDatabase(std::string dbname);
+        static Database LoadDatabase(std::string dbname);
 
     protected:
-        string member_name;
-        string member_path;
+        std::string member_name;
+        std::string member_path;
 };
 //==================================================
 

@@ -7,6 +7,7 @@ to the database.
 
 
 //Libraries
+#include <string>
 #include <string_view>
 #include <sstream>
 #include <cstring>
@@ -17,26 +18,18 @@ to the database.
 #include "screens.h"
 
 
-//=====================Namespace====================
-using namespace std;
-using namespace screens;
-//==================================================
-
-
-//====================Initializer===================
-Command::Command(string user_input)
-    : member_unformatted_command(user_input), 
+//====================Constructor===================
+Command::Command(std::string user_input) :
+    member_unformatted_command(user_input), 
     member_full_command(CommandFormatter(user_input)), 
     member_main_command(member_full_command[0]), 
     member_command_size(member_full_command.size())
-{
-    ;
-}
+{;}
 //==================================================
 
 
 //=================Command Formatter================
-vector<string> Command::CommandFormatter(string user_input)
+std::vector<std::string> Command::CommandFormatter(std::string user_input)
 { //Creates a string vector divided by whitespaces from the raw user input.
     vector<string> formatted_command;
 
@@ -60,7 +53,7 @@ vector<string> Command::CommandFormatter(string user_input)
 
 
 //===============Expression Formatter===============
-bool ExpressionFormatter(string expression, vector<string>* formatted_expression)
+bool ExpressionFormatter(std::string expression, std::vector<std::string>* formatted_expression)
 { //Creates a string vector divided by commas from the raw expression.
     bool is_valid = true;
     stringstream  ss(expression);
@@ -87,7 +80,7 @@ bool ExpressionFormatter(string expression, vector<string>* formatted_expression
 
 
 //================Expression Verifier===============
-vector<string> ExpressionVerifier(string *expression, int type, bool* valid_flag)
+std::vector<std::string> ExpressionVerifier(std::string *expression, int type, bool* valid_flag)
 { //Analyzes expression and returns true if it is valid.
     vector<string> formatted_expression;
 
@@ -177,7 +170,7 @@ vector<string> ExpressionVerifier(string *expression, int type, bool* valid_flag
 
 
 //================Argument Formatter================
-vector<string> ArgumentFormatter(string *argument, string *expression, int type, bool* valid_flag)
+std::vector<std::string> ArgumentFormatter(std::string *argument, std::string *expression, int type, bool* valid_flag)
 { //Separates expression for argument.
     switch(type)
     {
@@ -227,37 +220,37 @@ bool cli::ReadCommand(Command command, Database* db)
     }
 
 
-    //Be prepared for a big if-else block.
+    //Command recognition.
     if(command.member_main_command == "help") //'help' command.
     {
         if(command.member_command_size == 1)
         {
-            PrintHelpScreen();
+            screens::PrintHelpScreen();
         }
         else if(command.member_command_size == 2)
         {
-            PrintArgumentHelpScreen(command.member_full_command[1]);
+            screens::PrintArgumentHelpScreen(command.member_full_command[1]);
 
         }
         else
         {
-            string argument = command.member_unformatted_command;
+            std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            PrintInvalidHelpScreen(argument);
+            screens::PrintInvalidHelpScreen(argument);
         }
     }
     else if(command.member_main_command == "simpledb") //'simpledb' command.
     {
         if(command.member_command_size == 1)
         {
-            PrintInsufficientArgumentScreen(command.member_main_command);
+            screens::PrintInsufficientArgumentScreen(command.member_main_command);
         }
         else if(command.member_command_size == 2)
         {
-            string expression;
+            std::string expression;
             bool valid_expression = false;
-            string argument = command.member_full_command[1];
-            vector<string> formatted_expression;
+            std::string argument = command.member_full_command[1];
+            std::vector<std::string> formatted_expression;
 
             if(argument.rfind("--insert", 0) == 0)
             {
@@ -266,11 +259,11 @@ bool cli::ReadCommand(Command command, Database* db)
                 if (valid_expression)
                 {
                     db->InsertKeyValue(formatted_expression[0], formatted_expression[1]);
-                    PrintDone();
+                    screens::PrintDone();
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--remove", 0) == 0)
@@ -282,7 +275,7 @@ bool cli::ReadCommand(Command command, Database* db)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--search", 0) == 0)
@@ -290,11 +283,11 @@ bool cli::ReadCommand(Command command, Database* db)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 3, &valid_expression);
                 if (valid_expression)
                 {
-                    PrintKeyValue(formatted_expression[0], db->SearchKeyValue(formatted_expression[0]));
+                    screens::PrintKeyValue(formatted_expression[0], db->SearchKeyValue(formatted_expression[0]));
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--update", 0) == 0)
@@ -306,7 +299,7 @@ bool cli::ReadCommand(Command command, Database* db)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--list", 0) == 0)
@@ -317,8 +310,8 @@ bool cli::ReadCommand(Command command, Database* db)
                 }
                 else
                 {
-                    string expression = argument.erase(0, 6);
-                    PrintUnknownExpressionScreen(command.member_main_command, "--list", expression);
+                    std::string expression = argument.erase(0, 6);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, "--list", expression);
                 }
             }
             else if(argument.rfind("--reverse-list", 0) == 0)
@@ -329,8 +322,8 @@ bool cli::ReadCommand(Command command, Database* db)
                 }
                 else
                 {
-                    string expression = argument.erase(0, 14);
-                    PrintUnknownExpressionScreen(command.member_main_command, "--reverse-list", expression);
+                    std::string expression = argument.erase(0, 14);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, "--reverse-list", expression);
                 }
             }
             else if(argument.rfind("--compress", 0) == 0)
@@ -342,7 +335,7 @@ bool cli::ReadCommand(Command command, Database* db)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else if(argument.rfind("--decompress", 0) == 0)
@@ -354,35 +347,35 @@ bool cli::ReadCommand(Command command, Database* db)
                 }
                 else
                 {
-                    PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
                 }
             }
             else
             {
-                PrintUnknownArgumentScreen(command.member_main_command, argument);
+                screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
             }
         }
         else
         {
-            string argument = command.member_unformatted_command;
+            std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            PrintUnknownArgumentScreen(command.member_main_command, argument);
+            screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
         }
     }
     else if(command.member_main_command == "clear") //'clear' command.
     {
         if(command.member_command_size == 1)
         {
-            ClearScreen();
+            screens::ClearScreen();
         }
         else
         {
-            string argument = command.member_unformatted_command;
+            std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            PrintUnknownArgumentScreen(command.member_main_command, argument);
+            screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
         }
     }
-    else if(command.member_main_command == "exit") //'exit command.
+    else if(command.member_main_command == "exit") //exit command.
     {
         if(command.member_command_size == 1)
         {
@@ -390,14 +383,14 @@ bool cli::ReadCommand(Command command, Database* db)
         }
         else
         {
-            string argument = command.member_unformatted_command;
+            std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            PrintUnknownArgumentScreen(command.member_main_command, argument);
+            screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
         }
     }
     else //Unknown command.
     {
-        PrintUnknownCommandScreen(command.member_main_command);
+        screens::PrintUnknownCommandScreen(command.member_main_command);
     }
 
     return false; //Continues main loop.

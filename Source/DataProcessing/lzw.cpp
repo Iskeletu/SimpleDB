@@ -7,18 +7,18 @@ Responsible for LZW algorithm compression and decompression.
 //Libraries
 
 
-//Header File
+//Header Files
 #include "lzw.h"
 
 
 //=====================Namespace====================
-using namespace std;
+
 //==================================================
 
 
 //==================LZW Compression=================
 bool lzw::compress()
-{ //Return 1 if data compression was successful and 0 if it failed.
+{ //Returns 1 if data compression was successful and 0 if it failed.
     bool status = false;
 
     //TODO

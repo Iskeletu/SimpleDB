@@ -5,33 +5,30 @@ database and the rest of the program.
 */
 
 
-//Header File
+//Libraries
+#include <string>
+
+
+//Header Files
 #include "dbhandler.h"
 
 
-//=====================Namespace====================
-using namespace std;
-//==================================================
-
-
-//====================Initializer===================
+//====================Constructor===================
 SimpleDB::SimpleDB()
-{
-    ;
-}
+{;}
 //==================================================
 
 
-//=================Database Creator=================
-Database SimpleDB::CreateDB(string& dbname)
+//=================SimpleDB Creator=================
+Database SimpleDB::CreateDB(std::string& dbname)
 {
     return Database::CreateDatabase(dbname);
 }
 //==================================================
 
 
-//==================Database Loader=================
-Database SimpleDB::LoadDB(string& dbname)
+//==================SimpleDB Loader=================
+Database SimpleDB::LoadDB(std::string& dbname)
 {
     return Database::LoadDatabase(dbname);
 }

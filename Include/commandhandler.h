@@ -7,27 +7,23 @@
 #include <string>
 #include <vector>
 
+
 //Dependencies
 #include "dbhandler.h"
-
-
-//=====================Namespace====================
-using namespace std;
-//==================================================
 
 
 //======================Classes=====================
 class Command
 {
     public:
-        Command(string user_input);
+        Command(std::string user_input);
 
-        string member_unformatted_command;
-        vector<string> member_full_command;
-        string member_main_command;
+        std::string member_unformatted_command;
+        std::vector<std::string> member_full_command;
+        std::string member_main_command;
         int member_command_size;
 
-    static vector<string> CommandFormatter(string user_input);
+    static std::vector<std::string> CommandFormatter(std::string user_input);
 };
 //==================================================
 

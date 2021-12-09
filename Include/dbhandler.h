@@ -7,13 +7,8 @@
 #include <string>
 
 
-//Dependecy
+//Dependeies
 #include "database.h"
-
-
-//=====================Namespace====================
-using namespace std;
-//==================================================
 
 
 //======================Classes=====================
@@ -22,8 +17,8 @@ class SimpleDB
     public:
         SimpleDB();
 
-        static Database CreateDB(string& dbname);
-        static Database LoadDB(string& dbname);
+        static Database CreateDB(std::string& dbname);
+        static Database LoadDB(std::string& dbname);
 };
 //==================================================
 

@@ -7,11 +7,6 @@
 #include <string>
 
 
-//=====================Namespace====================
-using namespace std;
-//==================================================
-
-
 //=====================Functions====================
 namespace screens
 {
@@ -20,16 +15,16 @@ namespace screens
     void PrintDefaultScreen(void);
     void PrintDone(void);
     void PrintHelpScreen(void);
-    void PrintArgumentHelpScreen(string argument);
-    void PrintInvalidHelpScreen(string command);
-    void PrintUnknownCommandScreen(string command);
-    void PrintUnknownArgumentScreen(string command, string argument);
-    void PrintInsufficientArgumentScreen(string command);
-    void PrintUnknownExpressionScreen(string command, string argument, string expression);
+    void PrintArgumentHelpScreen(std::string argument);
+    void PrintInvalidHelpScreen(std::string command);
+    void PrintUnknownCommandScreen(std::string command);
+    void PrintUnknownArgumentScreen(std::string command, std::string argument);
+    void PrintInsufficientArgumentScreen(std::string command);
+    void PrintUnknownExpressionScreen(std::string command, std::string argument, std::string expression);
     void ClearScreen(void);
 
     //Database functions
-    void PrintKeyValue(string key, string value);
+    void PrintKeyValue(std::string key, std::string value);
 };
 //==================================================
 

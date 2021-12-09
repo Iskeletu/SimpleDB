@@ -4,8 +4,8 @@ File in work
 
 
 //Libraries
-#include <filesystem>
 #include <string>
+#include <filesystem>
 
 
 //Header files
@@ -14,7 +14,6 @@ File in work
 
 
 //=====================Namespace====================
-using namespace std;
 namespace fs = std::filesystem;
 //==================================================
 
@@ -24,7 +23,7 @@ TEST_CASE("Crate a database", "[CreateEmptyDB]")
 {
     SECTION("Default settings")
     {
-        string dbname("test-db");
+        std::string dbname("test-db");
         Database db(SimpleDB::CreateDB(dbname));
 
         //We know we have been successful when:-
@@ -47,7 +46,7 @@ TEST_CASE("Load an existing database", "[LoadDB]")
 {
     SECTION("Default settings")
     {
-        string dbname("test-db");
+        std::string dbname("test-db");
         Database db(SimpleDB::CreateDB(dbname));
 
         Database db2(SimpleDB::LoadDB(dbname));

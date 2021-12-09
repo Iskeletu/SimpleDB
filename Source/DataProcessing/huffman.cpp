@@ -7,12 +7,12 @@ Responsible for Huffman algorithm compression and decompression.
 //Libraries
 
 
-//Header File
+//Header Files
 #include "huffman.h"
 
 
 //=====================Namespace====================
-using namespace std;
+
 //==================================================
 
 

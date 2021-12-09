@@ -6,6 +6,7 @@ All work done in non-compressed database is handled by this file.
 
 //Libraries
 #include <iostream>
+#incldue <string>
 #include <fstream>
 #include <filesystem>
 
@@ -17,25 +18,23 @@ All work done in non-compressed database is handled by this file.
 
 
 //=====================Namespace====================
-using namespace std;
 namespace fs = std::filesystem;
 //==================================================
 
 
-//====================Initializer===================
-Database::Database(string dbname, string path)
-    : member_name(dbname), member_path(path)
-{
-    ;
-}
+//====================Constructor===================
+Database::Database(std::string dbname, std::string path) :
+    member_name(dbname),
+    member_path(path)
+{;}
 //==================================================
 
 
 //=================Database Creator=================
-Database Database::CreateDatabase(string dbname)
+Database Database::CreateDatabase(std::string dbname)
 { //Create and return a reference to a database.
-    string basedir("./Data");
-    string dbfolder(basedir + "/" + dbname); //This will not work on windows
+    std::string basedir("./Data");
+    std::string dbfolder(basedir + "/" + dbname); //This will not work on windows
 
     if(!fs::exists(basedir))
     {
@@ -53,17 +52,17 @@ Database Database::CreateDatabase(string dbname)
 
 
 //==================Database Loader=================
-Database Database::LoadDatabase(string dbname)
+Database Database::LoadDatabase(std::string dbname)
 { //Loads and returns a reference to an existing database.
-    string basedir("./Data");
-    string dbfolder(basedir + "/" + dbname); //This will not work on windows
+    std::string basedir("./Data");
+    std::string dbfolder(basedir + "/" + dbname); //This will not work on windows
     return Database(dbname, dbfolder); //Assumes it already exists
 }
 //==================================================
 
 
 //=================Get Path Function================
-string Database::GetDirectory()
+std::string Database::GetDirectory()
 { //This functions returns the full path of the database file
     return member_path;
 }
@@ -71,10 +70,10 @@ string Database::GetDirectory()
 
 
 //=================Insert Key-Value=================
-void Database::InsertKeyValue(string key, string value)
+void Database::InsertKeyValue(std::string key, std::string value)
 {
-    ofstream kvfile;
-    kvfile.open(member_path + "/" + key + "_string.kv", ios::out | ios::trunc); //This will not work on windows
+    std::ofstream kvfile;
+    kvfile.open(member_path + "/" + key + "_string.kv", std::ios::out | std::ios::trunc); //This will not work on windows
     kvfile<<value;
     kvfile.close();
 }
@@ -82,18 +81,18 @@ void Database::InsertKeyValue(string key, string value)
 
 
 //=================Search Key-Value=================
-string Database::SearchKeyValue(string key)
+std::string Database::SearchKeyValue(std::string key)
 {
-    string value;
+    std::string value;
 
-    ifstream kvfile(member_path + "/" + key + "_string.kv");
-    kvfile.seekg(0, ios::end);
+    std::ifstream kvfile(member_path + "/" + key + "_string.kv");
+    kvfile.seekg(0, std::ios::end);
     value.reserve(kvfile.tellg());
-    kvfile.seekg(0, ios::beg);
+    kvfile.seekg(0, std::ios::beg);
 
     value.assign(
-        istreambuf_iterator<char>(kvfile),
-        istreambuf_iterator<char>()
+        std::istreambuf_iterator<char>(kvfile),
+        std::istreambuf_iterator<char>()
     );
 
     return value;
