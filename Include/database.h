@@ -18,7 +18,7 @@ class Database
         Database(std::string dbname, std::string path);
 
         std::string         GetDirectory        (void);
-        void                InsertKeyValue      (Datacell* newcell);
+        void                InsertKeyValue      (Datacell* newcell, Database* db);
         std::string         SearchKeyValue      (std::string key);
         void                Erase               (void);
 

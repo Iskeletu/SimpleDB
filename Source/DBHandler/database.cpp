@@ -53,18 +53,17 @@ Database Database::CreateDatabase(std::string dbname)
 
     if(!fs::exists(dbfile))
     { //Creates a database file if it does not exist.
-        std::ofstream{dbfile};
-
-        //Formats as a default blank database file.
         std::ofstream file;
         file.open(dbfile);
+
+        //Formats as a default blank database file.
         std::string database_template = (
             "'" + dbname + "': {\n"
-            "\n"
             "}"
         );
         file << database_template;
-        file.close();
+
+        file.close();                                                           //Closes file.
     }
 
     return Database(dbname, dbfolder);
@@ -100,21 +99,40 @@ std::string Database::GetDirectory()
 
 
 //=================Insert Key-Value=================
-void Database::InsertKeyValue(Datacell* newcell)
+void Database::InsertKeyValue(Datacell* newcell, Database* db)
 { //Creates a folder with a name based on the "key" value and store "value" on it.
-    std::string key_value_template = (
-            "\t'" + newcell->GetKey() + "': [\n"
-            "\t\t'Sorting-Key': " + newcell->GetKey() + ",\n"
-            "\t\t'Value': " + newcell->GetValue() + "\n"
-            "]"
-        );
+    std::string path = (db->GetDirectory() + "/" + db->member_name + ".db");    //This will not work on windows.
 
-    std::ofstream kvfile;
-    kvfile.open(
-        member_path + "/" + newcell->GetKey() + "_string.kv", std::ios::out | std::ios::trunc
-    );                                                                          //This will not work on windows.
-    kvfile << newcell->GetValue();
-    kvfile.close();
+    //Database key-value template.
+    std::string key_value_template = (
+        "\t'" + newcell->GetKey() + "': [\n"
+        "\t\t'Sorting_Key': " + std::to_string(newcell->GetSortingKey()) + ",\n"
+        "\t\t'Value': " + newcell->GetValue() + "\n"
+        "\t]\n"
+    );
+
+    //Opens Database file
+    std::fstream file;
+    file.open(path);
+
+    //Analises the current character to know if this is the first insertion to the database.
+    file.seekp(-3, std::ios::end);
+    char chscan[1]; file.read(chscan, 1);
+
+
+    if(chscan[0] == ']')
+    { //Checks if it's the firts database key.
+        file << ",\n";
+    }
+    else
+    { //Does not add a comma if this is the first key.
+        file << "\n";
+    }
+
+    //Key insertion.
+    file << (key_value_template + "}");
+
+    file.close();                                                               //Closes file.
 }
 //==================================================
 

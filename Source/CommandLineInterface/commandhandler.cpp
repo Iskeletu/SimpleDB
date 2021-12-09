@@ -267,7 +267,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 if (valid_expression)
                 {
                     Datacell newcell = Datacell::CreateDatacell(formatted_expression[0], 0, formatted_expression[1]);
-                    db->InsertKeyValue(&newcell);
+                    db->InsertKeyValue(&newcell, db);
                     screens::PrintDone();
                 }
                 else

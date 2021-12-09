@@ -42,6 +42,14 @@ std::string Datacell::GetKey()
 //==================================================
 
 
+//=============Get Sorting Key Function=============
+int Datacell::GetSortingKey()
+{ //Returns datacell sorting key.
+    return member_sorting_key;
+}
+//==================================================
+
+
 //=================Get Value Fuction================
 std::string Datacell::GetValue()
 { //Returns value stored in the datacell.
