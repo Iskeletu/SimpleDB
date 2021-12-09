@@ -1,5 +1,6 @@
 /*
-File in work.
+Database managment file.
+All work done in non-compressed database is handled by this file.
 */
 
 
