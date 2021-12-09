@@ -37,8 +37,9 @@ Database::Database(std::string dbname, std::string path) :
 //=================Database Creator=================
 Database Database::CreateDatabase(std::string dbname)
 { //Creates and return a reference to a database.
-    std::string basedir("./Data");
+    std::string basedir("./Data");                                              //Default directory databases are created to.
     std::string dbfolder(basedir + "/" + dbname);                               //This will not work on windows.
+    std::string dbfile(dbfolder + "/" + dbname + ".db");                        //This will not work on windows.
 
     if(!fs::exists(basedir))
     { //Creates the base folder (default = {ProjectRoot}/Data/) if it does not exist.
@@ -50,6 +51,22 @@ Database Database::CreateDatabase(std::string dbname)
         fs::create_directory(dbfolder);
     }
 
+    if(!fs::exists(dbfile))
+    { //Creates a database file if it does not exist.
+        std::ofstream{dbfile};
+
+        //Formats as a default blank database file.
+        std::ofstream file;
+        file.open(dbfile);
+        std::string database_template = (
+            "'" + dbname + "': {\n"
+            "\n"
+            "}"
+        );
+        file << database_template;
+        file.close();
+    }
+
     return Database(dbname, dbfolder);
 }
 //==================================================
@@ -58,9 +75,18 @@ Database Database::CreateDatabase(std::string dbname)
 //==================Database Loader=================
 Database Database::LoadDatabase(std::string dbname)
 { //Load and return a reference to an existing database.
-    std::string basedir("./Data");
+    std::string basedir("./Data");                                              //Default directory databases are loaded from.
     std::string dbfolder(basedir + "/" + dbname);                               //This will not work on windows.
-    return Database(dbname, dbfolder);                                          //Assumes database already exists.
+    std::string dbfile(dbfolder + "/" + dbname + ".db");                        //This will not work on windows.
+
+    if(!fs::exists(dbfile))
+    { //Checks if databse exists.
+        return Database(dbname, dbfolder);
+    }
+    else
+    { //Returns a null database if the database the function is trying to load does no exist.
+        return Database("null", "null");
+    }
 }
 //==================================================
 
@@ -74,13 +100,20 @@ std::string Database::GetDirectory()
 
 
 //=================Insert Key-Value=================
-void Database::InsertKeyValue(std::string key, std::string value)
+void Database::InsertKeyValue(Datacell* newcell)
 { //Creates a folder with a name based on the "key" value and store "value" on it.
+    std::string key_value_template = (
+            "\t'" + newcell->GetKey() + "': [\n"
+            "\t\t'Sorting-Key': " + newcell->GetKey() + ",\n"
+            "\t\t'Value': " + newcell->GetValue() + "\n"
+            "]"
+        );
+
     std::ofstream kvfile;
     kvfile.open(
-        member_path + "/" + key + "_string.kv", std::ios::out | std::ios::trunc
+        member_path + "/" + newcell->GetKey() + "_string.kv", std::ios::out | std::ios::trunc
     );                                                                          //This will not work on windows.
-    kvfile<<value;
+    kvfile << newcell->GetValue();
     kvfile.close();
 }
 //==================================================

@@ -20,7 +20,7 @@ to the database.
 
 
 //====================Constructor===================
-Command::Command(std::string user_input) :
+cli::Command::Command(std::string user_input) :
     member_unformatted_command(user_input), 
     member_full_command(CommandFormatter(user_input)), 
     member_main_command(member_full_command[0]), 
@@ -30,7 +30,7 @@ Command::Command(std::string user_input) :
 
 
 //=================Command Formatter================
-std::vector<std::string> Command::CommandFormatter(std::string user_input)
+std::vector<std::string> cli::Command::CommandFormatter(std::string user_input)
 { //Creates a string vector divided by whitespaces from the raw user input.
     std::vector<std::string> formatted_command;
 
@@ -218,7 +218,7 @@ std::vector<std::string> ArgumentFormatter(std::string *argument, std::string* e
 
 
 //=================Command Processor================
-bool cli::ReadCommand(Command command, Database* db)
+bool cli::ReadCommand(cli::Command command, Database* db)
 { //Reads raw input data from user as a command and calls for related functions.
     if(command.member_command_size == 1 && command.member_main_command == "null")
     { //Does nothing if user input is blank.
@@ -266,7 +266,8 @@ bool cli::ReadCommand(Command command, Database* db)
                 //Checks for valid expression.
                 if (valid_expression)
                 {
-                    db->InsertKeyValue(formatted_expression[0], formatted_expression[1]);
+                    Datacell newcell = Datacell::CreateDatacell(formatted_expression[0], 0, formatted_expression[1]);
+                    db->InsertKeyValue(&newcell);
                     screens::PrintDone();
                 }
                 else

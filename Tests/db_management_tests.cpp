@@ -22,7 +22,7 @@ namespace fs = std::filesystem;
 
 
 //================Create-Delete Test================
-TEST_CASE("Crate and delete a database", "[CreateDatabase, DeleteDatabase]")
+TEST_CASE("Create and delete a database", "[CreateDatabase, DeleteDatabase]")
 { //Creates a database, checks if it exists then deletes and confirm it does not exist anymore.
     SECTION("Default settings")
     {
@@ -35,9 +35,9 @@ TEST_CASE("Crate and delete a database", "[CreateDatabase, DeleteDatabase]")
         //2. The database has a folder that exists on the file system.
         REQUIRE(fs::is_directory(fs::status(db.GetDirectory())));               //Checks if database directory exists.
 
-        //3. The database folder is empty (no database files yet).
+        //3. The database folder has a "dbname".db file.
         const auto &path = fs::directory_iterator(db.GetDirectory());
-        REQUIRE(path == end(path));                                             //Checks if database folder is empty.
+        REQUIRE(path == end(path));                                             //Checks if database folder has a "dbname".db file. TODO
 
         //4. The database folder does not exist after getting deleted.
         db.Erase();                                                             //Deletes previously created "test-db" database.

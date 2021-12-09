@@ -26,21 +26,22 @@ namespace fs = std::filesystem;
 //===================Main Function==================
 int main(void)
 {
-    std::string input;                                                      //Raw user input.
-    bool exit_flag = false;                                                 //Main loop exit flag.
-    Command command("null");
+    std::string input;                                                          //Raw user input.
+    bool exit_flag = false;                                                     //Main loop exit flag.
+    cli::Command command("null");
 
 
     //=================SimpleDB Startup=================
     screens::PrintStartupScreen();
-    std::cout << "Carregando database..." << std::endl;
 
     //Load Sequence
-    std::string dbname = "SimpleDB";                                        //Standard database name.
-    Database db("null", "null");                                            //Creates blank database reference.
+    std::string dbname = "SimpleDB";                                            //Standard database name.
+    Database db("null", "null");                                                //Creates blank database reference.
 
-    if(fs::is_directory(fs::status("./Data/" + dbname)))
-    { //Loads db into blank reference if it's folder exists.
+    std::cout << "Carregando database..." << std::endl;
+
+    if(fs::exists("./Data/" + dbname + "/" + dbname + ".db"))                    //This will not work on windows
+    { //Loads db into blank reference if it's file exists.
         db = SimpleDB::LoadDB(dbname);
 
         std::cout << "Concluído!" << std::endl;

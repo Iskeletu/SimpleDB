@@ -7,6 +7,10 @@
 #include <string>
 
 
+//Dependencies
+#include "datacell.h"
+
+
 //======================Classes=====================
 class Database
 {
@@ -14,7 +18,7 @@ class Database
         Database(std::string dbname, std::string path);
 
         std::string         GetDirectory        (void);
-        void                InsertKeyValue      (std::string key, std::string value);
+        void                InsertKeyValue      (Datacell* newcell);
         std::string         SearchKeyValue      (std::string key);
         void                Erase               (void);
 
