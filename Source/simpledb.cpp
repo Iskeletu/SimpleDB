@@ -10,6 +10,7 @@ Mainly calls for functions from other files and provides raw user input.
 
 
 //Header Files
+#include "screens.h"
 #include "commandhandler.h"
 #include "dbhandler.h"
 

@@ -7,26 +7,23 @@
 #include <string>
 
 
+//Dependecy
+#include "database.h"
+
+
 //=====================Namespace====================
 using namespace std;
 //==================================================
 
 
 //======================Classes=====================
-class Database
+class SimpleDB
 {
     public:
-        Database(string dbname, string path);
-        string GetDirectory(void);
-        void InsertKeyValue(string key, string value);
-        string SearchKeyValue(string key);
-        void Erase(void);
+        SimpleDB();
 
-    static Database CreateDatabase(string dbname);
-
-    protected:
-        string member_name;
-        string member_path;
+    static Database CreateDB(string& dbname);
+    static Database LoadDB(string& dbname);
 };
 //==================================================
 
