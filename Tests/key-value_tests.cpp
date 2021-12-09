@@ -17,7 +17,7 @@ TEST_CASE("Store and retrive a value", "[setKeyValue,getKeyValue]")
 { //Simple key-value store and retireve test
     SECTION("Basic set and get")
     {
-        string dbname("myemptydb");
+        string dbname("test-db");
         Database db(Database::CreateDatabase(dbname));
 
         // We know we have been successful when:-

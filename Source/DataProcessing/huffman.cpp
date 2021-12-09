@@ -1,5 +1,6 @@
 /*
-File in work.
+Huffman compression/decompression file.
+Responsible for Huffman algorithm compression and decompression.
 */
 
 

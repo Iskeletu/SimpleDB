@@ -1,5 +1,6 @@
 /*
-File in work.
+LZW compression/decompression file.
+Responsible for LZW algorithm compression and decompression.
 */
 
 

@@ -25,7 +25,7 @@ TEST_CASE("db-create", "[createEmptyDB]")
 
     SECTION("Default settings")
     {
-        string dbname("myemptydb");
+        string dbname("test-db");
         Database db(Database::CreateDatabase(dbname));
 
         //We know we have been successful when:-

@@ -1,5 +1,5 @@
 /*
-This file is responsible for command processing.
+This file is responsible for the command line interface.
 It formats raw data inputed by the user as commands that the
 rest of the functions can understand, it's the user's bridge
 to the database.

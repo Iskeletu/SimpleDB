@@ -2,6 +2,7 @@
 This file is responsible for all text generation/removal on the terminal.
 The main purpose is making the terminal as user-friendly as
 a text terminal can be.
+Command line interface is dependant on this file.
 */
 
 
