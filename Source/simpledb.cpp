@@ -7,6 +7,7 @@ Mainly calls for functions from other files and provides raw user input.
 //Libraries
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 
 //Header Files
@@ -16,42 +17,53 @@ Mainly calls for functions from other files and provides raw user input.
 
 
 //=====================Namespace====================
-using namespace std;
-using namespace screens;
-using namespace cli;
+namespace fs = std::filesystem;
 //==================================================
 
 
 //===================Main Function==================
 int main()
 {
-    //Variable definition.
-    string input; //Raw user input.
+    std::string input; //Raw user input.
     bool exit_flag = false; //Main loop exit flag.
     Command command("null");
 
 
     //=================SimpleDB Startup=================
-    PrintStartupScreen();
-    cout<<"Carregando database..."<<endl;
+    screens::PrintStartupScreen();
+    std::cout<<"Carregando database..."<<std::endl;
 
     //Load sequence
+    std::string dbname = "SimpleDB"; //Standard database name.
+    Database db("null", "null"); //Creates blank database reference.
+    if(fs::is_directory(fs::status("./Data/SimpleDB")))
+    { //Loads db if it's folder exists.
+        db = SimpleDB::LoadDB(dbname);
+        std::cout<<"Concluído!"<<endl;
+    }
+    else
+    { //Creates a new DB if there is none.
+        db = SimpleDB::CreateDB(dbname);
+        std::cout<<"Erro: Falha ao carregar database (arquivo inexistente)!"<<endl;
+        std::cout<<"Criando database..."<<endl;
+        std::cout<<"Concluído!"<<endl;
+    }
 
 
-    cout<<"Pressione a tecla enter para proseguir!"<<endl;
-    getline(cin, input); system("clear"); input.clear();
-    PrintDefaultScreen();
+    std::cout<<"Pressione a tecla enter para proseguir!"<<std::endl;
+    std::getline(cin, input); system("clear"); input.clear();
+    screens::PrintDefaultScreen();
     //==================================================
 
 
     //=====================Main loop====================
     while(!exit_flag)
     {
-        cout<<"SimpleDB Terminal > "; //Deafult text.
-        getline(cin, input); //Reads user input.
+        std::cout<<"SimpleDB Terminal > "; //Deafult text.
+        std::getline(cin, input); //Reads user input.
         command = (input);
 
-        exit_flag = ReadCommand(command); //Checks for exit flag.
+        exit_flag = cli::ReadCommand(command, &db); //Checks for exit flag.
     }
     //==================================================
 

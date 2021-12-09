@@ -1,5 +1,7 @@
 /*
-File in work
+SimpleDB lib.
+Intermediary between the functions of the
+database and the rest of the program.
 */
 
 

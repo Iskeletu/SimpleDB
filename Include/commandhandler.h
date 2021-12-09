@@ -7,6 +7,9 @@
 #include <string>
 #include <vector>
 
+//Dependencies
+#include "dbhandler.h"
+
 
 //=====================Namespace====================
 using namespace std;
@@ -32,7 +35,7 @@ class Command
 //=====================Functions====================
 namespace cli //Short for "Command Line Interface"
 {
-    bool ReadCommand(Command command);
+    bool ReadCommand(Command command, Database* db);
 };
 //==================================================
 

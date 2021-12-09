@@ -15,8 +15,10 @@ using namespace std;
 //=====================Functions====================
 namespace screens
 {
+    //CLI functions
     void PrintStartupScreen(void);
     void PrintDefaultScreen(void);
+    void PrintDone(void);
     void PrintHelpScreen(void);
     void PrintArgumentHelpScreen(string argument);
     void PrintInvalidHelpScreen(string command);
@@ -25,6 +27,9 @@ namespace screens
     void PrintInsufficientArgumentScreen(string command);
     void PrintUnknownExpressionScreen(string command, string argument, string expression);
     void ClearScreen(void);
+
+    //Database functions
+    void PrintKeyValue(string key, string value);
 };
 //==================================================
 

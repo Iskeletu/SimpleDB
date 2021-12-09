@@ -219,7 +219,7 @@ vector<string> ArgumentFormatter(string *argument, string *expression, int type,
 
 
 //=================Command Processor================
-bool cli::ReadCommand(Command command)
+bool cli::ReadCommand(Command command, Database* db)
 { //Reads raw input from user as command and calls for functions related.
     if(command.member_command_size == 1 && command.member_main_command == "null")
     { //Does nothing if input is blank.
@@ -265,7 +265,8 @@ bool cli::ReadCommand(Command command)
 
                 if (valid_expression)
                 {
-                    //proceed
+                    db->InsertKeyValue(formatted_expression[0], formatted_expression[1]);
+                    PrintDone();
                 }
                 else
                 {
@@ -289,7 +290,7 @@ bool cli::ReadCommand(Command command)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 3, &valid_expression);
                 if (valid_expression)
                 {
-                    //proceed
+                    PrintKeyValue(formatted_expression[0], db->SearchKeyValue(formatted_expression[0]));
                 }
                 else
                 {

@@ -34,7 +34,7 @@ Database::Database(string dbname, string path)
 //=================Database Creator=================
 Database Database::CreateDatabase(string dbname)
 { //Create and return a reference to a database.
-    string basedir("../Data");
+    string basedir("./Data");
     string dbfolder(basedir + "/" + dbname); //This will not work on windows
 
     if(!fs::exists(basedir))
@@ -55,7 +55,7 @@ Database Database::CreateDatabase(string dbname)
 //==================Database Loader=================
 Database Database::LoadDatabase(string dbname)
 { //Loads and returns a reference to an existing database.
-    string basedir("../Data");
+    string basedir("./Data");
     string dbfolder(basedir + "/" + dbname); //This will not work on windows
     return Database(dbname, dbfolder); //Assumes it already exists
 }

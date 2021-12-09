@@ -22,8 +22,8 @@ class SimpleDB
     public:
         SimpleDB();
 
-    static Database CreateDB(string& dbname);
-    static Database LoadDB(string& dbname);
+        static Database CreateDB(string& dbname);
+        static Database LoadDB(string& dbname);
 };
 //==================================================
 

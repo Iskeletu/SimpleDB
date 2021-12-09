@@ -50,6 +50,14 @@ void screens::PrintDefaultScreen()
 //==================================================
 
 
+//=======================Done=======================
+void screens::PrintDone()
+{ //Prints a standard "done" message when a command without return successfuly completes.
+    cout<<"Concluído."<<endl<<endl;
+}
+//==================================================
+
+
 //================Help Command Screen===============
 void screens::PrintHelpScreen()
 { //Screen for 'help' command.
@@ -190,6 +198,16 @@ void screens::ClearScreen()
 { //Completely aesthetical choice to undo the last command clearing from the terminal.
     system("clear"); //This will not work on windows
     cout<<"SimpleDB Terminal > clear"<<endl;
-    cout<<"Concluído."<<endl<<endl;
+    screens::PrintDone();
+}
+//==================================================
+
+
+//===============Clear Command Screen===============
+void screens::PrintKeyValue(string key, string value)
+{ //Prints values of a key inside the database.
+    cout<<"'"<<key<<"': {"<<endl;
+    cout<<"\t'"<<value<<"'"<<endl;
+    cout<<'}'<<endl<<endl;
 }
 //==================================================

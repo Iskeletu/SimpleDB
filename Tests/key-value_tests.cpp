@@ -24,7 +24,6 @@ TEST_CASE("Store and retrive a value", "[setKeyValue,getKeyValue]")
         // 1. The retrieved value is the same as the stored value
         string key("string");
         string value("defined_value");
-
         db.InsertKeyValue(key, value);
         REQUIRE(value == db.SearchKeyValue(key));
 
