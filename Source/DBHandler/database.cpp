@@ -6,7 +6,7 @@ All work done in non-compressed database is handled by this file.
 
 //Libraries
 #include <iostream>
-#incldue <string>
+#include <string>
 #include <fstream>
 #include <filesystem>
 

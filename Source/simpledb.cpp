@@ -39,19 +39,19 @@ int main()
     if(fs::is_directory(fs::status("./Data/SimpleDB")))
     { //Loads db if it's folder exists.
         db = SimpleDB::LoadDB(dbname);
-        std::cout<<"Concluído!"<<endl;
+        std::cout<<"Concluído!"<<std::endl;
     }
     else
     { //Creates a new DB if there is none.
         db = SimpleDB::CreateDB(dbname);
-        std::cout<<"Erro: Falha ao carregar database (arquivo inexistente)!"<<endl;
-        std::cout<<"Criando database..."<<endl;
-        std::cout<<"Concluído!"<<endl;
+        std::cout<<"Erro: Falha ao carregar database (arquivo inexistente)!"<<std::endl;
+        std::cout<<"Criando database..."<<std::endl;
+        std::cout<<"Concluído!"<<std::endl;
     }
 
 
     std::cout<<"Pressione a tecla enter para proseguir!"<<std::endl;
-    std::getline(cin, input); system("clear"); input.clear();
+    std::getline(std::cin, input); system("clear"); input.clear();
     screens::PrintDefaultScreen();
     //==================================================
 
@@ -60,7 +60,7 @@ int main()
     while(!exit_flag)
     {
         std::cout<<"SimpleDB Terminal > "; //Deafult text.
-        std::getline(cin, input); //Reads user input.
+        std::getline(std::cin, input); //Reads user input.
         command = (input);
 
         exit_flag = cli::ReadCommand(command, &db); //Checks for exit flag.

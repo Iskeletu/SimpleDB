@@ -31,7 +31,7 @@ Command::Command(std::string user_input) :
 //=================Command Formatter================
 std::vector<std::string> Command::CommandFormatter(std::string user_input)
 { //Creates a string vector divided by whitespaces from the raw user input.
-    vector<string> formatted_command;
+    std::vector<std::string> formatted_command;
 
     if(user_input.empty() || (user_input.rfind(" ", 0) == 0))
     { //Returns a "null" string if user_input is blank or starts with a blank space.
@@ -39,8 +39,8 @@ std::vector<std::string> Command::CommandFormatter(std::string user_input)
         return formatted_command;
     }
 
-    string temp;
-    istringstream ss(user_input);
+    std::string temp;
+    std::istringstream ss(user_input);
 
     while(ss >> temp)
     {
@@ -56,11 +56,11 @@ std::vector<std::string> Command::CommandFormatter(std::string user_input)
 bool ExpressionFormatter(std::string expression, std::vector<std::string>* formatted_expression)
 { //Creates a string vector divided by commas from the raw expression.
     bool is_valid = true;
-    stringstream  ss(expression);
+    std::stringstream  ss(expression);
 
     while (ss.good())
     {
-        string temp;
+        std::string temp;
         getline(ss, temp, ',');
 
         if(!temp.empty())
@@ -82,12 +82,12 @@ bool ExpressionFormatter(std::string expression, std::vector<std::string>* forma
 //================Expression Verifier===============
 std::vector<std::string> ExpressionVerifier(std::string *expression, int type, bool* valid_flag)
 { //Analyzes expression and returns true if it is valid.
-    vector<string> formatted_expression;
+    std::vector<std::string> formatted_expression;
 
     if(expression->rfind("=", 0) == 0)
     {
         expression->erase(0, 1);
-        string temp = *expression;
+        std::string temp = *expression;
 
         if(expression->length() > 2)
         {
