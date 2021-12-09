@@ -18,8 +18,8 @@
 //=====================Functions====================
 namespace huffman
 {
-    bool compress();
-    bool decompress();
+    bool    compress        ();
+    bool    decompress      ();
 };
 //==================================================
 

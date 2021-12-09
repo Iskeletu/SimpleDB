@@ -1,6 +1,10 @@
 /*
 Database managment file.
-All work done in non-compressed database is handled by this file.
+
+All work done in non-compressed database
+is handled by this file.
+
+Database Handling is dependant on this file.
 */
 
 
@@ -32,17 +36,17 @@ Database::Database(std::string dbname, std::string path) :
 
 //=================Database Creator=================
 Database Database::CreateDatabase(std::string dbname)
-{ //Create and return a reference to a database.
+{ //Creates and return a reference to a database.
     std::string basedir("./Data");
-    std::string dbfolder(basedir + "/" + dbname); //This will not work on windows
+    std::string dbfolder(basedir + "/" + dbname);                               //This will not work on windows.
 
     if(!fs::exists(basedir))
-    {
+    { //Creates the base folder (default = {ProjectRoot}/Data/) if it does not exist.
         fs::create_directory(basedir);
     }
 
     if(!fs::exists(dbfolder))
-    {
+    { //Creates database folder if it does not exist.
         fs::create_directory(dbfolder);
     }
 
@@ -53,17 +57,17 @@ Database Database::CreateDatabase(std::string dbname)
 
 //==================Database Loader=================
 Database Database::LoadDatabase(std::string dbname)
-{ //Loads and returns a reference to an existing database.
+{ //Load and return a reference to an existing database.
     std::string basedir("./Data");
-    std::string dbfolder(basedir + "/" + dbname); //This will not work on windows
-    return Database(dbname, dbfolder); //Assumes it already exists
+    std::string dbfolder(basedir + "/" + dbname);                               //This will not work on windows.
+    return Database(dbname, dbfolder);                                          //Assumes database already exists.
 }
 //==================================================
 
 
 //=================Get Path Function================
 std::string Database::GetDirectory()
-{ //This functions returns the full path of the database file
+{ //Returns the full path of the database folder.
     return member_path;
 }
 //==================================================
@@ -71,9 +75,11 @@ std::string Database::GetDirectory()
 
 //=================Insert Key-Value=================
 void Database::InsertKeyValue(std::string key, std::string value)
-{
+{ //Creates a folder with a name based on the "key" value and store "value" on it.
     std::ofstream kvfile;
-    kvfile.open(member_path + "/" + key + "_string.kv", std::ios::out | std::ios::trunc); //This will not work on windows
+    kvfile.open(
+        member_path + "/" + key + "_string.kv", std::ios::out | std::ios::trunc
+    );                                                                          //This will not work on windows.
     kvfile<<value;
     kvfile.close();
 }
@@ -82,10 +88,10 @@ void Database::InsertKeyValue(std::string key, std::string value)
 
 //=================Search Key-Value=================
 std::string Database::SearchKeyValue(std::string key)
-{
+{ //Returns value stored in "key" folder.
     std::string value;
 
-    std::ifstream kvfile(member_path + "/" + key + "_string.kv");
+    std::ifstream kvfile(member_path + "/" + key + "_string.kv");               //This will not work on windows.
     kvfile.seekg(0, std::ios::end);
     value.reserve(kvfile.tellg());
     kvfile.seekg(0, std::ios::beg);
@@ -102,7 +108,7 @@ std::string Database::SearchKeyValue(std::string key)
 
 //==================Erase Database==================
 void Database::Erase()
-{ //Deletes all files related to a database.
+{ //Deletes all files and folders related to the database.
     if (fs::exists(member_path))
     {
         fs::remove_all(member_path);

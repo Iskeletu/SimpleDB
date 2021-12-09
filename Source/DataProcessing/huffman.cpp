@@ -1,6 +1,8 @@
 /*
 Huffman compression/decompression file.
-Responsible for Huffman algorithm compression and decompression.
+
+Responsible for Huffman algorithm compression
+and decompression.
 */
 
 

@@ -17,15 +17,15 @@ class SimpleDB
     public:
         SimpleDB();
 
-        static Database CreateDB(std::string& dbname);
-        static Database LoadDB(std::string& dbname);
+        static Database     CreateDB    (std::string& dbname);
+        static Database     LoadDB      (std::string& dbname);
 };
 //==================================================
 
 
 //=====================Functions====================
-namespace dbh //Short for database handler
-{
+namespace dbh
+{//Short for "Database Handler".
 
 };
 //==================================================

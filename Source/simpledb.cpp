@@ -1,6 +1,8 @@
 /*
 Main file.
-Mainly calls for functions from other files and provides raw user input.
+
+Mainly calls for functions from other
+files and provides raw user input.
 */
 
 
@@ -22,48 +24,50 @@ namespace fs = std::filesystem;
 
 
 //===================Main Function==================
-int main()
+int main(void)
 {
-    std::string input; //Raw user input.
-    bool exit_flag = false; //Main loop exit flag.
+    std::string input;                                                      //Raw user input.
+    bool exit_flag = false;                                                 //Main loop exit flag.
     Command command("null");
 
 
     //=================SimpleDB Startup=================
     screens::PrintStartupScreen();
-    std::cout<<"Carregando database..."<<std::endl;
+    std::cout << "Carregando database..." << std::endl;
 
-    //Load sequence
-    std::string dbname = "SimpleDB"; //Standard database name.
-    Database db("null", "null"); //Creates blank database reference.
-    if(fs::is_directory(fs::status("./Data/SimpleDB")))
-    { //Loads db if it's folder exists.
+    //Load Sequence
+    std::string dbname = "SimpleDB";                                        //Standard database name.
+    Database db("null", "null");                                            //Creates blank database reference.
+
+    if(fs::is_directory(fs::status("./Data/" + dbname)))
+    { //Loads db into blank reference if it's folder exists.
         db = SimpleDB::LoadDB(dbname);
-        std::cout<<"Concluído!"<<std::endl;
+
+        std::cout << "Concluído!" << std::endl;
     }
     else
-    { //Creates a new DB if there is none.
+    { //Creates a new DB if there is none and loads to blank reference.
         db = SimpleDB::CreateDB(dbname);
-        std::cout<<"Erro: Falha ao carregar database (arquivo inexistente)!"<<std::endl;
-        std::cout<<"Criando database..."<<std::endl;
-        std::cout<<"Concluído!"<<std::endl;
+
+        std::cout << "Erro: Falha ao carregar database (arquivo inexistente)!" << std::endl;
+        std::cout << "Criando database..." << std::endl;
+        std::cout << "Concluído!" << std::endl;
     }
 
-
-    std::cout<<"Pressione a tecla enter para proseguir!"<<std::endl;
-    std::getline(std::cin, input); system("clear"); input.clear();
+    std::cout << "Pressione a tecla enter para proseguir!" << std::endl;
+    std::getline(std::cin, input); system("clear"); input.clear();              //This will not work on windows
     screens::PrintDefaultScreen();
     //==================================================
 
 
-    //=====================Main loop====================
+    //=====================Main Loop====================
     while(!exit_flag)
     {
-        std::cout<<"SimpleDB Terminal > "; //Deafult text.
-        std::getline(std::cin, input); //Reads user input.
+        std::cout << "SimpleDB Terminal > ";                                    //Deafult text.
+        std::getline(std::cin, input);                                          //Reads user input.
         command = (input);
 
-        exit_flag = cli::ReadCommand(command, &db); //Checks for exit flag.
+        exit_flag = cli::ReadCommand(command, &db);                             //Checks for exit flag.
     }
     //==================================================
 

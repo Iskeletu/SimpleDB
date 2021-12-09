@@ -18,8 +18,8 @@
 //=====================Functions====================
 namespace lzw
 {
-    bool compress();
-    bool decompress();
+    bool    compress        ();
+    bool    decompress      ();
 };
 //==================================================
 

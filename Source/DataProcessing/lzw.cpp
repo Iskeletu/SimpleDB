@@ -1,6 +1,8 @@
 /*
 LZW compression/decompression file.
-Responsible for LZW algorithm compression and decompression.
+
+Responsible for LZW algorithm compression
+and decompression.
 */
 
 
@@ -30,7 +32,7 @@ bool lzw::compress()
 
 //=================LZW Decompression================
 bool lzw::decompress()
-{ //Return 1 if data decompression was successful and 0 if it failed.
+{ //Returns 1 if data decompression was successful and 0 if it failed.
     bool status = false;
 
     //TODO
