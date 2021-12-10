@@ -18,12 +18,11 @@ class Database
         Database(std::string dbname, std::string path);
 
         std::string         GetDirectory            (void);
+        std::string         GetName                 (void);
         std::string         NewUniqueKey            (void);
         void                InsertKeyValue          (Datacell* newcell, Database* db);
         std::string         SearchKeyValue          (std::string key);
         void                Erase                   (void);
-        bool                CompressDatabase        (int type);
-        bool                DecompressDatabase      (int type);
 
         static Database     CreateDatabase          (std::string dbname);
         static Database     LoadDatabase            (std::string dbname);

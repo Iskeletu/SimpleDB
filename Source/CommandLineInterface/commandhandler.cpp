@@ -310,7 +310,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                     int sorting_key = std::stoi(formatted_expression[0]);
                     Datacell newcell = Datacell::CreateDatacell(db->NewUniqueKey(), sorting_key, formatted_expression[1]);
                     db->InsertKeyValue(&newcell, db);
-                    screens::PrintDone();
+                    screens::PrintDatacell(&newcell);
                 }
                 else
                 {
@@ -402,7 +402,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                         type = 2;
                     }
 
-                    bool is_done = db->CompressDatabase(type);
+                    bool is_done = dbh::CompressDatabase(db, &type);
                 }
                 else
                 {
@@ -427,7 +427,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                         type = 2;
                     }
 
-                    bool is_done = db->DecompressDatabase(type);
+                    bool is_done = dbh::DecompressDatabase(db, &type);
                 }
                 else
                 {

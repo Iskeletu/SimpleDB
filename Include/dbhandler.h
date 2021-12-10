@@ -17,8 +17,8 @@ class SimpleDB
     public:
         SimpleDB();
 
-        static Database     CreateDB        (std::string& dbname);
-        static Database     LoadDB          (std::string& dbname);
+        static Database     CreateDB                (std::string& dbname);
+        static Database     LoadDB                  (std::string& dbname);
 };
 //==================================================
 
@@ -26,7 +26,9 @@ class SimpleDB
 //=====================Functions====================
 namespace dbh
 {//Short for "Database Handler".
-    bool                    IsValidKey      (std::string key, Database* db);
+    bool                    IsValidKey              (std::string key, Database* db);
+    bool                    CompressDatabase        (Database* db, int* type);
+    bool                    DecompressDatabase      (Database* db, int* type);
 };
 //==================================================
 

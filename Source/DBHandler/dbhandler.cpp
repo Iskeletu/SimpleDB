@@ -4,7 +4,7 @@ SimpleDB lib.
 Intermediary between the functions of the
 database and the rest of the program.
 
-Command line interface is dependant on this file.
+commandhandler.cpp is dependant on this file.
 */
 
 
@@ -14,6 +14,8 @@ Command line interface is dependant on this file.
 
 //Header Files
 #include "dbhandler.h"
+#include "huffman.h"
+#include "lzw.h"
 
 
 //====================Constructor===================
@@ -44,5 +46,49 @@ bool dbh::IsValidKey (std::string key, Database* db)
     bool is_valid = false;
     //TODO
     return is_valid;
+}
+//==================================================
+
+
+//===============Database Compression===============
+bool dbh::CompressDatabase(Database* db, int* type)
+{ //TODO
+    bool is_successful = false;
+
+    switch(*type)
+    {
+        case 1:
+            huffman::compress(db->GetDirectory());
+        break;
+
+        case 2:
+            lzw::compress(db->GetDirectory());
+        break;
+    }
+
+    return is_successful;
+}
+//==================================================
+
+
+//==============Database Decompression==============
+bool dbh::DecompressDatabase(Database* db, int* type)
+{ //TODO
+    bool is_successful = false;
+
+    switch(*type)
+    {
+        case 1:
+            huffman::decompress(db->GetDirectory());
+        break;
+
+        case 2:
+            lzw::decompress(db->GetDirectory());
+        break;
+    }
+
+    *db = Database::LoadDatabase(db->GetName());
+
+    return is_successful;
 }
 //==================================================

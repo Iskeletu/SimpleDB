@@ -7,6 +7,10 @@
 #include <string>
 
 
+//Dependencies
+#include "datacell.h"
+
+
 //=====================Functions====================
 namespace screens
 {
@@ -24,7 +28,7 @@ namespace screens
     void    ClearScreen                         (void);
 
     //Database Functions
-    void    PrintKeyValue                       (std::string key, std::string value);
+    void    PrintDatacell                       (Datacell* existingcell);
 };
 //==================================================
 

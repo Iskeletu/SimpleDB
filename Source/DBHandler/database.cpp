@@ -4,7 +4,7 @@ Database managment file.
 All work done in non-compressed database
 is handled by this file.
 
-Database Handling is dependant on this file.
+database.cpp is dependant on this file.
 */
 
 
@@ -17,8 +17,6 @@ Database Handling is dependant on this file.
 
 //Header Files
 #include "database.h"
-#include "huffman.h"
-#include "lzw.h"
 
 
 //Local Reference
@@ -38,12 +36,12 @@ Database::Database(std::string dbname, std::string path) :
 {;}
 //==================================================
 
-
+#include <iostream>
 //=================Database Creator=================
 Database Database::CreateDatabase(std::string dbname)
 { //Creates and return a reference to a database.
-    std::string dbfolder(basedir + "/" + dbname);                               //This will not work on windows.
-    std::string dbfile(dbfolder + "/" + dbname + ".db");                        //This will not work on windows.
+    std::string dbfolder(basedir + "/" + dbname);                               //!This will not work on windows.
+    std::string dbfile(dbfolder + "/" + dbname + ".db");                        //!This will not work on windows.
 
     if(!fs::exists(basedir))
     { //Creates the base folder (default = .{ProjectRoot}/Data/) if it does not exist.
@@ -60,24 +58,42 @@ Database Database::CreateDatabase(std::string dbname)
         fs::create_directory(dbfolder);
     }
 
-    //Creates a new database file.
-    std::ofstream file;
-    file.open(dbfile);
+    //Creates a new database file and it's reference.
+    std::ofstream file(dbfile, std::ios::binary);
+    Database db(dbname, dbfolder);
 
     //Formats as a default blank database file.
-    std::string database_template = (
-        "'" + dbname + "': {\n"
-        "}"
-    );
-    file << database_template;
-
-    file.close();                                                           //Closes file.
-
-    //Creates database reference and sets it's size to 0;
-    Database db(dbname, dbfolder);
     db.member_size = 0;
 
+    size_t string_size = dbname.size();
+    file.write((char*)&string_size, sizeof(string_size));                       //Inserts size of "dbname" string.
+    file.write(&dbname[0], string_size);                                        //Inserts "dbname" string.
+    file.write((char*)&db.member_size, sizeof(int));                            //Inserts database size integer.
+
+    if(!file.good())
+    { //Throws an exception if writing was not successful.
+      throw std::runtime_error("Database::CreateDatabase=writingfailure");
+    }
+
+    file.close();                                                               //Closes file.
+
+
+    //Return the new reference.
     return db;
+}
+//==================================================
+
+
+//==================Database Reader=================
+int ReadDatabase(std::string path, std::string dbname)
+{ //This function rturns the amount of key stores inside the database and creates an index file.
+    std::ifstream dbfile(path + "/" + dbname + ".db");                          //!This will not work on windows.
+    std::ofstream indexfile(path + "/" + dbname + ".index");
+    int keycounter = 0;
+
+    //TODO - Database reader
+
+    return keycounter;
 }
 //==================================================
 
@@ -88,23 +104,33 @@ Database Database::LoadDatabase(std::string dbname)
     std::string dbfolder(basedir + "/" + dbname);                               //!This will not work on windows.
     std::string dbfile(dbfolder + "/" + dbname + ".db");                        //!This will not work on windows.
 
-    if(!fs::exists(dbfile))
-    { //Checks if databse exists.
+    if(fs::is_directory(fs::status(dbfolder)))
+    { //Throws a runtime error if the path the function is trying to load the database from does not exist.
+        throw std::runtime_error("Database::LoadDatabase=inexistent_path");
+    }
+
+    if(fs::exists(dbfile))
+    { //Checks if database file exists.
+
         //TODO - Check if database file is valid
-        if(1 != 1)
-        {
+
+        if(true) //!does not check if file is valid yet
+        { //The file exist and it's contents are valid. 
+            Database loadeddb(dbname, dbfolder);
+
+            //TODO - check how many key are store on the loaded database
+            loadeddb.member_size = ReadDatabase(dbfolder, dbname);
+        
+            return loadeddb;
+        }
+        else
+        { //The file exist but it's contets are invalid. Throws a runtime error.
             throw std::runtime_error("Database::LoadDatabase=invalid_file");
         }
-        
-        return Database(dbname, dbfolder);
     }
     else
-    { //Returns a null database if the database the function is trying to load does no exist.
-        /*
-        ? This else block should never be reached, functions
-        ? must guarantee the database exists before trying to load.
-        */
-        return Database("null", "null");
+    { //Throws a runtime error if the database the function is trying to load does no exist.
+        throw std::runtime_error("Database::LoadDatabase=inexistent_file");
     }
 }
 //==================================================
@@ -114,6 +140,14 @@ Database Database::LoadDatabase(std::string dbname)
 std::string Database::GetDirectory()
 { //Returns the full path of the database folder.
     return member_path;
+}
+//==================================================
+
+
+//=================Get Name Function================
+std::string Database::GetName()
+{ //Returns the name of the database folder.
+    return member_name;
 }
 //==================================================
 
@@ -131,37 +165,33 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
 { //Creates a folder with a name based on the "key" value and store "value" on it.
     std::string path = (db->GetDirectory() + "/" + db->member_name + ".db");    //!This will not work on windows.
 
-    //Database key-value template.
-    std::string key_value_template = (
-        "\t'" + newcell->GetKey() + "': [\n"
-        "\t\t'Sorting_Key': " + std::to_string(newcell->GetSortingKey()) + ",\n"
-        "\t\t'Value': " + newcell->GetValue() + "\n"
-        "\t]\n"
-    );
+    //Extract cell data to local variables.
+    std::string key = newcell -> GetKey();
+    int sorting_key = newcell ->GetSortingKey();
+    std::string value = newcell->GetValue();
 
     //Opens Database file
-    std::fstream file;
-    file.open(path);
+    std::ofstream file(path, std::ios::binary | std::ios::app);                 //Set to append to the end of the file.
 
-    //Analyses the current character to know if this is the first insertion to the database.
-    file.seekp(-3, std::ios::end);
-    char chscan = file.get();
+    //Datacell insertion.
+    size_t string_size = key.size();
+    file.write((char*)&string_size, sizeof(string_size));                      //Inserts size of "key" string.
+    file.write(&key[0], string_size);                                        //Inserts "key" strig.
+    file.write((char*)&sorting_key, sizeof(int));                               //Insert sorting key integer.
+    string_size = value.size();
+    file.write((char*)&string_size, sizeof(string_size));                      //Inserts size of "value" string.
+    file.write(&value[0], string_size);                                        //Inserts "value" string.
 
 
-    if(chscan == ']')
-    { //Checks if it's the firts database key.
-        file << ",\n";
+    if(!file.good())
+    { //Throws an exception if writing was not successful.
+      throw std::runtime_error("Database::InsertKeyValue=writingfailure");
     }
-    else
-    { //Does not add a comma if this is the first key.
-        file << "\n";
-    }
 
-    //Key insertion.
-    file << (key_value_template + "}");
+    //TODO - set file "database size" value to member.size
+    member_size++;                                                              //Sets size of the database to one more.
 
     file.close();                                                               //Closes file.
-    member_size++;                                                              //Sets size of the database to one more.
 }
 //==================================================
 
@@ -188,44 +218,9 @@ void Database::Erase()
 }
 //==================================================
 
-
-//===============Database Compression===============
-bool Database::CompressDatabase(int type)
-{ //TODO
-    bool is_successful = false;
-
-    switch(type)
-    {
-        case 1:
-            huffman::compress(member_path);
-        break;
-
-        case 2:
-            lzw::compress(member_path);
-        break;
-    }
-
-    return is_successful;
-}
-//==================================================
-
-
-//==============Database Decompression==============
-bool Database::DecompressDatabase(int type)
-{ //TODO
-    bool is_successful = false;
-
-    switch(type)
-    {
-        case 1:
-            huffman::decompress(member_path);
-        break;
-
-        case 2:
-            lzw::decompress(member_path);
-        break;
-    }
-
-    return is_successful;
-}
-//==================================================
+/*
+simpledb --insert=<1,aa>
+simpledb --insert=<2,bb>
+simpledb --insert=<3,cc>
+simpledb --insert=<4,dd>
+*/

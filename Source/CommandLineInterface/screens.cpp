@@ -4,7 +4,7 @@ This file is responsible for all text generation/removal on the terminal.
 The main purpose is making the terminal as user-friendly as
 a text terminal can be.
 
-Command line interface is dependant on this file.
+commandhandler.cpp is dependant on this file.
 */
 
 
@@ -204,10 +204,11 @@ void screens::ClearScreen()
 
 
 //===============Clear Command Screen===============
-void screens::PrintKeyValue(std::string key, std::string value)
-{ //Prints values of a key from the database.
-    std::cout << "'" << key << "': {" << std::endl;                             //Uses a json-like template.
-    std::cout << "\t'" << value << "'" << std::endl;
-    std::cout << '}' << std::endl << std::endl;
+void screens::PrintDatacell(Datacell* existingcell)
+{ //Prints datacell to screen after inserting to database.
+    std::cout << "'" << existingcell->GetKey() << "': [" << std::endl;               //Uses a json-like template.
+    std::cout << "\t'Sorting_Key': " << existingcell->GetSortingKey() << "," << std::endl;
+    std::cout << "\t'Value': " << existingcell->GetValue() << std::endl;
+    std::cout << "]" << std::endl << std::endl;
 }
 //==================================================
