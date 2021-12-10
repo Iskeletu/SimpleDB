@@ -4,6 +4,7 @@
 
 
 //Libraries
+#include <filesystem>
 
 
 //Dependencies
@@ -11,15 +12,15 @@
 
 
 //=====================Namespace====================
-
+namespace fs = std::filesystem;
 //==================================================
 
 
 //=====================Functions====================
 namespace huffman
 {
-    bool    compress        ();
-    bool    decompress      ();
+    bool    compress        (fs::path path);
+    bool    decompress      (fs::path path);
 };
 //==================================================
 

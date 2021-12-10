@@ -29,7 +29,8 @@ namespace fs = std::filesystem;
 //====================Constructor===================
 Database::Database(std::string dbname, std::string path) :
     member_name(dbname),
-    member_path(path)
+    member_path(path),
+    member_size(-1)
 {;}
 //==================================================
 
@@ -42,7 +43,7 @@ Database Database::CreateDatabase(std::string dbname)
     std::string dbfile(dbfolder + "/" + dbname + ".db");                        //This will not work on windows.
 
     if(!fs::exists(basedir))
-    { //Creates the base folder (default = {ProjectRoot}/Data/) if it does not exist.
+    { //Creates the base folder (default = .{ProjectRoot}/Data/) if it does not exist.
         fs::create_directory(basedir);
     }
 
@@ -50,23 +51,30 @@ Database Database::CreateDatabase(std::string dbname)
     { //Creates database folder if it does not exist.
         fs::create_directory(dbfolder);
     }
-
-    if(!fs::exists(dbfile))
-    { //Creates a database file if it does not exist.
-        std::ofstream file;
-        file.open(dbfile);
-
-        //Formats as a default blank database file.
-        std::string database_template = (
-            "'" + dbname + "': {\n"
-            "}"
-        );
-        file << database_template;
-
-        file.close();                                                           //Closes file.
+    else
+    { //Deletes contents in folder if it exits but a database creation was called.
+        fs::remove_all(dbfolder);
+        fs::create_directory(dbfolder);
     }
 
-    return Database(dbname, dbfolder);
+    //Creates a new database file.
+    std::ofstream file;
+    file.open(dbfile);
+
+    //Formats as a default blank database file.
+    std::string database_template = (
+        "'" + dbname + "': {\n"
+        "}"
+    );
+    file << database_template;
+
+    file.close();                                                           //Closes file.
+
+    //Creates database reference and sets it's size to 0;
+    Database db(dbname, dbfolder);
+    db.member_size = 0;
+
+    return db;
 }
 //==================================================
 
@@ -94,6 +102,15 @@ Database Database::LoadDatabase(std::string dbname)
 std::string Database::GetDirectory()
 { //Returns the full path of the database folder.
     return member_path;
+}
+//==================================================
+
+
+//=================Generete New Key=================
+std::string Database::NewUniqueKey(void)
+{ //Generates a ney unique key string;
+    int key = (member_size + 1);
+    return("key_" + std::to_string(key));
 }
 //==================================================
 
@@ -133,6 +150,7 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
     file << (key_value_template + "}");
 
     file.close();                                                               //Closes file.
+    member_size++;                                                              //Sets size of the database to one more.
 }
 //==================================================
 
@@ -164,5 +182,47 @@ void Database::Erase()
     {
         fs::remove_all(member_path);
     }
+}
+//==================================================
+
+
+//===============Database Compression===============
+bool Database::CompressDatabase(int type)
+{
+    bool is_successful = false;
+
+    switch(type)
+    {
+        case 1:
+            is_successful = huffman::compress(member_path);
+        break;
+
+        case 2:
+            is_successful = lzw::compress(member_path);
+        break;
+    }
+
+    return is_successful;
+}
+//==================================================
+
+
+//==============Database Decompression==============
+bool Database::DecompressDatabase(int type)
+{
+    bool is_successful = false;
+
+    switch(type)
+    {
+        case 1:
+            is_successful = huffman::compress(member_path);
+        break;
+
+        case 2:
+            is_successful = lzw::compress(member_path);
+        break;
+    }
+
+    return is_successful;
 }
 //==================================================

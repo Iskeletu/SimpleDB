@@ -102,6 +102,21 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                         //Checks if expression is valid and has enough terms for type 1.
                         *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
                         if(formatted_expression.size() != 2)
+                        { //Does not have the right amount of parameters.
+                            *valid_flag = false;
+                        }
+                        
+                        //Confirms if the first paramether is a positive integer;
+                        if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
+                        { //String is an intenger, this checks if it x > 0;
+                            int prmscan = std::stoi(formatted_expression[0]);
+
+                            if(prmscan <= 0)
+                            { //Integer is not higher than 0;
+                                *valid_flag = false;
+                            }
+                        }
+                        else
                         {
                             *valid_flag = false;
                         }
@@ -116,7 +131,7 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                         //Checks if expression is valid and has enough terms for type 2.
                         *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
                         if(formatted_expression.size() != 1)
-                        {
+                        { //Does not have the right amount of parameters.
                             *valid_flag = false;
                         }
                     }
@@ -130,7 +145,7 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                         //Checks if expression is valid and has enough terms for type 3.
                         *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
                         if(formatted_expression.size() != 1)
-                        {
+                        { //Does not have the right amount of parameters.
                             *valid_flag = false;
                         }
                     }
@@ -144,7 +159,7 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                         //Checks if expression is valid and has enough terms for type 4.
                         *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
                         if(formatted_expression.size() != 3)
-                        {
+                        { //Does not have the right amount of parameters.
                             *valid_flag = false;
                         }
                     }
@@ -157,7 +172,7 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                         formatted_expression.push_back(*expression);
                     }
                     else
-                    {
+                    { //Expression is not a valid string for type 5.
                         *valid_flag = false;
                     }
                 break;
@@ -265,8 +280,9 @@ bool cli::ReadCommand(cli::Command command, Database* db)
 
                 //Checks for valid expression.
                 if (valid_expression)
-                {
-                    Datacell newcell = Datacell::CreateDatacell(formatted_expression[0], 0, formatted_expression[1]);
+                { //Creates a new datacell with user input and insert to the database.
+                    int sorting_key = std::stoi(formatted_expression[0]);
+                    Datacell newcell = Datacell::CreateDatacell(db->NewUniqueKey(), sorting_key, formatted_expression[1]);
                     db->InsertKeyValue(&newcell, db);
                     screens::PrintDone();
                 }
@@ -350,7 +366,17 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks for valid expression.
                 if (valid_expression)
                 {
-                    //proceed
+                    int type;
+                    if(argument == "huffman")
+                    {
+                        type = 1;
+                    }
+                    else
+                    {
+                        type = 2;
+                    }
+
+                    bool is_done = db->CompressDatabase(type);
                 }
                 else
                 {
@@ -364,7 +390,18 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks for valid expression.
                 if (valid_expression)
                 {
-                    //proceed
+                    int type;
+
+                    if(argument == "huffman")
+                    {
+                        type = 1;
+                    }
+                    else
+                    {
+                        type = 2;
+                    }
+
+                    bool is_done = db->DecompressDatabase(type);
                 }
                 else
                 {

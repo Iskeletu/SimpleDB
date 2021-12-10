@@ -14,12 +14,12 @@ and decompression.
 
 
 //=====================Namespace====================
-
+namespace fs = std::filesystem;
 //==================================================
 
 
 //==================LZW Compression=================
-bool lzw::compress()
+bool lzw::compress(fs::path path)
 { //Returns 1 if data compression was successful and 0 if it failed.
     bool status = false;
 
@@ -31,7 +31,7 @@ bool lzw::compress()
 
 
 //=================LZW Decompression================
-bool lzw::decompress()
+bool lzw::decompress(fs::path path)
 { //Returns 1 if data decompression was successful and 0 if it failed.
     bool status = false;
 

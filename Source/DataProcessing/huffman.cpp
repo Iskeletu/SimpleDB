@@ -14,12 +14,17 @@ and decompression.
 
 
 //=====================Namespace====================
+namespace fs = std::filesystem;
+//==================================================
+
+
+//===================Huffman Tree===================
 
 //==================================================
 
 
 //================Huffman Compression===============
-bool huffman::compress()
+bool huffman::compress(fs::path path)
 { //Returns 1 if data compression was successful and 0 if it failed.
     bool status = false;
 
@@ -31,7 +36,7 @@ bool huffman::compress()
 
 
 //===============Huffman Decompression==============
-bool huffman::decompress()
+bool huffman::decompress(fs::path path)
 { //Returns 1 if data decompression was successful and 0 if it failed.
     bool status = false;
 

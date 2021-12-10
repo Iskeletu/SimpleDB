@@ -17,8 +17,8 @@ class SimpleDB
     public:
         SimpleDB();
 
-        static Database     CreateDB    (std::string& dbname);
-        static Database     LoadDB      (std::string& dbname);
+        static Database     CreateDB        (std::string& dbname);
+        static Database     LoadDB          (std::string& dbname);
 };
 //==================================================
 
