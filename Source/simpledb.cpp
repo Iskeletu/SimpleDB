@@ -40,7 +40,7 @@ int main(void)
 
     std::cout << "Carregando database..." << std::endl;
 
-    if(fs::exists("./Data/" + dbname + "/" + dbname + ".db"))                    //This will not work on windows
+    if(fs::exists("./Data/" + dbname + "/" + dbname + ".db"))                    //!This will not work on windows
     { //Loads db into blank reference if it's file exists.
         db = SimpleDB::LoadDB(dbname);
 
@@ -56,7 +56,7 @@ int main(void)
     }
 
     std::cout << "Pressione a tecla enter para proseguir!" << std::endl;
-    std::getline(std::cin, input); system("clear"); input.clear();              //This will not work on windows
+    std::getline(std::cin, input); system("clear"); input.clear();              //!This will not work on windows
     screens::PrintDefaultScreen();
     //==================================================
 

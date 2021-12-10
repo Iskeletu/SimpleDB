@@ -37,7 +37,7 @@ TEST_CASE("Create and delete a database", "[CreateDatabase, DeleteDatabase]")
 
         //3. The database folder has a "dbname".db file.
         const auto &path = fs::directory_iterator(db.GetDirectory());
-        REQUIRE(path == end(path));                                             //Checks if database folder has a "dbname".db file. TODO
+        REQUIRE(path == end(path));                                             //TODO Checks if database folder has a "dbname".db file.
 
         //4. The database folder does not exist after getting deleted.
         db.Erase();                                                             //Deletes previously created "test-db" database.

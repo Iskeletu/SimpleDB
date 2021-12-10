@@ -10,6 +10,7 @@ Command line interface is dependant on this file.
 
 //Libraries
 #include <iostream>
+#include <string>
 
 
 //Header Files
@@ -193,7 +194,7 @@ void screens::PrintUnknownExpressionScreen(std::string command, std::string argu
 //===============Clear Command Screen===============
 void screens::ClearScreen()
 { //Clears the screen and prints the last command done with a standard "done" message.
-    system("clear");                                                            //This will not work on windows
+    system("clear");                                                            //!This will not work on windows
 
     std::cout << "SimpleDB Terminal > clear" << std::endl;                      //Completely aesthetical choice to redo the last command.
 

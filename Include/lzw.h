@@ -4,11 +4,8 @@
 
 
 //Libraries
+#include <string>
 #include <filesystem>
-
-
-//Dependencies
-#include "dbhandler.h"
 
 
 //=====================Namespace====================
@@ -19,8 +16,8 @@ namespace fs = std::filesystem;
 //=====================Functions====================
 namespace lzw
 {
-    bool    compress        (fs::path path);
-    bool    decompress      (fs::path path);
+    fs::path    compress        (std::string db_path);
+    void        decompress      (std::string compressed_file_path);
 };
 //==================================================
 

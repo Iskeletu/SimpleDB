@@ -21,6 +21,10 @@ Database Handling is dependant on this file.
 #include "lzw.h"
 
 
+//Local Reference
+std::string basedir("./Data");                                                  //Default directory databases are loaded from.
+
+
 //=====================Namespace====================
 namespace fs = std::filesystem;
 //==================================================
@@ -38,7 +42,6 @@ Database::Database(std::string dbname, std::string path) :
 //=================Database Creator=================
 Database Database::CreateDatabase(std::string dbname)
 { //Creates and return a reference to a database.
-    std::string basedir("./Data");                                              //Default directory databases are created to.
     std::string dbfolder(basedir + "/" + dbname);                               //This will not work on windows.
     std::string dbfile(dbfolder + "/" + dbname + ".db");                        //This will not work on windows.
 
@@ -82,16 +85,25 @@ Database Database::CreateDatabase(std::string dbname)
 //==================Database Loader=================
 Database Database::LoadDatabase(std::string dbname)
 { //Load and return a reference to an existing database.
-    std::string basedir("./Data");                                              //Default directory databases are loaded from.
-    std::string dbfolder(basedir + "/" + dbname);                               //This will not work on windows.
-    std::string dbfile(dbfolder + "/" + dbname + ".db");                        //This will not work on windows.
+    std::string dbfolder(basedir + "/" + dbname);                               //!This will not work on windows.
+    std::string dbfile(dbfolder + "/" + dbname + ".db");                        //!This will not work on windows.
 
     if(!fs::exists(dbfile))
     { //Checks if databse exists.
+        //TODO - Check if database file is valid
+        if(1 != 1)
+        {
+            throw std::runtime_error("Database::LoadDatabase=invalid_file");
+        }
+        
         return Database(dbname, dbfolder);
     }
     else
     { //Returns a null database if the database the function is trying to load does no exist.
+        /*
+        ? This else block should never be reached, functions
+        ? must guarantee the database exists before trying to load.
+        */
         return Database("null", "null");
     }
 }
@@ -109,8 +121,7 @@ std::string Database::GetDirectory()
 //=================Generete New Key=================
 std::string Database::NewUniqueKey(void)
 { //Generates a ney unique key string;
-    int key = (member_size + 1);
-    return("key_" + std::to_string(key));
+    return("key_" + std::to_string(member_size + 1));
 }
 //==================================================
 
@@ -118,7 +129,7 @@ std::string Database::NewUniqueKey(void)
 //=================Insert Key-Value=================
 void Database::InsertKeyValue(Datacell* newcell, Database* db)
 { //Creates a folder with a name based on the "key" value and store "value" on it.
-    std::string path = (db->GetDirectory() + "/" + db->member_name + ".db");    //This will not work on windows.
+    std::string path = (db->GetDirectory() + "/" + db->member_name + ".db");    //!This will not work on windows.
 
     //Database key-value template.
     std::string key_value_template = (
@@ -132,12 +143,12 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
     std::fstream file;
     file.open(path);
 
-    //Analises the current character to know if this is the first insertion to the database.
+    //Analyses the current character to know if this is the first insertion to the database.
     file.seekp(-3, std::ios::end);
-    char chscan[1]; file.read(chscan, 1);
+    char chscan = file.get();
 
 
-    if(chscan[0] == ']')
+    if(chscan == ']')
     { //Checks if it's the firts database key.
         file << ",\n";
     }
@@ -160,15 +171,7 @@ std::string Database::SearchKeyValue(std::string key)
 { //Returns value stored in "key" folder.
     std::string value;
 
-    std::ifstream kvfile(member_path + "/" + key + "_string.kv");               //This will not work on windows.
-    kvfile.seekg(0, std::ios::end);
-    value.reserve(kvfile.tellg());
-    kvfile.seekg(0, std::ios::beg);
-
-    value.assign(
-        std::istreambuf_iterator<char>(kvfile),
-        std::istreambuf_iterator<char>()
-    );
+    //TODO
 
     return value;
 }
@@ -188,17 +191,17 @@ void Database::Erase()
 
 //===============Database Compression===============
 bool Database::CompressDatabase(int type)
-{
+{ //TODO
     bool is_successful = false;
 
     switch(type)
     {
         case 1:
-            is_successful = huffman::compress(member_path);
+            huffman::compress(member_path);
         break;
 
         case 2:
-            is_successful = lzw::compress(member_path);
+            lzw::compress(member_path);
         break;
     }
 
@@ -209,17 +212,17 @@ bool Database::CompressDatabase(int type)
 
 //==============Database Decompression==============
 bool Database::DecompressDatabase(int type)
-{
+{ //TODO
     bool is_successful = false;
 
     switch(type)
     {
         case 1:
-            is_successful = huffman::compress(member_path);
+            huffman::decompress(member_path);
         break;
 
         case 2:
-            is_successful = lzw::compress(member_path);
+            lzw::decompress(member_path);
         break;
     }
 

@@ -4,7 +4,6 @@ SimpleDB lib.
 Intermediary between the functions of the
 database and the rest of the program.
 
-Compression/Decompression algorithm files are dependant on this file.
 Command line interface is dependant on this file.
 */
 
@@ -35,5 +34,15 @@ Database SimpleDB::CreateDB(std::string& dbname)
 Database SimpleDB::LoadDB(std::string& dbname)
 { //Calls for LoadDatabase method from database.h.
     return Database::LoadDatabase(dbname);
+}
+//==================================================
+
+#include <iostream>
+//=================Valid Key Checker================
+bool dbh::IsValidKey (std::string key, Database* db)
+{ //Checks if a given string matches with a valid key within the database.
+    bool is_valid = false;
+    //TODO
+    return is_valid;
 }
 //==================================================

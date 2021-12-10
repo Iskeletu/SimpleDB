@@ -1,5 +1,5 @@
 /*
-LZW compression/decompression file.
+LZW compression/decompression file (.lzw).
 
 Responsible for LZW algorithm compression
 and decompression.
@@ -7,6 +7,8 @@ and decompression.
 
 
 //Libraries
+#include <string>
+#include <filesystem>
 
 
 //Header Files
@@ -19,24 +21,20 @@ namespace fs = std::filesystem;
 
 
 //==================LZW Compression=================
-bool lzw::compress(fs::path path)
-{ //Returns 1 if data compression was successful and 0 if it failed.
-    bool status = false;
+fs::path lzw::compress(std::string db_path)
+{ //
+    fs::path compressed_file_path((db_path.substr(0, db_path.size()-3)) + ".lzw");
 
     //TODO
 
-    return status;
+    return compressed_file_path;
 }
 //==================================================
 
 
 //=================LZW Decompression================
-bool lzw::decompress(fs::path path)
-{ //Returns 1 if data decompression was successful and 0 if it failed.
-    bool status = false;
-
+void lzw::decompress(std::string compressed_file_path)
+{ //
     //TODO
-
-    return status;
 }
 //==================================================

@@ -19,6 +19,10 @@ to the database.
 #include "screens.h"
 
 
+//Local Reference
+Database cli_db_reference("null", "null");                                      //Local reference to the database.
+
+
 //====================Constructor===================
 cli::Command::Command(std::string user_input) :
     member_unformatted_command(user_input), 
@@ -87,15 +91,14 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
 
     if(expression->rfind("=", 0) == 0)
     { //Checks if expression is formatted correctly for general commands.
-        expression->erase(0, 1);
-        std::string temp = *expression;
+        expression->erase(0, 1); //Removes "=" from expression;
 
         if(expression->length() > 2)
         { //Proceeds if "expression" has more than two charcters.
             switch(type)
             { //Type: 1 = insert | 2 = remove | 3 = search | 4 = update | 5 = compress & decomrpress;
                 case 1:
-                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                     { //Checks if expression is formatted correctly.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
 
@@ -106,9 +109,9 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                             *valid_flag = false;
                         }
                         
-                        //Confirms if the first paramether is a positive integer;
+                        //Confirms if the first parameter is a positive integer;
                         if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
-                        { //String is an intenger, this checks if it x > 0;
+                        { //The string is an intenger, this checks if it is higher then 0;
                             int prmscan = std::stoi(formatted_expression[0]);
 
                             if(prmscan <= 0)
@@ -117,14 +120,14 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                             }
                         }
                         else
-                        {
+                        { //String is not and integer.
                             *valid_flag = false;
                         }
                     }
                 break;
 
-                case 2:
-                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                case 2: //TODO
+                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                     { //Checks if expression is formatted correctly.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
 
@@ -137,8 +140,8 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                     }
                 break;
 
-                case 3:
-                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                case 3: //TODO
+                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                     { //Checks if expression is formatted correctly.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
 
@@ -151,8 +154,8 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                     }
                 break;
 
-                case 4:
-                    if(temp[0] == '<' && temp[temp.length()-1] == '>')
+                case 4: //TODO
+                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                     { //Checks if expression is formatted correctly.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
 
@@ -160,6 +163,27 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
                         *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
                         if(formatted_expression.size() != 3)
                         { //Does not have the right amount of parameters.
+                            *valid_flag = false;
+                        }
+
+                        //Confirms if the first parameter is a valid key within the database.
+                        if(!dbh::IsValidKey(formatted_expression[0], &cli_db_reference))
+                        { //The informed key is not a valid key within the database.
+                            *valid_flag = false;
+                        }
+
+                        //Confirms if the second parameter is a positive integer;
+                        if(formatted_expression[1].find_first_not_of( "0123456789" ) == std::string::npos)
+                        { //The string is an intenger, this checks if it is higher then 0;
+                            int prmscan = std::stoi(formatted_expression[1]);
+
+                            if(prmscan <= 0)
+                            { //Integer is not higher than 0;
+                                *valid_flag = false;
+                            }
+                        }
+                        else
+                        { //String is not and integer.
                             *valid_flag = false;
                         }
                     }
@@ -235,6 +259,8 @@ std::vector<std::string> ArgumentFormatter(std::string *argument, std::string* e
 //=================Command Processor================
 bool cli::ReadCommand(cli::Command command, Database* db)
 { //Reads raw input data from user as a command and calls for related functions.
+    cli_db_reference = *db;                                                     //Sets local database reference.
+
     if(command.member_command_size == 1 && command.member_main_command == "null")
     { //Does nothing if user input is blank.
         return false;
@@ -312,7 +338,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks for valid expression.
                 if (valid_expression)
                 {
-                    screens::PrintKeyValue(formatted_expression[0], db->SearchKeyValue(formatted_expression[0]));
+                    //TODO proceed
                 }
                 else
                 {

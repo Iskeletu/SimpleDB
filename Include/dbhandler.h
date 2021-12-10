@@ -26,7 +26,7 @@ class SimpleDB
 //=====================Functions====================
 namespace dbh
 {//Short for "Database Handler".
-
+    bool                    IsValidKey      (std::string key, Database* db);
 };
 //==================================================
 

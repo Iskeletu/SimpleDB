@@ -1,5 +1,5 @@
 /*
-Huffman compression/decompression file.
+Huffman compression/decompression file (.hff).
 
 Responsible for Huffman algorithm compression
 and decompression.
@@ -7,6 +7,8 @@ and decompression.
 
 
 //Libraries
+#include <string>
+#include <filesystem>
 
 
 //Header Files
@@ -24,24 +26,20 @@ namespace fs = std::filesystem;
 
 
 //================Huffman Compression===============
-bool huffman::compress(fs::path path)
-{ //Returns 1 if data compression was successful and 0 if it failed.
-    bool status = false;
-
+fs::path huffman::compress(std::string db_path)
+{ //
+    fs::path compressed_file_path((db_path.substr(0, db_path.size()-3)) + ".hff");
+    
     //TODO
 
-    return status;
+    return compressed_file_path;
 }
 //==================================================
 
 
 //===============Huffman Decompression==============
-bool huffman::decompress(fs::path path)
-{ //Returns 1 if data decompression was successful and 0 if it failed.
-    bool status = false;
-
+void huffman::decompress(std::string compressed_file_path)
+{ //
     //TODO
-
-    return status;
 }
 //==================================================
