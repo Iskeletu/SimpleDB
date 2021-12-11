@@ -5,8 +5,9 @@ This file is resposible for Datacell management.
 Datacell is a structure that contais organised
 data for easier insertion in the database.
 
-database. is dependant on this file.
-screens.cpp is dependant on this file
+screens.cpp is dependant on this file.
+index.cpp is dependant on this file.
+database.cpp is dependant on this file.
 */
 
 

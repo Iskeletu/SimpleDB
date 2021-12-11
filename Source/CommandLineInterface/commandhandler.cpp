@@ -68,7 +68,7 @@ bool ExpressionFormatter(std::string expression, std::vector<std::string>* forma
     { //Splits expression string at every comma.
         std::string temp;
         getline(ss, temp, ',');
-
+        
         if(!temp.empty())
         { //Stores "temp" into the current positon of the vector if it is not empty.
             formatted_expression->push_back(temp);                              //Stores resultant string into the formatted expression string vector.
@@ -612,3 +612,5 @@ bool cli::ReadCommand(cli::Command command, Database* db)
     return false;                                                               //Continues main loop.
 }
 //==================================================
+
+//TODO = expression formater is breaking at <1,> expression.
