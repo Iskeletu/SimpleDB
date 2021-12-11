@@ -16,7 +16,7 @@
 class Database
 {
     public:
-        Database(std::string dbname, std::string path);
+        Database(std::string dbname, std::string path, std::vector<Index> index);
 
         std::string         GetDirectory            (void);
         std::string         GetName                 (void);
@@ -26,7 +26,7 @@ class Database
         bool                UpdateKeyValue          (Datacell* existingcell);
         bool                RemoveKeyValue          (Datacell* existingcell);
         void                Erase                   (void);
-
+            void DebugIndex(void); //!delete
         static Database     CreateDatabase          (std::string dbname);
         static Database     LoadDatabase            (std::string dbname);
 
@@ -35,7 +35,7 @@ class Database
         std::string member_path;
         int member_size;
         int member_last_insertion;
-        //std::vector<Index> member_index;
+        std::vector<Index> member_index;
 };
 //==================================================
 

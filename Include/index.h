@@ -16,21 +16,23 @@
 class Index
 {
     public:
-        Index(int key, int sorting_key, int header_size, int key_size, int value_size);
+        Index(size_t key_size, int key, int sorting_key, size_t value_size);
 
-        int member_key;
+        void                            RemoveIndexKey      (int key);
+        std::vector<int>                GetValuePosition    (int key);
+        int                             GetSortingKey       (void);
 
-        void            InsertIndexKey      (Datacell existingcell);
-        void            RemoveIndexKey      (std::string* key);
-        void            OrderIndex          (void);
-
-        static Index    CreateIndex         (std::string dbname);
+        static std::vector<Index>       CreateIndex         (std::string dbname);
+        static std::vector<Index>       LoadIndex           (std::string dbname, std::string dbpath, int dbsize);
+        static void                     InsertIndexKey      (std::vector<Index>* dbindex, Datacell* newmember);
+        static void                     SortIndex           (std::vector<Index>* dbindex);
+        static void PrintIndex (std::vector<Index> loadedindex);
 
     protected:
+        size_t member_key_size;
+        int member_key;
         int member_sorting_key;
-        int member_header_size;
-        int member_key_size;
-        int member_value_size;
+        size_t member_value_size;
 };
 //==================================================
 

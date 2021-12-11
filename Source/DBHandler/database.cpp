@@ -8,6 +8,7 @@ is handled by this file.
 
 //Libraries
 #include <string>
+#include <vector>
 #include <fstream>
 #include <filesystem>
 
@@ -26,12 +27,12 @@ namespace fs = std::filesystem;
 
 
 //====================Constructor===================
-Database::Database(std::string dbname, std::string path) :
+Database::Database(std::string dbname, std::string path, std::vector<Index> index_vector) :
     member_name(dbname),
     member_path(path),
     member_size(-1),
-    member_last_insertion(-1)
-    //member_index(0, 0, 0, 0, 0)
+    member_last_insertion(-1),
+    member_index(index_vector)
 {;}
 //==================================================
 
@@ -59,7 +60,7 @@ Database Database::CreateDatabase(std::string dbname)
 
     //Creates a new database file and it's reference.
     std::ofstream ofile(dbfile, std::ios::binary);                              //Creates file and open as input and output.
-    Database db(dbname, dbfolder);                                              //Creates database reference to previouly created file.
+    Database db(dbname, dbfolder, Index::CreateIndex(dbname));                  //Creates database reference to previouly created file.
 
     //Formats as a default blank database file.
     db.member_size = 0;
@@ -86,7 +87,7 @@ Database Database::CreateDatabase(std::string dbname)
 
 
 //==================Database Reader=================
-void ReadDatabase(Database* db, int *database_size, int *last_insertion)
+void ReadDatabase(Database* db, int* database_size, int* last_insertion, std::vector<Index>* newindex)
 { //This function loads database members store in binary database file to primary memory.
 //Slave function to "Database::LoadDatabase".
     std::string dbfile = (db->GetDirectory() + "/" + db->GetName() +".db");      //!This will not work on windows.
@@ -128,6 +129,8 @@ void ReadDatabase(Database* db, int *database_size, int *last_insertion)
     }
 
     ifile.close();                                                              //Closes file.
+
+    *newindex = Index::LoadIndex(db->GetName(), dbfile, *database_size);         //Generates a complete index for the database. //!(might slow down start up).
 }
 //==================================================
 
@@ -158,13 +161,15 @@ Database Database::LoadDatabase(std::string dbname)
 
         if(temp == dbname)
         { //The file exist and it's contents are valid. 
-            Database loadeddb(dbname, dbfolder);                                //Creates a database reference.
+            std::vector<Index> newindex = Index::CreateIndex(dbname);
+            Database loadeddb(dbname, dbfolder, newindex);                      //Creates a database reference.
 
             //Loads relevant members to primary memory.
             int database_size, last_insertion;
-            ReadDatabase(&loadeddb, &database_size, &last_insertion);
-            loadeddb.member_size = database_size;
-            loadeddb.member_last_insertion = last_insertion;
+            ReadDatabase(&loadeddb, &database_size, &last_insertion, &newindex);
+            loadeddb.member_size = database_size;                               //Updates database size.
+            loadeddb.member_last_insertion = last_insertion;                    //Updates last insertion value.
+            loadeddb.member_index = newindex;                                   //Updates index.
         
             return loadeddb;                                                    //Returns previouly created database reference.
         }
@@ -242,6 +247,7 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
     //Updates value of the last insertion to the database.
     key.erase(0,4);                                                             //Removes "key_" from "key" string for integer conversion.
     member_last_insertion = std::stoi(key);                                     //Defines "member_last_insertion" as the value of the integer conversion from "key" string.
+    Index::InsertIndexKey(&(db->member_index), newcell);                        //Updates index.
 }
 //==================================================
 
@@ -291,3 +297,14 @@ void Database::Erase()
     }
 }
 //==================================================
+
+
+
+
+
+
+//!delete
+void Database::DebugIndex()
+{
+    Index::PrintIndex(member_index);
+}

@@ -36,7 +36,7 @@ int main(void)
 
     //Load Sequence
     std::string dbname = "SimpleDB";                                            //Standard database name.
-    Database db("null", "null");                                                //Creates blank database reference.
+    Database db("null", "null", Index::CreateIndex("null"));                    //Creates blank database reference.
 
     std::cout << "Carregando database..." << std::endl;
 
