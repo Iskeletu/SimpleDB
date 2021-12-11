@@ -32,7 +32,7 @@ After creating a new datase file or loading an existing one the following messag
 Pressione a tecla enter para proseguir!
 _
 ```
-Press enter to preceed to the custom CLI, see (TODO)[TODO] for more information on the CLI usage.
+Press enter to preceed to the custom CLI, see [TODO](TODO) for more information on the CLI usage.
 
 ## Command Line Interface
 SimpleDB runs on a custom command line interface (CLI).
@@ -43,7 +43,15 @@ TODO
 
 ## Features
 
-TODO
+* Custom command line interface
+    - As friendly as a terminal interface can be.
+    - Multi step opretions are easier and painless.
+    - Informational feedback
+* Primary memory indexation
+    - Much faster search operations on secondary memory.
+    - Much faster data sorting.
+* Huffman and LZW compression/decompression.
+    - TODO
 
 ## Compiling
 
@@ -68,7 +76,7 @@ Run with:
 ```bash
 .\Build\build
 ```
-No arguments necessary, all interaction can be done within the custom CLI.
+No arguments necessary, all interactions can be done within the custom CLI.
 
 ## License
 
