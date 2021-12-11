@@ -21,7 +21,9 @@ class Database
         std::string         GetName                 (void);
         std::string         NewUniqueKey            (void);
         void                InsertKeyValue          (Datacell* newcell, Database* db);
-        std::string         SearchKeyValue          (std::string key);
+        bool                SearchKeyValue          (Datacell* existingcell);
+        bool                UpdateKeyValue          (Datacell* existingcell);
+        bool                RemoveKeyValue          (Datacell* existingcell);
         void                Erase                   (void);
 
         static Database     CreateDatabase          (std::string dbname);

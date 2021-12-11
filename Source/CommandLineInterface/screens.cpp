@@ -19,7 +19,7 @@ commandhandler.cpp is dependant on this file.
 
 //==================Startup Screen==================
 void screens::PrintStartupScreen()
-{ //Startup screen, its only use is to have something to look at when the program is loading..
+{ //Startup screen, its only use is to have something to look at when the program is loading.
     std::cout << " ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________"                      << std::endl;
     std::cout << "|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"    << std::endl;
     std::cout << "\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________|"            << std::endl << std::endl;
@@ -48,145 +48,180 @@ void screens::PrintDefaultScreen()
 //==================================================
 
 
-//=======================Done=======================
-void screens::PrintDone()
-{ //Prints a standard "done" message when a command without return successfuly completes.
-    std::cout << "Concluído." << std::endl << std::endl;
-}
-//==================================================
-
-
-//================Help Command Screen===============
-void screens::PrintHelpScreen()
-{ //Screen for 'help' command.
-    std::cout << "+----------------------------------------------+" << std::endl;
-    std::cout << "|  '->' = Uso do comando.                      |" << std::endl;
-    std::cout << "|  '*'  = Argumento dinsponível.               |" << std::endl;
-    std::cout << "|                                              |" << std::endl;
-    std::cout << "|  HELP  ->  Mostra essa tela.                 |" << std::endl;
-    std::cout << "|    * help                                    |" << std::endl;
-    std::cout << "|    * simpledb                                |" << std::endl;
-    std::cout << "|    * clear                                   |" << std::endl;
-    std::cout << "|    * exit                                    |" << std::endl;
-    std::cout << "|  SIMPLEDB  ->  Realiza operações no BD.      |" << std::endl;
-    std::cout << "|    * --insert                                |" << std::endl;
-    std::cout << "|    * --remove                                |" << std::endl;
-    std::cout << "|    * --search                                |" << std::endl;
-    std::cout << "|    * --update                                |" << std::endl;
-    std::cout << "|    * --list / --revese-list                  |" << std::endl;
-    std::cout << "|    * --compress                              |" << std::endl;
-    std::cout << "|    * --decompress                            |" << std::endl;
-    std::cout << "|  CLEAR  ->  Limpa o histórico de mensagens.  |" << std::endl;
-    std::cout << "|  EXIT  ->  Fecha o programa.                 |" << std::endl;
-    std::cout << "|                                              |" << std::endl;
-    std::cout << "|  Use 'help [comando]' para mais informações. |" << std::endl;
-    std::cout << "+----------------------------------------------+" << std::endl << std::endl;
+//==============Unknown Command Screen==============
+void screens::PrintUnknownCommandScreen(std::string* command)
+{ //Default message for unknown commands.
+    std::cout << "Erro: Comando '" << *command << "' não reconhecido." << std::endl;
+    std::cout << "Use 'help' sem argumentos para ver a lista de comandos disponíveis." << std::endl << std::endl;
 }
 //==================================================
 
 
 //==========Argumented Help Command Screen==========
-void screens::PrintArgumentHelpScreen(std::string argument)
-{ //Has one screen for each of the commands that can be used as argument for 'help' command.
-    if(argument == "help")
-    { //'help help' screen.
-        std::cout << "+----------------------------------------------+" << std::endl;
-        std::cout << "|  Comando: 'HELP'                             |" << std::endl;
-        std::cout << "|    Exibe lista de comandos disponíveis para  |" << std::endl;
-        std::cout << "|    execução                                  |" << std::endl;
-        std::cout << "|                                              |" << std::endl;
-        std::cout << "|  *Aceita os seguintes arugmentos:            |" << std::endl;
-        std::cout << "|    -> 'HELP': Motra essa tela.               |" << std::endl;
-        std::cout << "|    -> 'SIMPLEDB': Mostra informações sobre   |" << std::endl;
-        std::cout << "|    o comando 'simpledb'.                     |" << std::endl;
-        std::cout << "|    -> 'CLEAR': Mostra informaçãoes sobre o   |" << std::endl;
-        std::cout << "|    comando 'clear'.                          |" << std::endl;
-        std::cout << "|    -> 'EXIT': Mostra informaçãoes sobre o    |" << std::endl;
-        std::cout << "|    comando 'exit'.                           |" << std::endl;
-        std::cout << "+----------------------------------------------+" << std::endl << std::endl;
-    }
-    else if(argument == "simpledb")
-    { //'help simpledb' screen.
-        std::cout << "+----------------------------------------------+" << std::endl;
-        std::cout << "|  TODO.                                       |" << std::endl;
-        std::cout << "+----------------------------------------------+" << std::endl << std::endl;
-    }
-    else if(argument == "clear")
-    { //'help clear' screen.
-        std::cout << "+----------------------------------------------+" << std::endl;
-        std::cout << "|  Comando: 'CLEAR'                            |" << std::endl;
-        std::cout << "|    Limpa o hitórico de mensagens do termi-   |" << std::endl;
-        std::cout << "|    nal.                                      |" << std::endl;
-        std::cout << "|                                              |" << std::endl;
-        std::cout << "|  *Não aceita argumentos.                     |" << std::endl;
-        std::cout << "+----------------------------------------------+" << std::endl << std::endl;
-    }
-    else if(argument == "exit")
-    { //'help exit' screen.
-        std::cout << "+----------------------------------------------+" << std::endl;
-        std::cout << "|  Comando: 'EXIT'                             |" << std::endl;
-        std::cout << "|    Inicializa sequência de finalização e     |" << std::endl;
-        std::cout << "|    encerra o SimpleDB.                       |" << std::endl;
-        std::cout << "|                                              |" << std::endl;
-        std::cout << "|  *Não aceita argumentos.                     |" << std::endl;
-        std::cout << "+----------------------------------------------+" << std::endl<<std::endl;
-    }
-    else
+void screens::PrintHelpScreen(std::string* argument, int type)
+{ //Has one screen for each of the commands that can be used as argument for 'help' command na done with no arguments.
+    switch(type)
     {
-        PrintInvalidHelpScreen(argument);
+        /*
+        Type 1 = "help" command with no arguments.
+        Type 2 = 'help help' command.
+        Type 3 = 'help simpledb' command.
+        Type 4 = 'help clear' command.
+        Type 5 = 'help exit' command.
+        Type 6 = Command 'help' has invalid arguments.
+        */
+        case 1:
+            std::cout << "+----------------------------------------------+" << std::endl;
+            std::cout << "|  '->' = Uso do comando.                      |" << std::endl;
+            std::cout << "|  '*'  = Argumento dinsponível.               |" << std::endl;
+            std::cout << "|                                              |" << std::endl;
+            std::cout << "|  HELP  ->  Mostra essa tela.                 |" << std::endl;
+            std::cout << "|    * help                                    |" << std::endl;
+            std::cout << "|    * simpledb                                |" << std::endl;
+            std::cout << "|    * clear                                   |" << std::endl;
+            std::cout << "|    * exit                                    |" << std::endl;
+            std::cout << "|  SIMPLEDB  ->  Realiza operações no BD.      |" << std::endl;
+            std::cout << "|    * --insert                                |" << std::endl;
+            std::cout << "|    * --remove                                |" << std::endl;
+            std::cout << "|    * --search                                |" << std::endl;
+            std::cout << "|    * --update                                |" << std::endl;
+            std::cout << "|    * --list / --revese-list                  |" << std::endl;
+            std::cout << "|    * --compress                              |" << std::endl;
+            std::cout << "|    * --decompress                            |" << std::endl;
+            std::cout << "|  CLEAR  ->  Limpa o histórico de mensagens.  |" << std::endl;
+            std::cout << "|  EXIT  ->  Fecha o programa.                 |" << std::endl;
+            std::cout << "|                                              |" << std::endl;
+            std::cout << "|  Use 'help [comando]' para mais informações. |" << std::endl;
+            std::cout << "+----------------------------------------------+" << std::endl << std::endl;
+        break;
+
+        case 2:
+            std::cout << "+----------------------------------------------+" << std::endl;
+            std::cout << "|  Comando: 'HELP'                             |" << std::endl;
+            std::cout << "|    Exibe lista de comandos disponíveis para  |" << std::endl;
+            std::cout << "|    execução                                  |" << std::endl;
+            std::cout << "|                                              |" << std::endl;
+            std::cout << "|  *Aceita os seguintes arugmentos:            |" << std::endl;
+            std::cout << "|    -> 'HELP': Motra essa tela.               |" << std::endl;
+            std::cout << "|    -> 'SIMPLEDB': Mostra informações sobre   |" << std::endl;
+            std::cout << "|    o comando 'simpledb'.                     |" << std::endl;
+            std::cout << "|    -> 'CLEAR': Mostra informaçãoes sobre o   |" << std::endl;
+            std::cout << "|    comando 'clear'.                          |" << std::endl;
+            std::cout << "|    -> 'EXIT': Mostra informaçãoes sobre o    |" << std::endl;
+            std::cout << "|    comando 'exit'.                           |" << std::endl;
+            std::cout << "+----------------------------------------------+" << std::endl << std::endl;
+        break;
+    
+        case 3:
+            std::cout << "+----------------------------------------------+" << std::endl;
+            std::cout << "|  TODO.                                       |" << std::endl;
+            std::cout << "+----------------------------------------------+" << std::endl << std::endl;
+        break;
+    
+        case 4:
+            std::cout << "+----------------------------------------------+" << std::endl;
+            std::cout << "|  Comando: 'CLEAR'                            |" << std::endl;
+            std::cout << "|    Limpa o hitórico de mensagens do termi-   |" << std::endl;
+            std::cout << "|    nal.                                      |" << std::endl;
+            std::cout << "|                                              |" << std::endl;
+            std::cout << "|  *Não aceita argumentos.                     |" << std::endl;
+            std::cout << "+----------------------------------------------+" << std::endl << std::endl;
+        break;
+    
+        case 5:
+            std::cout << "+----------------------------------------------+" << std::endl;
+            std::cout << "|  Comando: 'EXIT'                             |" << std::endl;
+            std::cout << "|    Inicializa sequência de finalização e     |" << std::endl;
+            std::cout << "|    encerra o SimpleDB.                       |" << std::endl;
+            std::cout << "|                                              |" << std::endl;
+            std::cout << "|  *Não aceita argumentos.                     |" << std::endl;
+            std::cout << "+----------------------------------------------+" << std::endl<<std::endl;
+        break;
+
+        case 6:
+            std::cout << "Erro: Nenhuma informação localizada para o comando '" << *argument << "'." << std::endl;
+            std::cout << "Use 'help' sem argumentos para ver a lista de comandos disponíveis." << std::endl << std::endl;
+        break;
     }
 }
 //==================================================
 
 
-//============Invalid Help Command Screen===========
-void screens::PrintInvalidHelpScreen(std::string command)
-{ //Default message for invalid 'help' command usage.
-    std::cout << "Nenhuma informação localizada para o comando '" << command << "'." << std::endl;
-    std::cout << "Use 'help' sem argumentos para ver a lisca de comandos disponíveis." << std::endl<<std::endl;
-}
-//==================================================
+//===============Argument Error Screen==============
+void screens::PrintArgumentErrorScreen(std::string* command, std::string* argument, int type)
+{ //Default messages for error with arguments.
+    switch(type)
+    {
+        /*
+        Type 1 = Unrecognized argument.
+        Type 2 = Too few arguments.
+        Type 3 = Too many arguments.
+        Type 4 = No arguments needed.
+        */
+        case 1:
+            std::cout << "Erro: Argumento '" << *argument << "' não reconhecido para o comando '" << *command << "'." << std::endl;
+        break;
 
+        case 2:
+            std::cout << "Erro: Argumentos insuficientes para o comando '" << *command << "'." << std::endl;
+        break;
 
-//==============Unknown Command Screen==============
-void screens::PrintUnknownCommandScreen(std::string command)
-{ //Default message for unknown commands.
-    std::cout << "Comando '" << command << "' não reconhecido, digite 'help' para mais informações." << std::endl << std::endl;
-}
-//==================================================
+        case 3:
+            std::cout << "Erro: Argumentos em excesso para o comando '" << *command << "'." << std::endl;
+        break;
 
-
-//==============Unknown Argument Screen=============
-void screens::PrintUnknownArgumentScreen(std::string command, std::string argument)
-{ //Default message for unknown arguments.
-    std::cout << "Argumento '" << argument << "' desconhecido para o comando '" << command << "'." << std::endl;
-    std::cout << "Use 'help " << command << "' para mais informações." << std::endl << std::endl;
-}
-//==================================================
-
-
-//===========Insufficient Argument Screen===========
-void screens::PrintInsufficientArgumentScreen(std::string command)
-{
-    std::cout << "Argumentos insuficientes para o comando '" << command << "'." << std::endl;
-    std::cout << "Use 'help " << command << "' para mais informações." << std::endl << std::endl;
-}
-//==================================================
-
-
-//=============Unknown Expression Screen=============
-void screens::PrintUnknownExpressionScreen(std::string command, std::string argument, std::string expression)
-{ //Default messages for unknown expression.
-    if(expression != "null")
-    { //Invalid expression.
-        std::cout << "Expressão '" << expression << "' inválida para o argumento '" << argument << "'." << std::endl;
-        std::cout << "Use 'help " << command << "' para mais informações." << std::endl << std::endl;
+        case 4:
+            std::cout << "Erro: Comando '" << *command << "' não aceita argumentos." << std::endl;
+        break;
     }
-    else
-    { //Missing expression.
-        std::cout << "Expressão não pode estar em branco para o argumento '" << argument << "'." << std::endl;
-        std::cout << "Use 'help " << command << "' para mais informações." << std::endl << std::endl;
+
+    std::cout << "Use 'help " << *command << "' para mais informações." << std::endl << std::endl;
+}
+//==================================================
+
+
+//===========Wrong Expression Terms Screen==========
+void screens::PrintExpressionErrorScreen(std::string* command, std::string* argument, std::string* expression, int type)
+{ //Default messages for arguments with unknown or invalid expressions.
+    switch(type)
+    {
+        /*
+        Type 1 = Expression is missing.
+        Type 2 = Expression is invalid.
+        Type 3 = Too few terms in expression.
+        Type 4 = Too many terms in expression.
+        Type 5 = No expression needed.
+        */
+        case 1:
+            std::cout << "Erro: Expressão não pode estar em branco para o argumento '" << *argument << "'." << std::endl;
+        break;
+
+        case 2:
+            std::cout << "Erro: Expressão '" << *expression << "' inválida para o argumento '" << *argument << "'." << std::endl;
+        break;
+
+        case 3:
+            std::cout << "Erro: Arguemnto '" << *argument << "' requer mais termos na expressão." << std::endl;
+        break;
+
+        case 4:
+            std::cout << "Erro: Argumento '" << *argument << "' requer memos termos na expressão." << std::endl;
+        break;
+
+        case 5:
+            std::cout << "Erro: Argumento '" << *argument << "' não aceita expressões." << std::endl;
+        break;
     }
+
+    std::cout << "Use 'help " << *command << "' para mais informações." << std::endl << std::endl;
+}
+//==================================================
+
+
+//====================Done Screen===================
+void screens::PrintDone()
+{ //Prints a standard "done" message when a command without return successfuly completes.
+    std::cout << "Operação concluída!" << std::endl << std::endl;
 }
 //==================================================
 
@@ -203,12 +238,20 @@ void screens::ClearScreen()
 //==================================================
 
 
-//===============Clear Command Screen===============
+//==================Print Datacell==================
 void screens::PrintDatacell(Datacell* existingcell)
-{ //Prints datacell to screen after inserting to database.
-    std::cout << "'" << existingcell->GetKey() << "': [" << std::endl;               //Uses a json-like template.
+{ //Prints datacell to screen.
+    std::cout << "'" << existingcell->GetKey() << "': [" << std::endl;          //Uses a json-like template.
     std::cout << "\t'Sorting_Key': " << existingcell->GetSortingKey() << "," << std::endl;
     std::cout << "\t'Value': " << existingcell->GetValue() << std::endl;
     std::cout << "]" << std::endl << std::endl;
+}
+//==================================================
+
+
+//=================Print Invalid Key================
+void screens::PrintInvalidKeyScreen(std::string* key)
+{ //Prints a stantdard "invalid key" message for failed update/removal procedures.
+    std::cout << "Erro: A chave '" << *key << "' não existe na database!" << std::endl << std::endl;
 }
 //==================================================

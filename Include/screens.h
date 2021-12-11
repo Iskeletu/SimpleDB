@@ -14,21 +14,19 @@
 //=====================Functions====================
 namespace screens
 {
-    //CLI Functions
-    void    PrintStartupScreen                  (void);
-    void    PrintDefaultScreen                  (void);
-    void    PrintDone                           (void);
-    void    PrintHelpScreen                     (void);
-    void    PrintArgumentHelpScreen             (std::string argument);
-    void    PrintInvalidHelpScreen              (std::string command);
-    void    PrintUnknownCommandScreen           (std::string command);
-    void    PrintUnknownArgumentScreen          (std::string command, std::string argument);
-    void    PrintInsufficientArgumentScreen     (std::string command);
-    void    PrintUnknownExpressionScreen        (std::string command, std::string argument, std::string expression);
-    void    ClearScreen                         (void);
+    //CLI Related Functions
+    void    PrintStartupScreen              (void);
+    void    PrintDefaultScreen              (void);
+    void    PrintUnknownCommandScreen       (std::string* command);
+    void    PrintHelpScreen                 (std::string* argument, int type);
+    void    PrintArgumentErrorScreen        (std::string* command, std::string* argument, int type);
+    void    PrintExpressionErrorScreen      (std::string* command, std::string* argument, std::string* expression, int type);
+    void    PrintDone                       (void);
+    void    ClearScreen                     (void);
 
-    //Database Functions
-    void    PrintDatacell                       (Datacell* existingcell);
+    //Database Related Functions
+    void    PrintDatacell                   (Datacell* existingcell);
+    void    PrintInvalidKeyScreen           (std::string* key);
 };
 //==================================================
 

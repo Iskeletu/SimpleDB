@@ -248,13 +248,37 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
 
 
 //=================Search Key-Value=================
-std::string Database::SearchKeyValue(std::string key)
-{ //Returns value stored in "key" folder.
-    std::string value;
+bool Database::SearchKeyValue(Datacell* existingcell)
+{ //Returns a value stored in an existing key inside the datavase.
+    bool cell_exists = false;
 
     //TODO
 
-    return value;
+    return cell_exists;
+}
+//==================================================
+
+
+//=================Update Key-Value=================
+bool Database::UpdateKeyValue(Datacell* existingcell)
+{ //Updates a value stored in an existing key inside the database.
+    bool cell_exists = false;
+
+    //TODO
+
+    return cell_exists;
+}
+//==================================================
+
+
+//=================Remove Key-Value=================
+bool Database::RemoveKeyValue(Datacell* existingcell)
+{ //Delets an existing key stored inside the database.
+    bool cell_exists = false;
+
+    //TODO
+
+    return cell_exists;
 }
 //==================================================
 
@@ -268,11 +292,3 @@ void Database::Erase()
     }
 }
 //==================================================
-
-/*
-!delete
-simpledb --insert=<1,aa>
-simpledb --insert=<2,bb>
-simpledb --insert=<3,cc>
-simpledb --insert=<4,dd>
-*/

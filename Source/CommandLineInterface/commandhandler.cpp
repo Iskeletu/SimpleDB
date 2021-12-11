@@ -35,21 +35,21 @@ cli::Command::Command(std::string user_input) :
 
 //=================Command Formatter================
 std::vector<std::string> cli::Command::CommandFormatter(std::string user_input)
-{ //Creates a string vector divided by whitespaces from the raw user input.
+{ //Formats user input string by separating it at every whitespace and storing in a string vector.
     std::vector<std::string> formatted_command;
 
     if(user_input.empty() || (user_input.rfind(" ", 0) == 0))
     { //Returns a "null" string if user_input is blank or starts with a blank space.
-        formatted_command.push_back("null");
+        formatted_command.push_back("null");                                    //Sets the first string of the formatted command string vector as "null".
         return formatted_command;
     }
 
-    std::string temp;
+    //String formation.
     std::istringstream ss(user_input);
-
+    std::string temp;
     while(ss >> temp)
     {
-        formatted_command.push_back(temp);
+        formatted_command.push_back(temp);                                      //Stores resultant string into the formatted command string vector.
     }
 
     return formatted_command;
@@ -59,23 +59,24 @@ std::vector<std::string> cli::Command::CommandFormatter(std::string user_input)
 
 //===============Expression Formatter===============
 bool ExpressionFormatter(std::string expression, std::vector<std::string>* formatted_expression)
-{ //Creates a string vector divided by commas from the raw expression.
+{ //Formats raw expression string by separating it at every comma and storing in a string vector, returns true if the expression if valid and false if it is invalid.
+//Slave function to "ExpressionVerifier".
     bool is_valid = true;
-    std::stringstream  ss(expression);
 
+    std::stringstream  ss(expression);
     while (ss.good())
-    {
+    { //Splits expression string at every comma.
         std::string temp;
         getline(ss, temp, ',');
 
         if(!temp.empty())
         { //Stores "temp" into the current positon of the vector if it is not empty.
-            formatted_expression->push_back(temp);
+            formatted_expression->push_back(temp);                              //Stores resultant string into the formatted expression string vector.
         }
         else
         { //Insert a "null" into the current vector position if there is no data between commas.
             is_valid = false;                                                   //Flags the expression as invalid.
-            formatted_expression->push_back("null");
+            formatted_expression->push_back("null");                            //Sets the first string of the formatted expression string vector as "null".
         }
     }
 
@@ -85,119 +86,98 @@ bool ExpressionFormatter(std::string expression, std::vector<std::string>* forma
 
 
 //================Expression Verifier===============
-std::vector<std::string> ExpressionVerifier(std::string *expression, int type, bool* valid_flag)
-{ //Analyzes expression and returns true if it is valid.
+std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, bool* valid_flag)
+{ //Analyzes the expression and return a string vector with the formatted expression terms if it valid.
+//Slave function to "ArgumentFormmatter".
     std::vector<std::string> formatted_expression;
 
     if(expression->rfind("=", 0) == 0)
-    { //Checks if expression is formatted correctly for general commands.
-        expression->erase(0, 1); //Removes "=" from expression;
+    { //Initial check, confirms if the expression is formatted correctly for any argument implemented.
+        expression->erase(0, 1);                                                //Removes "=" from "expression" string.
 
         if(expression->length() > 2)
-        { //Proceeds if "expression" has more than two charcters.
-            switch(type)
-            { //Type: 1 = insert | 2 = remove | 3 = search | 4 = update | 5 = compress & decomrpress;
+        { //Second check, "expression" string needs to have more than 2 characters remaining.
+            switch(*type)
+            { //Third check, confirm if value types are correct and has enough parametes for it's respective argument.
+                /*
+                Type 1 = expression for '--insert' argument.
+                Type 2 = expression for '--remove', '--search' and '--update' argument.
+                Type 3 = expression for '--list' and '--reverse-list' arguments.
+                Type 4 = expression for '--compress' and '--decompress' arguments.
+                */
                 case 1:
                     if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly.
+                    { //Checks if expression is formatted correctly for type 1.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
 
-                        //Checks if expression is valid and has enough terms for type 1.
+                        //Confirms if expression has enough terms for type 1.
                         *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-                        if(formatted_expression.size() != 2)
-                        { //Does not have the right amount of parameters.
-                            *valid_flag = false;
-                        }
-                        
-                        //Confirms if the first parameter is a positive integer;
-                        if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
-                        { //The string is an intenger, this checks if it is higher then 0;
-                            int prmscan = std::stoi(formatted_expression[0]);
 
-                            if(prmscan <= 0)
-                            { //Integer is not higher than 0;
-                                *valid_flag = false;
-                            }
+                        if(formatted_expression.size() != 2)
+                        { //Does not have the right amount of parameters for type 1.
+                            *valid_flag = false;
                         }
                         else
-                        { //String is not and integer.
-                            *valid_flag = false;
+                        { //Confirm if the value types of the parameters are correct for type 1.
+                            //Confirms if the first parameter is a positive integer.
+                            if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
+                            { //Confirms if the first parameter is a positive integer.
+                                //Convert first parameter into a integer variable.
+                                int parameter_scan = std::stoi(formatted_expression[0]);
+
+                                if(parameter_scan <= 0)
+                                { //First parameter is not and integer but it's value is not higher than 0.
+                                    *valid_flag = false;                        //Sets valid expression flag to invalid.
+                                }
+                            }
+                            else
+                            { //First parameter is not and integer.
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            }
+                            //? Second parameter can be any value.
                         }
                     }
                 break;
 
                 case 2: //TODO
                     if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly.
+                    { //Checks if expression is formatted correctly for type 2.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
 
-                        //Checks if expression is valid and has enough terms for type 2.
+                        //Confirms if expression has enough terms for type 2.
+                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+
+                        if(formatted_expression.size() != 1)
+                        { //Does not have the right amount of parameters for type 2.
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
+                        }
+                    }
+                break;
+
+                case 3:
+                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                    { //Checks if expression is formatted correctly for type 3.
+                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
+
+                        //Confirms if expression has enough terms for type 2.
                         *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
                         if(formatted_expression.size() != 1)
-                        { //Does not have the right amount of parameters.
-                            *valid_flag = false;
+                        { //Does not have the right amount of parameters for type 2.
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
                         }
                     }
                 break;
 
-                case 3: //TODO
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
-
-                        //Checks if expression is valid and has enough terms for type 3.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-                        if(formatted_expression.size() != 1)
-                        { //Does not have the right amount of parameters.
-                            *valid_flag = false;
-                        }
-                    }
-                break;
-
-                case 4: //TODO
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
-
-                        //Checks if expression is valid and has enough terms for type 4.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-                        if(formatted_expression.size() != 3)
-                        { //Does not have the right amount of parameters.
-                            *valid_flag = false;
-                        }
-
-                        //Confirms if the first parameter is a valid key within the database.
-                        if(!dbh::IsValidKey(formatted_expression[0], &cli_db_reference))
-                        { //The informed key is not a valid key within the database.
-                            *valid_flag = false;
-                        }
-
-                        //Confirms if the second parameter is a positive integer;
-                        if(formatted_expression[1].find_first_not_of( "0123456789" ) == std::string::npos)
-                        { //The string is an intenger, this checks if it is higher then 0;
-                            int prmscan = std::stoi(formatted_expression[1]);
-
-                            if(prmscan <= 0)
-                            { //Integer is not higher than 0;
-                                *valid_flag = false;
-                            }
-                        }
-                        else
-                        { //String is not and integer.
-                            *valid_flag = false;
-                        }
-                    }
-                break;
-
-                case 5:
+                case 4:
+                    //Checks if expression is formatted correctly for type 3.
                     if(*expression == "huffman" || *expression == "lzw")
-                    { //Checks if expression is valid for type 5.
-                        *valid_flag = true;
-                        formatted_expression.push_back(*expression);
+                    { //Expresion is valid for type 3.
+                        *valid_flag = true;                                     //Sets valid expression flag to valid.
+                        formatted_expression.push_back(*expression);            //Inserts expression into formatted expression string vector.
                     }
                     else
-                    { //Expression is not a valid string for type 5.
-                        *valid_flag = false;
+                    { //Expresion is not valid for type 3.
+                        *valid_flag = false;                                    //Sets valid expression flag to invalid.
                     }
                 break;
             }
@@ -215,10 +195,20 @@ std::vector<std::string> ExpressionVerifier(std::string *expression, int type, b
 
 
 //================Argument Formatter================
-std::vector<std::string> ArgumentFormatter(std::string *argument, std::string* expression, int type, bool* valid_flag)
-{ //Separates expression for argument.
+std::vector<std::string> ArgumentFormatter(std::string* argument, std::string* expression, int type, bool* valid_flag)
+{ //Separates argument from expression and returns formatted expression.
+    /*
+    Type 1 = '--insert' argument.
+    Type 2 = '--remove' argument.
+    Type 3 = '--search' argument.
+    Type 4 = '--update' argument.
+    Type 5 = '--list' argument.
+    Type 6 = '--reverse-list' argument.
+    Type 7 = '--compress' argument.
+    Type 8 = '--decompress' argument.
+    */
     switch(type)
-    { //Type: 1 = insert | 2 = remove | 3 = search | 4 = update | 5 = compress | 6 = decompress;
+    {
         case 1:
             *expression = argument->erase(0, 8);
             *argument = "--insert";
@@ -232,26 +222,41 @@ std::vector<std::string> ArgumentFormatter(std::string *argument, std::string* e
         case 3:
             *expression = argument->erase(0, 8);
             *argument = "--search";
+            type--;
         break;
 
         case 4:
             *expression = argument->erase(0, 8);
             *argument = "--update";
+            type = 2;
         break;
         
         case 5:
-            *expression = argument->erase(0, 10);
-            *argument = "--compress";
+            *expression = argument->erase(0, 6);
+            *argument = "--list";
+            type = 3;
         break;
 
         case 6:
+            *expression = argument->erase(0, 14);
+            *argument = "--reverse-list";
+            type = 3;
+        break;
+
+        case 7:
+            *expression = argument->erase(0, 10);
+            *argument = "--compress";
+            type = 4;
+        break;
+
+        case 8:
             *expression = argument->erase(0, 12);
             *argument = "--decompress";
-            type--;
+            type = 4;
         break;
     }
 
-    return ExpressionVerifier(expression, type, valid_flag);
+    return ExpressionVerifier(expression, &type, valid_flag);
 }
 //==================================================
 
@@ -259,225 +264,236 @@ std::vector<std::string> ArgumentFormatter(std::string *argument, std::string* e
 //=================Command Processor================
 bool cli::ReadCommand(cli::Command command, Database* db)
 { //Reads raw input data from user as a command and calls for related functions.
-    cli_db_reference = *db;                                                     //Sets local database reference.
+    cli_db_reference = *db;                                                     //Defines local database reference.
 
     if(command.member_command_size == 1 && command.member_main_command == "null")
-    { //Does nothing if user input is blank.
+    { //Ends the command reading if user input is blank.
         return false;
     }
-
 
     //Command recognition.
     if(command.member_main_command == "help")
     { //'help' command.
         if(command.member_command_size == 1)
-        { //Command without arguments.
-            screens::PrintHelpScreen();
+        { //'help' command without arguments.
+            std::string argument = "null";
+            screens::PrintHelpScreen(&argument, 1);
         }
         else if(command.member_command_size == 2)
-        { //Valid argument;
-            screens::PrintArgumentHelpScreen(command.member_full_command[1]);
-
+        { //'help' command has a valid number of arguments.
+            if(command.member_full_command[1] == "help")
+            { //'help help' command.
+                screens::PrintHelpScreen(&(command.member_full_command[1]), 2);
+            }
+            else if(command.member_full_command[1] == "simpledb")
+            { //'help simpledb' command.
+                screens::PrintHelpScreen(&(command.member_full_command[1]), 3);
+            }
+            else if(command.member_full_command[1] == "clear")
+            { //'help clear' command.
+                screens::PrintHelpScreen(&(command.member_full_command[1]), 4);
+            }
+            else if(command.member_full_command[1] == "exit")
+            { //'help exit' command.
+                screens::PrintHelpScreen(&(command.member_full_command[1]), 5);
+            }
+            else
+            { //Unrecognized argument for 'help' command.
+                screens::PrintHelpScreen(&(command.member_full_command[1]), 6);
+            }
         }
         else
-        { //Inalid argument;
+        { //Too many arguments for 'help' command.
             //Sets "argument" as everything after the main command and prints the error message.
             std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            screens::PrintInvalidHelpScreen(argument);
+            screens::PrintArgumentErrorScreen(&(command.member_main_command), &argument, 3);
         }
     }
     else if(command.member_main_command == "simpledb")
     { //'simpledb' command.
         if(command.member_command_size == 1)
-        { //Insufficient arguments.
-            screens::PrintInsufficientArgumentScreen(command.member_main_command);
+        { //Insufficient arguments for 'simpledb' command.
+            std::string argument = "null";
+            screens::PrintArgumentErrorScreen(&(command.member_main_command), &argument, 2);
         }
         else if(command.member_command_size == 2)
-        { //Valid argument.
-            std::string argument = command.member_full_command[1];
-            std::vector<std::string> formatted_expression;
-            std::string expression;
-            bool valid_expression = false;
+        { //'simpledb' command has a valid number of arguments.
+            std::string argument = command.member_full_command[1];              //Sets the second member of the full command vector as the argument.
+            std::vector<std::string> formatted_expression;                      //Stores the formatted terms of the expression.
+            std::string expression;                                             //Stores raw unformatted expression.
+            bool valid_expression = false;                                      //Flag for checking if the expression is valid, is false by default.
 
             if(argument.rfind("--insert", 0) == 0)
             { //"--insert" argument.
+                //Formats the third member of the command vector as an expression and saves to a previosuly created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 1, &valid_expression);
 
-                //Checks for valid expression.
+                //Checks if expression is valid for "--insert" (has enough and terms and the right value types).
                 if (valid_expression)
-                { //Creates a new datacell with user input and insert to the database.
-                    int sorting_key = std::stoi(formatted_expression[0]);
+                { //Expression is valid for "--insert".
+                    int sorting_key = std::stoi(formatted_expression[0]);       //Converts first member of the formatted expression vector to an integer.
+
+                    //Creates Datacell with the values extracted from the expression vector.
                     Datacell newcell = Datacell::CreateDatacell(db->NewUniqueKey(), sorting_key, formatted_expression[1]);
-                    db->InsertKeyValue(&newcell, db);
-                    screens::PrintDatacell(&newcell);
+                    db->InsertKeyValue(&newcell, db);                           //Inserts datacell to database file.
+
+                    screens::PrintDatacell(&newcell);                           //Confirms insertion in terminal.      
                 }
                 else
-                {
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                { //Expression is not valid for "--insert".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else if(argument.rfind("--remove", 0) == 0)
             { //"--remove" argument.
+                //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 2, &valid_expression);
 
-                //Checks for valid expression.
+                //Checks if expression is valid for "--remove" (has enough and terms and the right value types).
                 if (valid_expression)
-                {
+                { //Expression is valid for "--remove".
                     //TODO proceed
                 }
                 else
-                {
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                { //Expression is not valid for "--remove".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else if(argument.rfind("--search", 0) == 0)
             { //"--search" argument.
+                //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 3, &valid_expression);
 
-                //Checks for valid expression.
+                //Checks if expression is valid for "--search (has enough and terms and the right value types).
                 if (valid_expression)
-                {
+                { //Expression is valid for "--search".
                     //TODO proceed
                 }
                 else
-                {
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                { //Expression is not valid for "--search".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else if(argument.rfind("--update", 0) == 0)
             { //"--update" argument.
+                //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 4, &valid_expression);
 
-                //Checks for valid expression.
+                //Checks if expression is valid for "--update" (has enough and terms and the right value types).
                 if (valid_expression)
-                {
+                { //Expression is valid for "--update".
                     //TODO proceed
                 }
                 else
-                {
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                { //Expression is not valid for "--update".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else if(argument.rfind("--list", 0) == 0)
-            {
-                if(argument == "--list")
-                {
+            { //"--list" argument.
+                //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
+                formatted_expression = ArgumentFormatter(&argument, &expression, 5, &valid_expression);
+
+                //Checks if expression is valid for "--list" (has enough and terms and the right value types).
+                if (valid_expression)
+                { //Expression is valid for "--list".
                     //TODO proceed
                 }
                 else
-                {
-                    //Sets "expression" as everything after the argument and prints the error message.
-                    std::string expression = argument.erase(0, 6);
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, "--list", expression);
+                { //Expression is not valid for "--list".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else if(argument.rfind("--reverse-list", 0) == 0)
-            {
-                if(argument == "--reverse-list")
-                {
+            { //"--reverse-list" argument.
+                //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
+                formatted_expression = ArgumentFormatter(&argument, &expression, 6, &valid_expression);
+
+                //Checks if expression is valid for "--reverse-list" (has enough and terms and the right value types).
+                if (valid_expression)
+                { //Expression is valid for "--reverse-list".
                     //TODO proceed
                 }
                 else
-                {
-                    //Sets "expression" as everything after the argument and prints the error message.
-                    std::string expression = argument.erase(0, 14);
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, "--reverse-list", expression);
+                { //Expression is not valid for "--reverse-list".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else if(argument.rfind("--compress", 0) == 0)
             { //"--compress" argument.
-                formatted_expression = ArgumentFormatter(&argument, &expression, 5, &valid_expression);
+                //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
+                formatted_expression = ArgumentFormatter(&argument, &expression, 7, &valid_expression);
 
-                //Checks for valid expression.
+                //Checks if expression is valid for "--compress" (has enough and terms and the right value types).
                 if (valid_expression)
-                {
-                    int type;
-                    if(argument == "huffman")
-                    {
-                        type = 1;
-                    }
-                    else
-                    {
-                        type = 2;
-                    }
-
-                    bool is_done = dbh::CompressDatabase(db, &type);
+                { //Expression is valid for "--compress".
+                    //TODO proceed
                 }
                 else
-                {
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                { //Expression is not valid for "--compress".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else if(argument.rfind("--decompress", 0) == 0)
             { //"--decompress" argument.
-                formatted_expression = ArgumentFormatter(&argument, &expression, 6, &valid_expression);
+                //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
+                formatted_expression = ArgumentFormatter(&argument, &expression, 8, &valid_expression);
 
-                //Checks for valid expression.
+                //Checks if expression is valid for "--decompress" (has enough and terms and the right value types).
                 if (valid_expression)
-                {
-                    int type;
-
-                    if(argument == "huffman")
-                    {
-                        type = 1;
-                    }
-                    else
-                    {
-                        type = 2;
-                    }
-
-                    bool is_done = dbh::DecompressDatabase(db, &type);
+                { //Expression is valid for "--decompress"".
+                    //TODO proceed
                 }
                 else
-                {
-                    screens::PrintUnknownExpressionScreen(command.member_main_command, argument, expression);
+                { //Expression is not valid for "--decompress".
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
                 }
             }
             else
-            { //Invalid argument.
-                screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
+            { //Unrecognized argument for 'simpledb' command.
+                screens::PrintArgumentErrorScreen(&(command.member_main_command), &argument, 1);
             }
         }
         else
-        { //Too mnay arguemnts.
+        { //Too many arguments for 'simpledb' command.
             //Sets "argument" as everything after the main command and prints the error message.
             std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
+            screens::PrintArgumentErrorScreen(&(command.member_main_command), &argument, 3);
         }
     }
     else if(command.member_main_command == "clear")
     { //'clear' command.
         if(command.member_command_size == 1)
-        { //Command without arguments.
+        { //'clear' command without arguments.
             screens::ClearScreen();
         }
         else
-        { //Inalid argument;
+        { //Too many arguments for 'clear' command.
             //Sets "argument" as everything after the main command and prints the error message.
             std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
+            screens::PrintArgumentErrorScreen(&(command.member_main_command), &argument, 4);
         }
     }
     else if(command.member_main_command == "exit")
-    { //exit command.
+    { //'exit' command.
         if(command.member_command_size == 1)
-        { //Command without arguments.
-            return true;                                                        //Breaks main loop.
+        { //'exit' command without arguments.
+            return true;                                                        //Breaks the main loop.
         }
         else
-        { //Invalid argument.
+        { //Too many arguments for 'exit' command.
             //Sets "argument" as everything after the main command and prints the error message.
             std::string argument = command.member_unformatted_command;
             argument.erase(0, (command.member_main_command.size()+1));
-            screens::PrintUnknownArgumentScreen(command.member_main_command, argument);
+            screens::PrintArgumentErrorScreen(&(command.member_main_command), &argument, 4);
         }
     }
     else
     { //Unknown command.
-        screens::PrintUnknownCommandScreen(command.member_main_command);
+        screens::PrintUnknownCommandScreen(&(command.member_main_command));
     }
 
     return false;                                                               //Continues main loop.
