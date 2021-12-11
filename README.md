@@ -29,10 +29,10 @@ If the file is not manually deleted all subsequent startups will load the files 
   
 After creating a new datase file or loading an existing one the following message will be displayed:
 ```
-Pressione a tecla enter par proseguir!
+Pressione a tecla enter para proseguir!
 _
 ```
-Press enter to precceso to the custom CLI, see (TODO)[TODO] for more information on CLI usage.
+Press enter to preceed to the custom CLI, see (TODO)[TODO] for more information on the CLI usage.
 
 ## Command Line Interface
 SimpleDB runs on a custom command line interface (CLI).

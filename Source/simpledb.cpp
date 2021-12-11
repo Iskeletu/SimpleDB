@@ -55,7 +55,7 @@ int main(void)
         std::cout << "Concluído!" << std::endl;
     }
 
-    std::cout << "Pressione a tecla enter para proseguir!" << std::endl;
+    std::cout << "Pressione a tecla enter para prosseguir!" << std::endl;
     std::getline(std::cin, input); system("clear"); input.clear();              //!This will not work on windows
     screens::PrintDefaultScreen();
     //==================================================
