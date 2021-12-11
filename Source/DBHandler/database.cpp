@@ -211,9 +211,9 @@ std::string Database::NewUniqueKey(void)
 
 
 //=================Insert Key-Value=================
-void Database::InsertKeyValue(Datacell* newcell, Database* db)
+void Database::InsertKeyValue(Datacell* newcell)
 { //Creates a folder with a name based on the "key" value and store "value" on it.
-    std::string path = (db->GetDirectory() + "/" + db->member_name + ".db");    //!This will not work on windows.
+    std::string path = (member_path + "/" + member_name + ".db");               //!This will not work on windows.
 
     //Extract cell data to local variables.
     std::string key = newcell->GetKey();
@@ -247,19 +247,38 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
     //Updates value of the last insertion to the database.
     key.erase(0,4);                                                             //Removes "key_" from "key" string for integer conversion.
     member_last_insertion = std::stoi(key);                                     //Defines "member_last_insertion" as the value of the integer conversion from "key" string.
-    Index::InsertIndexKey(&(db->member_index), newcell);                        //Updates index.
+    Index::InsertIndexKey(&member_index, newcell);                              //Updates index.
 }
 //==================================================
 
 
 //=================Search Key-Value=================
 bool Database::SearchKeyValue(Datacell* existingcell)
-{ //Returns a value stored in an existing key inside the datavase.
-    bool cell_exists = false;
+{ //Searchs and loads key value from database file, returns true if informed key existis within the database file and false if not.
+    //Extracts key location from index vector.
+    std::vector<int> search_result = Index::GetValuePosition(&member_index, stoi((existingcell->GetKey()).erase(0,4)));
 
-    //TODO
+    //Checks if key exist within the index file.
+    if(search_result[0] != -1 && search_result[1] != -1 && search_result[2] != -1)
+    { //Key exisits, reads value from file and returns true.
+        std::string dbfile(member_path + "/" + member_name + ".db");            //!This will not work on windows.
+        std::string value;
 
-    return cell_exists;
+        std::ifstream ifile(dbfile, std::ios::binary);                          //Opes file as input.
+        ifile.seekg(search_result[0]);                                          //Sets read point to desired value.
+        value.resize(search_result[1]);
+        ifile.read(&value[0], search_result[1]);                                //Reads value to "value" string.
+        ifile.close();                                                          //Closes file.
+
+        //Updates existing cell.
+        existingcell->UpdateValues(existingcell->GetKey(), search_result[2], value);
+
+        return true;
+    }
+    else
+    { //key does not exist, return false.
+        return false;
+    }
 }
 //==================================================
 

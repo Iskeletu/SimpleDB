@@ -17,7 +17,7 @@ sorting the database index class.
 
 //================Partition Function================
 int Partition(std::vector<Index>* indexvector, int start, int end)
-{ //!describe function
+{ //Part of Quick-sort implementation.
 //Slave function to "qcks::QuickSort".
 	int pivot = end;
 	int j = start;

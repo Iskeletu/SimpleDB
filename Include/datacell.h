@@ -16,6 +16,7 @@ class Datacell
         std::string             GetKey              (void);
         int                     GetSortingKey       (void);
         std::string             GetValue            (void);
+        void                    UpdateValues        (std::string key, int sorting_key, std::string value);
 
         static Datacell         CreateDatacell      (std::string key, int sorting_key, std::string value);
 

@@ -127,12 +127,12 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                                 int parameter_scan = std::stoi(formatted_expression[0]);
 
                                 if(parameter_scan <= 0)
-                                { //First parameter is not and integer but it's value is not higher than 0.
+                                { //First parameter is an integer but it's value is not higher than 0.
                                     *valid_flag = false;                        //Sets valid expression flag to invalid.
                                 }
                             }
                             else
-                            { //First parameter is not and integer.
+                            { //First parameter is not an integer.
                                 *valid_flag = false;                            //Sets valid expression flag to invalid.
                             }
                             //? Second parameter can be any value.
@@ -140,7 +140,7 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                     }
                 break;
 
-                case 2: //TODO
+                case 2:
                     if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                     { //Checks if expression is formatted correctly for type 2.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
@@ -152,10 +152,36 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                         { //Does not have the right amount of parameters for type 2.
                             *valid_flag = false;                                //Sets valid expression flag to invalid.
                         }
+                        else
+                        { //Confirm if the value types of the parameters are correct for type 1.
+                            std::string temp = formatted_expression[0];
+                            temp.erase(0,4);
+
+                            //Confirms if the parameter is in the "key_*integer*" format.
+                            if(temp.empty())
+                            { //The parameter does not have enough characters to be valid.
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            }
+                            else if(temp.find_first_not_of( "0123456789" ) == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
+                            { //Confirms if the parameter is in the right format.
+                                //Convert parameter into a integer variable.
+                                int parameter_scan = std::stoi(temp);
+
+                                if(parameter_scan <= 0)
+                                { //The parameter is formatted correctly but it's value is invalid.
+                                    *valid_flag = false;                        //Sets valid expression flag to invalid.
+                                }
+                            }
+                            else
+                            { //First parameter is not int the "key_*integer*" format.
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            }
+                            //? Second parameter can be any value.
+                        }
                     }
                 break;
 
-                case 3:
+                case 3: //TODO
                     if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                     { //Checks if expression is formatted correctly for type 3.
                         expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
@@ -169,7 +195,7 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                     }
                 break;
 
-                case 4:
+                case 4: //TODO
                     //Checks if expression is formatted correctly for type 4.
                     if(*expression == "huffman" || *expression == "lzw")
                     { //Expresion is valid for type 4.
@@ -344,7 +370,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
 
                     //Creates Datacell with the values extracted from the expression vector.
                     Datacell newcell = Datacell::CreateDatacell(db->NewUniqueKey(), sorting_key, formatted_expression[1]);
-                    db->InsertKeyValue(&newcell, db);                           //Inserts datacell to database file.
+                    db->InsertKeyValue(&newcell);                           //Inserts datacell to database file.
 
                     screens::PrintDatacell(&newcell);                           //Confirms insertion in terminal.      
                 }
@@ -412,7 +438,21 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks if expression is valid for "--search (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--search".
-                    //TODO proceed
+                    //Creates Datacell with the key value extracted from the expression vector.
+                    Datacell existingcell = Datacell::CreateDatacell(formatted_expression[0], 0, "null");
+
+                    //Completes the Datacell with data from the database file.
+                    bool is_successful = db->SearchKeyValue(&existingcell);
+
+                    //Checks if search was successful.
+                    if(is_successful)
+                    { //Search was successful, prints value to terminal.
+                        screens::PrintDatacell(&existingcell);
+                    }
+                    else
+                    { //Search was not successful, prints invalid key error.
+                        screens::PrintInvalidKeyScreen(&(formatted_expression[0]));
+                    }
                 }
                 else
                 { //Expression is not valid for "--search".

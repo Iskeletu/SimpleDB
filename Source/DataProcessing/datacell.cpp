@@ -58,3 +58,13 @@ std::string Datacell::GetValue()
     return member_value;
 }
 //==================================================
+
+
+//==============Update Values Function==============
+void Datacell::UpdateValues(std::string key, int sorting_key, std::string value)
+{
+    member_key = key;
+    member_sorting_key = sorting_key;
+    member_value = value;
+}
+//==================================================

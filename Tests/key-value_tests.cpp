@@ -13,6 +13,7 @@ key-value test cases.
 //Header Files
 #include "catch.hpp"
 #include "dbhandler.h"
+#include "datacell.h"
 
 
 //==================Key-Value Test==================
@@ -22,13 +23,16 @@ TEST_CASE("Store and retrive a value", "[setKeyValue, getKeyValue]")
     {
         std::string dbname("test-db");
         Database db(SimpleDB::CreateDB(dbname));                                //Creates "test-db" database.
+        std::string value = "Teste-Value";
+
+        //Creates a insertion cell with predetermined values.
+        Datacell testcell = Datacell::CreateDatacell(db.NewUniqueKey(), 1, value);
 
         // We know we have been successful when:-
         // 1. The retrieved value is the same as the stored value
-        std::string key("defined_key");
-        std::string value("defined_value");
-        db.InsertKeyValue(key, value);                                          //Creates a "defined_key" key with "defined_value" value.
-        REQUIRE(value == db.SearchKeyValue(key));                               //Checks if value stored in database matches with local string values.
+        db.InsertKeyValue(&testcell);                                           //Inserts a "value" value into the test database.
+        db.SearchKeyValue(&testcell);                                           //Reads value from database to cell.
+        REQUIRE(value == testcell.GetValue());                                  //Checks if value stored in database matches with local string values.
 
         db.Erase();                                                             //Deletes previously created "test-db" database.
     }
