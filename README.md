@@ -6,7 +6,7 @@
 SimpleDB is a simple C++ key-value database project.  
 SimpleDB uses features of the lastest stable specification (C++17).  
   
-Test cases are made using [Catch2](https://github.com/catchorg/Catch2) framework. See [TODO](TODO) for
+Test cases are made using [Catch2](https://github.com/catchorg/Catch2) framework. See [Test Cases](#Test-Cases) for
 more information on the tests.  
   
 SimplesDB was testes an is guareteed to run properly on the following specificatios:
@@ -29,10 +29,10 @@ If the file is not manually deleted all subsequent startups will load the files 
   
 After creating a new datase file or loading an existing one the following message will be displayed:
 ```
-Pressione a tecla enter para proseguir!
+Pressione a tecla enter para prosseguir!
 _
 ```
-Press enter to preceed to the custom CLI, see [TODO](TODO) for more information on the CLI usage.
+Press enter to preceed to the custom CLI, see [CLI](#Command-Line-Interface) for more information on the CLI usage.
 
 ## Command Line Interface
 SimpleDB runs on a custom command line interface (CLI).  
@@ -77,12 +77,12 @@ TODO
 * Custom command line interface:
     - As user friendly as a terminal interface can be.
     - Multi step opretions are easier and painless.
-    - Informational feedbacka
+    - Informational feedback.
 * Primary memory indexation:
     - Much faster search operations on secondary memory.
     - Much faster data sorting.
 * Huffman and LZW compression/decompression:
-    - TODO
+    - lower disk space usage.
 
 ## Compiling
 
@@ -103,11 +103,20 @@ TODO
 ```
 
 The executable file for either cases will be found at `.\Build\build`.  
+  
 Run with:
 ```bash
 .\Build\build
 ```
 No arguments necessary, all interactions can be done within the custom CLI.
+
+## Templates
+
+This repository has a `template.db` file at ```./Template/Template.md``` template with 100 unique key each with a unique value and random sorting keys, see [TEMPLATE](https://github.com/Iskeletu/SimpleDB/blob/main/Template/TEMPLATE.md) for more information.
+
+## Test Cases
+
+TODO
 
 ## License
 
