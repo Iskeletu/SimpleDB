@@ -87,106 +87,111 @@ bool ExpressionFormatter(std::string expression, std::vector<std::string>* forma
 
 //================Expression Verifier===============
 std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, bool* valid_flag)
-{ //Analyzes the expression and return a string vector with the formatted expression terms if it valid.
+{ //Analyzes the expression and return a string vector with the formatted expression parameters if it is valid.
 //Slave function to "ArgumentFormmatter".
     std::vector<std::string> formatted_expression;
 
-    if(expression->rfind("=", 0) == 0)
-    { //Initial check, confirms if the expression is formatted correctly for any argument implemented.
-        expression->erase(0, 1);                                                //Removes "=" from "expression" string.
-
-        if(expression->length() > 2)
-        { //Second check, "expression" string needs to have more than 2 characters remaining.
-            switch(*type)
-            { //Third check, confirm if value types are correct and has enough parametes for it's respective argument.
-                /*
-                Type 1 = expression for '--insert' argument.
-                Type 2 = expression for '--remove', '--search' and '--update' argument.
-                Type 3 = expression for '--list' and '--reverse-list' arguments.
-                Type 4 = expression for '--compress' and '--decompress' arguments.
-                */
-                case 1:
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly for type 1.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
-
-                        //Confirms if expression has enough terms for type 1.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-
-                        if(formatted_expression.size() != 2)
-                        { //Does not have the right amount of parameters for type 1.
-                            *valid_flag = false;
-                        }
-                        else
-                        { //Confirm if the value types of the parameters are correct for type 1.
-                            //Confirms if the first parameter is a positive integer.
-                            if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
-                            { //Confirms if the first parameter is a positive integer.
-                                //Convert first parameter into a integer variable.
-                                int parameter_scan = std::stoi(formatted_expression[0]);
-
-                                if(parameter_scan <= 0)
-                                { //First parameter is not and integer but it's value is not higher than 0.
-                                    *valid_flag = false;                        //Sets valid expression flag to invalid.
-                                }
-                            }
-                            else
-                            { //First parameter is not and integer.
-                                *valid_flag = false;                            //Sets valid expression flag to invalid.
-                            }
-                            //? Second parameter can be any value.
-                        }
-                    }
-                break;
-
-                case 2: //TODO
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly for type 2.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
-
-                        //Confirms if expression has enough terms for type 2.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-
-                        if(formatted_expression.size() != 1)
-                        { //Does not have the right amount of parameters for type 2.
-                            *valid_flag = false;                                //Sets valid expression flag to invalid.
-                        }
-                    }
-                break;
-
-                case 3:
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly for type 3.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
-
-                        //Confirms if expression has enough terms for type 2.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-                        if(formatted_expression.size() != 1)
-                        { //Does not have the right amount of parameters for type 2.
-                            *valid_flag = false;                                //Sets valid expression flag to invalid.
-                        }
-                    }
-                break;
-
-                case 4:
-                    //Checks if expression is formatted correctly for type 3.
-                    if(*expression == "huffman" || *expression == "lzw")
-                    { //Expresion is valid for type 3.
-                        *valid_flag = true;                                     //Sets valid expression flag to valid.
-                        formatted_expression.push_back(*expression);            //Inserts expression into formatted expression string vector.
-                    }
-                    else
-                    { //Expresion is not valid for type 3.
-                        *valid_flag = false;                                    //Sets valid expression flag to invalid.
-                    }
-                break;
-            }
-        }
-    }
-    else if(expression->empty())
+    //Checks if "expression" string is empty.
+    if(expression->empty())
     { //Sets expression to "null" if it's empty.
         *expression = "null";
+        formatted_expression.push_back(*expression);                            //Sets the first string of the formatted expression string vector as "null".
         *valid_flag = false;
+    }
+    else
+    { //"expression" string is not empty.
+        if(expression->rfind("=", 0) == 0)
+        { //Initial check, confirms if the expression is formatted correctly for any argument implemented.
+            expression->erase(0, 1);                                            //Removes "=" from "expression" string.
+
+            if(expression->length() > 2)
+            { //Second check, "expression" string needs to have more than 2 characters remaining.
+                switch(*type)
+                { //Third check, confirm if value types are correct and has enough parametes for it's respective argument.
+                    /*
+                    Type 1 = expression for '--insert' argument.
+                    Type 2 = expression for '--remove', '--search' and '--update' argument.
+                    Type 3 = expression for '--list' and '--reverse-list' arguments.
+                    Type 4 = expression for '--compress' and '--decompress' arguments.
+                    */
+                    case 1:
+                        if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                        { //Checks if expression is formatted correctly for type 1.
+                            expression->erase(0, 1); expression->pop_back();    //Removes "<>" from expression;
+
+                            //Confirms if expression has enough parameters for type 1.
+                            *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+
+                            if(formatted_expression.size() != 2)
+                            { //Does not have the right amount of parameters for type 1.
+                                *valid_flag = false;
+                            }
+                            else
+                            { //Confirm if the value types of the parameters are correct for type 1.
+                                //Confirms if the first parameter is a positive integer.
+                                if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
+                                { //Confirms if the first parameter is a positive integer.
+                                    //Convert first parameter into a integer variable.
+                                    int parameter_scan = std::stoi(formatted_expression[0]);
+
+                                    if(parameter_scan <= 0)
+                                    { //First parameter is not and integer but it's value is not higher than 0.
+                                        *valid_flag = false;                    //Sets valid expression flag to invalid.
+                                    }
+                                }
+                                else
+                                { //First parameter is not and integer.
+                                    *valid_flag = false;                        //Sets valid expression flag to invalid.
+                                }
+                                //? Second parameter can be any value.
+                            }
+                        }
+                    break;
+
+                    case 2: //TODO
+                        if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                        { //Checks if expression is formatted correctly for type 2.
+                            expression->erase(0, 1); expression->pop_back();    //Removes "<>" from expression;
+
+                            //Confirms if expression has enough parameters for type 2.
+                            *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+
+                            if(formatted_expression.size() != 1)
+                            { //Does not have the right amount of parameters for type 2.
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            }
+                        }
+                    break;
+
+                    case 3:
+                        if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                        { //Checks if expression is formatted correctly for type 3.
+                            expression->erase(0, 1); expression->pop_back();    //Removes "<>" from expression;
+
+                            //Confirms if expression has enough parameters for type 3.
+                            *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+                            if(formatted_expression.size() != 1)
+                            { //Does not have the right amount of parameters for type 3.
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            }
+                        }
+                    break;
+
+                    case 4:
+                        //Checks if expression is formatted correctly for type 4.
+                        if(*expression == "huffman" || *expression == "lzw")
+                        { //Expresion is valid for type 4.
+                            *valid_flag = true;                                 //Sets valid expression flag to valid.
+                            formatted_expression.push_back(*expression);        //Inserts expression into formatted expression string vector.
+                        }
+                        else
+                        { //Expresion is not valid for type 4.
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
+                        }
+                    break;
+                }
+            }
+        }
     }
 
     return formatted_expression;
@@ -320,8 +325,8 @@ bool cli::ReadCommand(cli::Command command, Database* db)
         else if(command.member_command_size == 2)
         { //'simpledb' command has a valid number of arguments.
             std::string argument = command.member_full_command[1];              //Sets the second member of the full command vector as the argument.
-            std::vector<std::string> formatted_expression;                      //Stores the formatted terms of the expression.
-            std::string expression;                                             //Stores raw unformatted expression.
+            std::vector<std::string> formatted_expression;                      //Stores the formatted parameters of the expression.
+            std::string expression;                                             //Stores the unformatted raw expression.
             bool valid_expression = false;                                      //Flag for checking if the expression is valid, is false by default.
 
             if(argument.rfind("--insert", 0) == 0)
@@ -329,7 +334,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previosuly created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 1, &valid_expression);
 
-                //Checks if expression is valid for "--insert" (has enough and terms and the right value types).
+                //Checks if expression is valid for "--insert" (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--insert".
                     int sorting_key = std::stoi(formatted_expression[0]);       //Converts first member of the formatted expression vector to an integer.
@@ -342,7 +347,24 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 }
                 else
                 { //Expression is not valid for "--insert".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() < 2)
+                    { //Expression has not enough parameters.
+                        type = 3;
+                    }
+                    else if(formatted_expression.size() > 2)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else if(argument.rfind("--remove", 0) == 0)
@@ -350,14 +372,27 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 2, &valid_expression);
 
-                //Checks if expression is valid for "--remove" (has enough and terms and the right value types).
+                //Checks if expression is valid for "--remove" (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--remove".
                     //TODO proceed
                 }
                 else
                 { //Expression is not valid for "--remove".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() > 1)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else if(argument.rfind("--search", 0) == 0)
@@ -365,14 +400,27 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 3, &valid_expression);
 
-                //Checks if expression is valid for "--search (has enough and terms and the right value types).
+                //Checks if expression is valid for "--search (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--search".
                     //TODO proceed
                 }
                 else
                 { //Expression is not valid for "--search".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() > 1)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else if(argument.rfind("--update", 0) == 0)
@@ -380,14 +428,27 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 4, &valid_expression);
 
-                //Checks if expression is valid for "--update" (has enough and terms and the right value types).
+                //Checks if expression is valid for "--update" (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--update".
                     //TODO proceed
                 }
                 else
                 { //Expression is not valid for "--update".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() > 1)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else if(argument.rfind("--list", 0) == 0)
@@ -395,14 +456,27 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 5, &valid_expression);
 
-                //Checks if expression is valid for "--list" (has enough and terms and the right value types).
+                //Checks if expression is valid for "--list" (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--list".
                     //TODO proceed
                 }
                 else
                 { //Expression is not valid for "--list".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() > 1)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else if(argument.rfind("--reverse-list", 0) == 0)
@@ -410,14 +484,27 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 6, &valid_expression);
 
-                //Checks if expression is valid for "--reverse-list" (has enough and terms and the right value types).
+                //Checks if expression is valid for "--reverse-list" (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--reverse-list".
                     //TODO proceed
                 }
                 else
                 { //Expression is not valid for "--reverse-list".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() > 1)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else if(argument.rfind("--compress", 0) == 0)
@@ -425,14 +512,27 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 7, &valid_expression);
 
-                //Checks if expression is valid for "--compress" (has enough and terms and the right value types).
+                //Checks if expression is valid for "--compress" (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--compress".
                     //TODO proceed
                 }
                 else
                 { //Expression is not valid for "--compress".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() > 1)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else if(argument.rfind("--decompress", 0) == 0)
@@ -440,14 +540,27 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 8, &valid_expression);
 
-                //Checks if expression is valid for "--decompress" (has enough and terms and the right value types).
+                //Checks if expression is valid for "--decompress" (has enough and parameters and the right value types).
                 if (valid_expression)
                 { //Expression is valid for "--decompress"".
                     //TODO proceed
                 }
                 else
                 { //Expression is not valid for "--decompress".
-                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, 2);
+                    //Checks what error message needs to be displayed.
+                    int type = 1;
+
+                    if(formatted_expression[0] == "null")
+                    { //Missing expression.
+                        type = 2;
+                    }
+                    else if(formatted_expression.size() > 1)
+                    { //Expression has more than enough parameters.
+                        type = 4;
+                    }
+
+                    //Will call for the generic error message (type 1) if none of the above are true.
+                    screens::PrintExpressionErrorScreen(&(command.member_main_command), &argument, &expression, type);
                 }
             }
             else

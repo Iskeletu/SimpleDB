@@ -19,7 +19,7 @@ commandhandler.cpp is dependant on this file.
 
 //==================Startup Screen==================
 void screens::PrintStartupScreen()
-{ //Startup screen, its only use is to have something to look at when the program is loading.
+{ //Startup screen, its only use is to have something to look at when the program is starting up.
     std::cout << " ____________  ____________  ____________  ____________  ____________  ____________  ____________  ____________"                      << std::endl;
     std::cout << "|\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\\\____________\\"    << std::endl;
     std::cout << "\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________\\|____________|"            << std::endl << std::endl;
@@ -40,7 +40,7 @@ void screens::PrintStartupScreen()
 
 //==================Default Screen==================
 void screens::PrintDefaultScreen()
-{ //Informational screen shown when the program finishes the starting up.
+{ //Informational screen shown when SimpleDB finishes starting up.
     std::cout << "+----------------------------------------------+" << std::endl;
     std::cout << "|     Digite 'help' para mais informações.     |" << std::endl;
     std::cout << "+----------------------------------------------+" << std::endl << std::endl;
@@ -59,7 +59,7 @@ void screens::PrintUnknownCommandScreen(std::string* command)
 
 //==========Argumented Help Command Screen==========
 void screens::PrintHelpScreen(std::string* argument, int type)
-{ //Has one screen for each of the commands that can be used as argument for 'help' command na done with no arguments.
+{ //Has one screen for each of it's arguments, including no argument and invalid argument.
     switch(type)
     {
         /*
@@ -73,7 +73,7 @@ void screens::PrintHelpScreen(std::string* argument, int type)
         case 1:
             std::cout << "+----------------------------------------------+" << std::endl;
             std::cout << "|  '->' = Uso do comando.                      |" << std::endl;
-            std::cout << "|  '*'  = Argumento dinsponível.               |" << std::endl;
+            std::cout << "|  '*'  = Argumento disponível.                |" << std::endl;
             std::cout << "|                                              |" << std::endl;
             std::cout << "|  HELP  ->  Mostra essa tela.                 |" << std::endl;
             std::cout << "|    * help                                    |" << std::endl;
@@ -98,21 +98,21 @@ void screens::PrintHelpScreen(std::string* argument, int type)
         case 2:
             std::cout << "+----------------------------------------------+" << std::endl;
             std::cout << "|  Comando: 'HELP'                             |" << std::endl;
-            std::cout << "|    Exibe lista de comandos disponíveis para  |" << std::endl;
-            std::cout << "|    execução                                  |" << std::endl;
+            std::cout << "|    Exibe a lista de comandos disponíveis pa- |" << std::endl;
+            std::cout << "|    ra execução                               |" << std::endl;
             std::cout << "|                                              |" << std::endl;
-            std::cout << "|  *Aceita os seguintes arugmentos:            |" << std::endl;
+            std::cout << "|  *Aceita os seguintes argumentos:            |" << std::endl;
             std::cout << "|    -> 'HELP': Motra essa tela.               |" << std::endl;
             std::cout << "|    -> 'SIMPLEDB': Mostra informações sobre   |" << std::endl;
             std::cout << "|    o comando 'simpledb'.                     |" << std::endl;
-            std::cout << "|    -> 'CLEAR': Mostra informaçãoes sobre o   |" << std::endl;
+            std::cout << "|    -> 'CLEAR': Mostra informações sobre o    |" << std::endl;
             std::cout << "|    comando 'clear'.                          |" << std::endl;
-            std::cout << "|    -> 'EXIT': Mostra informaçãoes sobre o    |" << std::endl;
-            std::cout << "|    comando 'exit'.                           |" << std::endl;
+            std::cout << "|    -> 'EXIT': Mostra informações sobre o co- |" << std::endl;
+            std::cout << "|    mando 'exit'.                             |" << std::endl;
             std::cout << "+----------------------------------------------+" << std::endl << std::endl;
         break;
     
-        case 3:
+        case 3: //TODO
             std::cout << "+----------------------------------------------+" << std::endl;
             std::cout << "|  TODO.                                       |" << std::endl;
             std::cout << "+----------------------------------------------+" << std::endl << std::endl;
@@ -149,7 +149,7 @@ void screens::PrintHelpScreen(std::string* argument, int type)
 
 //===============Argument Error Screen==============
 void screens::PrintArgumentErrorScreen(std::string* command, std::string* argument, int type)
-{ //Default messages for error with arguments.
+{ //Default messages for errors with arguments.
     switch(type)
     {
         /*
@@ -180,32 +180,32 @@ void screens::PrintArgumentErrorScreen(std::string* command, std::string* argume
 //==================================================
 
 
-//===========Wrong Expression Terms Screen==========
+//===========Expression Error Screen==========
 void screens::PrintExpressionErrorScreen(std::string* command, std::string* argument, std::string* expression, int type)
-{ //Default messages for arguments with unknown or invalid expressions.
+{ //Default messages for errors with expression.
     switch(type)
     {
         /*
-        Type 1 = Expression is missing.
-        Type 2 = Expression is invalid.
-        Type 3 = Too few terms in expression.
-        Type 4 = Too many terms in expression.
+        Type 1 = Expression is invalid.
+        Type 2 = Expression is missing.
+        Type 3 = Too few parameters in expression.
+        Type 4 = Too many parameters in expression.
         Type 5 = No expression needed.
         */
         case 1:
-            std::cout << "Erro: Expressão não pode estar em branco para o argumento '" << *argument << "'." << std::endl;
+            std::cout << "Erro: Expressão '" << *expression << "' é inválida para o argumento '" << *argument << "'." << std::endl;
         break;
 
         case 2:
-            std::cout << "Erro: Expressão '" << *expression << "' inválida para o argumento '" << *argument << "'." << std::endl;
+            std::cout << "Erro: Expressão não pode estar em branco para o argumento '" << *argument << "'." << std::endl;
         break;
 
         case 3:
-            std::cout << "Erro: Arguemnto '" << *argument << "' requer mais termos na expressão." << std::endl;
+            std::cout << "Erro: Arguemnto '" << *argument << "' requer mais parâmetros na expressão." << std::endl;
         break;
 
         case 4:
-            std::cout << "Erro: Argumento '" << *argument << "' requer memos termos na expressão." << std::endl;
+            std::cout << "Erro: Argumento '" << *argument << "' requer menos parâmetros na expressão." << std::endl;
         break;
 
         case 5:
