@@ -74,7 +74,7 @@ int main(void)
 
 
     //TODO save and exit sequence
-    db.Erase();
+    //db.Erase();
 
 
     return 0;

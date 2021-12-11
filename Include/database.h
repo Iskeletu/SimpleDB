@@ -31,6 +31,7 @@ class Database
         std::string member_name;
         std::string member_path;
         int member_size;
+        int member_last_insertion;
 };
 //==================================================
 

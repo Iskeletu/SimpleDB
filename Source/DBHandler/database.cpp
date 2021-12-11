@@ -9,7 +9,6 @@ database.cpp is dependant on this file.
 
 
 //Libraries
-#include <iostream>
 #include <string>
 #include <fstream>
 #include <filesystem>
@@ -32,7 +31,8 @@ namespace fs = std::filesystem;
 Database::Database(std::string dbname, std::string path) :
     member_name(dbname),
     member_path(path),
-    member_size(-1)
+    member_size(-1),
+    member_last_insertion(-1)
 {;}
 //==================================================
 
@@ -64,9 +64,10 @@ Database Database::CreateDatabase(std::string dbname)
 
     //Formats as a default blank database file.
     db.member_size = 0;
+    db.member_last_insertion = 0;
 
     size_t string_size = dbname.size();
-    ofile.write((char*)&string_size, sizeof(size_t));                      //Inserts size of "dbname" string.
+    ofile.write((char*)&string_size, sizeof(size_t));                           //Inserts size of "dbname" string.
     ofile.write(&dbname[0], string_size);                                       //Inserts "dbname" string.
     ofile.write((char*)&db.member_size, sizeof(int));                           //Inserts database size integer.
     ofile.flush();
@@ -86,15 +87,48 @@ Database Database::CreateDatabase(std::string dbname)
 
 
 //==================Database Reader=================
-int ReadDatabase(std::string path, std::string dbname)
-{ //This function rturns the amount of key stores inside the database and creates an index file.
-    std::ifstream dbfile(path + "/" + dbname + ".db");                          //!This will not work on windows.
-    std::ofstream indexfile(path + "/" + dbname + ".index");
-    int keycounter = 0;
+void ReadDatabase(Database* db, int *database_size, int *last_insertion)
+{ //This function loads database members store in binary database file to primary memory.
+//Slave function to "Database::LoadDatabase".
+    std::string dbfile = (db->GetDirectory() + "/" + db->GetName() +".db");      //!This will not work on windows.
 
-    //TODO - Database reader
+    std::ifstream ifile(dbfile, std::ios::binary);                              //Opens file as input.
 
-    return keycounter;
+    //Reads database size.
+    size_t string_size;
+    ifile.read((char*)&string_size, sizeof(size_t));                            //Gets size of database name string on file.
+    ifile.seekg(sizeof(size_t) + string_size);                                  //Sets read location to database size.
+    ifile.read((char*)database_size, sizeof(int));                              //Gets database size value.
+
+    //Reads the number of the last inserted key.
+    if(*database_size > 0)
+    { //The database has at least one key stored.
+        std::string key;
+        int scan = (sizeof(size_t) + string_size + sizeof(int));                //Sets read location to the first key inserted.
+
+        for(int i = 1; i < *database_size; i++)
+        { //Goes to the last key stored.
+            ifile.seekg(scan);
+            ifile.read((char*)&string_size, sizeof(size_t));
+            scan = (scan + sizeof(size_t) + string_size + sizeof(int));
+            ifile.seekg(scan);
+            ifile.read((char*)&string_size, sizeof(size_t));
+            scan = (scan + sizeof(size_t) + string_size);
+        }
+        ifile.seekg(scan);
+
+        ifile.read((char*)&string_size, sizeof(size_t));                        //Gets size of key string on file.
+        key.resize(string_size);
+        ifile.read(&key[0], string_size);                                       //Gets value of the last key string from file and store on "key".
+        key.erase(0, 4);                                                        //Removes "key_" from "key" string for integer conversion.
+        *last_insertion = std::stoi(key);                                       //Defines "last_insertion" as the value of the integer conversion from "key" string.
+    }
+    else
+    { //The database has no keys stored.
+        *last_insertion = 0;
+    }
+
+    ifile.close();                                                              //Closes file.
 }
 //==================================================
 
@@ -105,24 +139,35 @@ Database Database::LoadDatabase(std::string dbname)
     std::string dbfolder(basedir + "/" + dbname);                               //!This will not work on windows.
     std::string dbfile(dbfolder + "/" + dbname + ".db");                        //!This will not work on windows.
 
-    if(fs::is_directory(fs::status(dbfolder)))
+    if(!fs::exists(dbfolder))
     { //Throws a runtime error if the path the function is trying to load the database from does not exist.
         throw std::runtime_error("Database::LoadDatabase=inexistent_path");
     }
 
     if(fs::exists(dbfile))
     { //Checks if database file exists.
+        //Checks if file is valid by comparing "dbname" with database name stored on the binary file.
+        std::ifstream ifile(dbfile, std::ios::binary);                          //Opens file as input.
 
-        //TODO - Check if database file is valid
+        size_t string_size;
+        std::string temp;
 
-        if(true) //!does not check if file is valid yet
+        ifile.read((char*)&string_size, sizeof(size_t));                        //Gets size of database name string on file.
+        temp.resize(string_size);
+        ifile.read(&temp[0], string_size);                                      //Gets database name on file.
+        ifile.close();                                                          //Closes file.
+
+        if(temp == dbname)
         { //The file exist and it's contents are valid. 
-            Database loadeddb(dbname, dbfolder);
+            Database loadeddb(dbname, dbfolder);                                //Creates a database reference.
 
-            //TODO - check how many key are store on the loaded database
-            loadeddb.member_size = ReadDatabase(dbfolder, dbname);
+            //Loads relevant members to primary memory.
+            int database_size, last_insertion;
+            ReadDatabase(&loadeddb, &database_size, &last_insertion);
+            loadeddb.member_size = database_size;
+            loadeddb.member_last_insertion = last_insertion;
         
-            return loadeddb;
+            return loadeddb;                                                    //Returns previouly created database reference.
         }
         else
         { //The file exist but it's contets are invalid. Throws a runtime error.
@@ -156,11 +201,11 @@ std::string Database::GetName()
 //=================Generete New Key=================
 std::string Database::NewUniqueKey(void)
 { //Generates a ney unique key string;
-    return("key_" + std::to_string(member_size + 1));
+    return("key_" + std::to_string(member_last_insertion + 1));
 }
 //==================================================
 
-#include <iostream>
+
 //=================Insert Key-Value=================
 void Database::InsertKeyValue(Datacell* newcell, Database* db)
 { //Creates a folder with a name based on the "key" value and store "value" on it.
@@ -172,7 +217,7 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
     std::string value = newcell->GetValue();
 
     //Opens Database file
-    std::ofstream ofile(path, std::ios::binary | std::ios::app);                //Opens files as output and set to append to the end of the file.
+    std::ofstream ofile(path, std::ios::binary | std::ios::app);                //Opens file as output and set to append to the end of the file.
 
     //Datacell insertion.
     size_t string_size = key.size();
@@ -194,6 +239,10 @@ void Database::InsertKeyValue(Datacell* newcell, Database* db)
     ofile.seekp(sizeof(size_t) + member_name.size());                           //Sets write location to database size.
     ofile.write((char*)&member_size, sizeof(int));                              //Overwrites database size.
     ofile.close();                                                              //Closes file.
+
+    //Updates value of the last insertion to the database.
+    key.erase(0,4);                                                             //Removes "key_" from "key" string for integer conversion.
+    member_last_insertion = std::stoi(key);                                     //Defines "member_last_insertion" as the value of the integer conversion from "key" string.
 }
 //==================================================
 
