@@ -8,19 +8,21 @@ management test cases.
 
 //Libraries
 #include <string>
+#include <vector>
 #include <filesystem>
 
 
 //Header Files
 #include "tests.h"
 #include "dbhandler.h"
+#include "datacell.h"
 
 
 //=====================Namespace====================
 namespace fs = std::filesystem;
 //==================================================
 
-
+#include<iostream>
 //================Create-Delete Test================
 TEST_CASE("Create and delete a database", "[CreateDatabase, DeleteDatabase]")
 { //Creates a database, checks if it exists then deletes and confirm it does not exist anymore.
@@ -37,7 +39,22 @@ TEST_CASE("Create and delete a database", "[CreateDatabase, DeleteDatabase]")
 
         //3. The database folder has a "dbname".db file.
         const auto &path = fs::directory_iterator(db.GetDirectory());
-        REQUIRE(path == end(path));                                             //TODO Checks if database folder has a "dbname".db file.
+        std::vector<std::string> files;
+
+        for (const auto & entry : fs::directory_iterator(path))
+        { //Gets the list of files within the current directory
+            files.push_back(entry.path());
+            std::cout << entry.path() << std::endl;
+        }
+        fs::path temp1(db.GetDirectory() + "/" + dbname + ".db");               //!This will not work on windows.
+        fs::path temp2;
+
+        if(files.size() == 1)
+        { //Only gives "temp2" a value if there is only a single file in the directory.
+            temp2 = fs::path(files[0]);
+        }
+        
+        REQUIRE(temp1 == temp2);                                                //Checks if db2 database directory has only its .db file.
 
         //4. The database folder does not exist after getting deleted.
         db.Erase();                                                             //Deletes previously created "test-db" database.
@@ -64,7 +81,22 @@ TEST_CASE("Load an existing database", "[LoadDatabase]")
 
         //3. The database folder is empty (no database files yet).
         const auto &path = fs::directory_iterator(db2.GetDirectory());
-        REQUIRE(path == end(path));                                             //Checks if db2 database directory is empty.
+        std::vector<std::string> files;
+
+        for (const auto & entry : fs::directory_iterator(path))
+        { //Gets the list of files within the current directory
+            files.push_back(entry.path());
+            std::cout << entry.path() << std::endl;
+        }
+        fs::path temp1(db2.GetDirectory() + "/" + dbname + ".db");              //!This will not work on windows.
+        fs::path temp2;
+
+        if(files.size() == 1)
+        { //Only gives "temp2" a value if there is only a single file in the directory.
+            temp2 = fs::path(files[0]);
+        }
+        
+        REQUIRE(temp1 == temp2);                                                //Checks if db2 database directory has only its .db file.
 
         //4. The database folder does not exist after getting deleted.
         db2.Erase();                                                            //Deletes test database via db2 reference.
