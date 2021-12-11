@@ -1,3 +1,6 @@
+<a id="top"></a>
+![SimpleDB logo](https://imgur.com/a/z40PbRZ)
+
 # SimpleDB
 
 SimpleDB is a simple C++ key-value database that work as following:
@@ -13,8 +16,12 @@ OS:             Ubuntu 20.04.3 LTS
 Release:        20.04
 g++:            (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
 ```
-Other specifications might have unwanted behaviour or not run at all.
+Other specifications might have unwanted behaviour or not run at all.  
 Windows is currently not supported.
+
+## Starting Up
+
+SimpleDB will create a default directory for database storage and 
 
 ## Command Line Interface
 SimpleDB runs on a custom command line interface (CLI).
