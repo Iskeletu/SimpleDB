@@ -19,8 +19,8 @@ Source/build
 !Tests/
 Tests/build
 
-#Database Files
-!Database/
+#Template files
+!Template/
 
 #CMake Files
 !CMake/
