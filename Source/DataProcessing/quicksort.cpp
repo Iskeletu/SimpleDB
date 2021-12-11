@@ -15,19 +15,6 @@ sorting the database index class.
 #include "quicksort.h"
 
 
-//===================Swap Function==================
-void Swap(Index* index1, Index* index2)
-{ //Swaps two indices within the index vector.
-//Slave function to "Partition".
-    Index* temp = index1;
-    index1 = index2;
-    index2 = temp;
-    temp = nullptr;
-    free(temp);
-}
-//==================================================
-
-
 //================Partition Function================
 int Partition(std::vector<Index>* indexvector, int start, int end)
 { //!describe function
@@ -39,11 +26,11 @@ int Partition(std::vector<Index>* indexvector, int start, int end)
     {
 		if((*indexvector)[i].GetSortingKey() < (*indexvector)[pivot].GetSortingKey())
         {
-			Swap(&((*indexvector)[i]), &((*indexvector)[j]));
+			std::swap((*indexvector)[i], (*indexvector)[j]);
 			++j;
 		}
 	}
-	Swap(&((*indexvector)[j]), &((*indexvector)[pivot]));
+	std::swap((*indexvector)[j], (*indexvector)[pivot]);
 
 	return j;
 }

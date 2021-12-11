@@ -95,7 +95,7 @@ std::vector<Index> Index::LoadIndex(std::string dbname, std::string dbpath, int 
 //===================Index Sorter===================
 void Index::SortIndex(std::vector<Index>* dbindex)
 {
-    //qcks::QuickSort(dbindex, 0, (dbindex->size() - 1));
+    qcks::QuickSort(dbindex, 0, (dbindex->size() - 1));
 }
 //==================================================
 
