@@ -9,6 +9,7 @@
 
 //Dependencies
 #include "datacell.h"
+#include "index.h"
 
 
 //======================Classes=====================
@@ -34,6 +35,7 @@ class Database
         std::string member_path;
         int member_size;
         int member_last_insertion;
+        Index member_index;
 };
 //==================================================
 
