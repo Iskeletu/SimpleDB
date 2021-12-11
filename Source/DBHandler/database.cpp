@@ -36,7 +36,7 @@ Database::Database(std::string dbname, std::string path) :
 {;}
 //==================================================
 
-#include <iostream>
+
 //=================Database Creator=================
 Database Database::CreateDatabase(std::string dbname)
 { //Creates and return a reference to a database.
@@ -59,23 +59,24 @@ Database Database::CreateDatabase(std::string dbname)
     }
 
     //Creates a new database file and it's reference.
-    std::ofstream file(dbfile, std::ios::binary);
-    Database db(dbname, dbfolder);
+    std::ofstream ofile(dbfile, std::ios::binary);                              //Creates file and open as input and output.
+    Database db(dbname, dbfolder);                                              //Creates database reference to previouly created file.
 
     //Formats as a default blank database file.
     db.member_size = 0;
 
     size_t string_size = dbname.size();
-    file.write((char*)&string_size, sizeof(string_size));                       //Inserts size of "dbname" string.
-    file.write(&dbname[0], string_size);                                        //Inserts "dbname" string.
-    file.write((char*)&db.member_size, sizeof(int));                            //Inserts database size integer.
+    ofile.write((char*)&string_size, sizeof(size_t));                      //Inserts size of "dbname" string.
+    ofile.write(&dbname[0], string_size);                                       //Inserts "dbname" string.
+    ofile.write((char*)&db.member_size, sizeof(int));                           //Inserts database size integer.
+    ofile.flush();
 
-    if(!file.good())
+    if(!ofile.good())
     { //Throws an exception if writing was not successful.
       throw std::runtime_error("Database::CreateDatabase=writingfailure");
     }
 
-    file.close();                                                               //Closes file.
+    ofile.close();                                                              //Closes file.
 
 
     //Return the new reference.
@@ -159,39 +160,40 @@ std::string Database::NewUniqueKey(void)
 }
 //==================================================
 
-
+#include <iostream>
 //=================Insert Key-Value=================
 void Database::InsertKeyValue(Datacell* newcell, Database* db)
 { //Creates a folder with a name based on the "key" value and store "value" on it.
     std::string path = (db->GetDirectory() + "/" + db->member_name + ".db");    //!This will not work on windows.
 
     //Extract cell data to local variables.
-    std::string key = newcell -> GetKey();
-    int sorting_key = newcell ->GetSortingKey();
+    std::string key = newcell->GetKey();
+    int sorting_key = newcell->GetSortingKey();
     std::string value = newcell->GetValue();
 
     //Opens Database file
-    std::ofstream file(path, std::ios::binary | std::ios::app);                 //Set to append to the end of the file.
+    std::ofstream ofile(path, std::ios::binary | std::ios::app);                //Opens files as output and set to append to the end of the file.
 
     //Datacell insertion.
     size_t string_size = key.size();
-    file.write((char*)&string_size, sizeof(string_size));                      //Inserts size of "key" string.
-    file.write(&key[0], string_size);                                        //Inserts "key" strig.
-    file.write((char*)&sorting_key, sizeof(int));                               //Insert sorting key integer.
+    ofile.write((char*)&string_size, sizeof(size_t));                           //Inserts size of "key" string.
+    ofile.write(&key[0], string_size);                                          //Inserts "key" strig.
+    ofile.write((char*)&sorting_key, sizeof(int));                              //Insert sorting key integer.
     string_size = value.size();
-    file.write((char*)&string_size, sizeof(string_size));                      //Inserts size of "value" string.
-    file.write(&value[0], string_size);                                        //Inserts "value" string.
+    ofile.write((char*)&string_size, sizeof(size_t));                           //Inserts size of "value" string.
+    ofile.write(&value[0], string_size);                                        //Inserts "value" string.
 
-
-    if(!file.good())
+    if(!ofile.good())
     { //Throws an exception if writing was not successful.
       throw std::runtime_error("Database::InsertKeyValue=writingfailure");
     }
 
-    //TODO - set file "database size" value to member.size
-    member_size++;                                                              //Sets size of the database to one more.
+    ofile.close(); ofile.open(path, std::ios::binary | std::ios::in);           //Reopens file as output and set to not overwrite unwanted data.
 
-    file.close();                                                               //Closes file.
+    member_size++;
+    ofile.seekp(sizeof(size_t) + member_name.size());                           //Sets write location to database size.
+    ofile.write((char*)&member_size, sizeof(int));                              //Overwrites database size.
+    ofile.close();                                                              //Closes file.
 }
 //==================================================
 
@@ -219,6 +221,7 @@ void Database::Erase()
 //==================================================
 
 /*
+!delete
 simpledb --insert=<1,aa>
 simpledb --insert=<2,bb>
 simpledb --insert=<3,cc>
