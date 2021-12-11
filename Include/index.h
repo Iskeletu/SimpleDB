@@ -10,7 +10,6 @@
 
 //Dependencies
 #include "datacell.h"
-#include "database.h"
 
 
 //======================Classes=====================
@@ -21,11 +20,11 @@ class Index
 
         int member_key;
 
-        void                            InsertIndexKey      (Datacell existingcell);
-        void                            RemoveIndexKey      (std::string* key);
-        void                            OrderIndex          (void);
+        void            InsertIndexKey      (Datacell existingcell);
+        void            RemoveIndexKey      (std::string* key);
+        void            OrderIndex          (void);
 
-        static std::vector<Index>       CreateIndex         (Database* db);
+        static Index    CreateIndex         (std::string dbname);
 
     protected:
         int member_sorting_key;

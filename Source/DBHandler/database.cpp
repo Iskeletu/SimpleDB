@@ -3,8 +3,6 @@ Database managment file.
 
 All work done in non-compressed database
 is handled by this file.
-
-index.cpp is dependant on this file.
 */
 
 
@@ -32,8 +30,8 @@ Database::Database(std::string dbname, std::string path) :
     member_name(dbname),
     member_path(path),
     member_size(-1),
-    member_last_insertion(-1),
-    member_index(0, 0, 0, 0, 0)
+    member_last_insertion(-1)
+    //member_index(0, 0, 0, 0, 0)
 {;}
 //==================================================
 

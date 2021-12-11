@@ -35,7 +35,7 @@ class Database
         std::string member_path;
         int member_size;
         int member_last_insertion;
-        Index member_index;
+        //std::vector<Index> member_index;
 };
 //==================================================
 

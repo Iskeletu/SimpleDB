@@ -32,11 +32,8 @@ Index::Index(int key, int sorting_key, int header_size, int key_size, int value_
 
 
 //===================Index Creator==================
-std::vector<Index> Index::CreateIndex(Database* db)
+Index Index::CreateIndex(std::string dbname)
 {
-    std::string dbname = db->GetName();
-    std::vector<Index> dbindex;
-    dbindex.push_back(Index(0, 0, dbname.size(), 0, 0));
-    return dbindex;
+    return Index(0, 0, dbname.size(), 0, 0);
 }
 //==================================================
