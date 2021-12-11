@@ -1,5 +1,5 @@
 <a id="top"></a>
-![SimpleDB logo](https://imgur.com/a/z40PbRZ)
+![SimpleDB logo](https://i.imgur.com/UoeOadZ.png)
 
 # SimpleDB
 
