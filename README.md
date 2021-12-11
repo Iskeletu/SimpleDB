@@ -16,7 +16,7 @@ g++:            (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
 Other specifications might have unwanted behaviour or not run at all.
 Windows is currently not supported.
 
-##Command Line Interface
+## Command Line Interface
 SimpleDB runs on a custom command line interface (CLI).
 
 ###Usage
@@ -27,7 +27,7 @@ TODO
 
 Compiling wiht CMake was implemented and you can build this repository as following
 
-###Building with CMake:
+### Building with CMake:
 
 For standard compilation use the following commands:
 ```bash
