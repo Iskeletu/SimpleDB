@@ -35,22 +35,53 @@ _
 Press enter to preceed to the custom CLI, see [TODO](TODO) for more information on the CLI usage.
 
 ## Command Line Interface
-SimpleDB runs on a custom command line interface (CLI).
+SimpleDB runs on a custom command line interface (CLI).  
 
-### Usage
+The following commands are supported:
+
+### HELP
+```bash
+SimpleDB > help [*arg]
+```
+Can be used with arguments to show available commands or with a command as argument to show usage.  
+Does not support expressions.  
+
+### SIMPLEDB
+```bash
+SimpleDB > simpledb [arg]=<exp>
+```
+Supports expressions.  
+Requires as least one of the following arguments:  
+  
+TODO
+
+### CLEAR
+```bash
+SimpleDB > clear
+```
+Does not support arguments nor expressions, has the same function as a normal bash terminal clear command.
+
+### EXIT
+```bash
+SimpleDB > exit
+```
+Does not support arguments nor expressions, initializes save and exit sequence.
+
+
+## Usage
 
 TODO
 
 ## Features
 
-* Custom command line interface
-    - As friendly as a terminal interface can be.
+* Custom command line interface:
+    - As user friendly as a terminal interface can be.
     - Multi step opretions are easier and painless.
-    - Informational feedback
-* Primary memory indexation
+    - Informational feedbacka
+* Primary memory indexation:
     - Much faster search operations on secondary memory.
     - Much faster data sorting.
-* Huffman and LZW compression/decompression.
+* Huffman and LZW compression/decompression:
     - TODO
 
 ## Compiling
