@@ -4,6 +4,9 @@ SimpleDB lib.
 Intermediary between the functions of the
 database and the rest of the program.
 
+Handles calls to database functions so other files
+don't have to do it directly and cause erros.
+
 commandhandler.cpp is dependant on this file.
 */
 
@@ -26,7 +29,7 @@ SimpleDB::SimpleDB()
 
 //=================SimpleDB Creator=================
 Database SimpleDB::CreateDB(std::string& dbname)
-{ //Calls for CreateDatabase method from database.h.
+{ //Calls for CreateDatabase function from database.h.
     return Database::CreateDatabase(dbname);
 }
 //==================================================
@@ -34,18 +37,31 @@ Database SimpleDB::CreateDB(std::string& dbname)
 
 //==================SimpleDB Loader=================
 Database SimpleDB::LoadDB(std::string& dbname)
-{ //Calls for LoadDatabase method from database.h.
+{ //Calls for LoadDatabase function from database.h.
     return Database::LoadDatabase(dbname);
 }
 //==================================================
 
-#include <iostream>
-//=================Valid Key Checker================
-bool dbh::IsValidKey (std::string key, Database* db)
-{ //Checks if a given string matches with a valid key within the database.
-    bool is_valid = false;
-    //TODO
-    return is_valid;
+
+//================SimpleDB Key Remover==============
+bool SimpleDB::RemoveDBKey(Database* db, Datacell* existingcell)
+{ //Calls for key removal from database file. 
+    return Database::RemoveKeyValue(db, existingcell);
+}
+//==================================================
+
+
+//================SimpleDB Key Updater==============
+bool SimpleDB::UpdateDBKey(Database* db, Datacell* oldcell, Datacell* newcell)
+{ //Calls for key removal from database file then inserts the same key with a different value.
+    bool success = Database::RemoveKeyValue(db, oldcell);
+
+    if(success)
+    {
+        db->InsertKeyValue(newcell);
+    }
+
+    return success;
 }
 //==================================================
 

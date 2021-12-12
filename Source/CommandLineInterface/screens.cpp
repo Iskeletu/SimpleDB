@@ -239,12 +239,46 @@ void screens::ClearScreen()
 
 
 //==================Print Datacell==================
-void screens::PrintDatacell(Datacell* existingcell)
+void DatacellPrinter(Datacell* datacell)
 { //Prints datacell to screen.
-    std::cout << "'" << existingcell->GetKey() << "': [" << std::endl;          //Uses a json-like template.
-    std::cout << "\t'Sorting_Key': " << existingcell->GetSortingKey() << "," << std::endl;
-    std::cout << "\t'Value': " << existingcell->GetValue() << std::endl;
+//Slave function to "screesn::PrintDatacell".
+    std::cout << "'" << datacell->GetKey() << "': [" << std::endl;          //Uses a json-like template.
+    std::cout << "\t'Sorting_Key': " << datacell->GetSortingKey() << "," << std::endl;
+    std::cout << "\t'Value': " << datacell->GetValue() << std::endl;
     std::cout << "]" << std::endl << std::endl;
+}
+
+void screens::PrintDatacell(Datacell* oldcell, Datacell* existingcell, int type)
+{ //calls for DatacellPrinter based on printing type.
+    switch(type)
+    {
+        /*
+        Type 1 = Function was called to print an insertion.
+        Type 2 = Function was called to print a value search.
+        Type 3 = Function was called to print a key removal.
+        Type 4 = Function was called to print a key update.
+        */
+        case 1:
+            std::cout << "Inserção concluída:" << std::endl;
+        break;
+
+        case 2:
+            std::cout << "Resultado da busca:" << std::endl;
+        break;
+
+        case 3:
+            std::cout << "Chave removida:" << std::endl;
+        break;
+
+        case 4:
+            std::cout << "Chave atualizada:" << std::endl << std::endl;
+            std::cout << "DE:" << std::endl;
+            DatacellPrinter(oldcell);
+            std::cout << "PARA:" << std::endl;
+        break;
+    }
+
+    DatacellPrinter(existingcell);
 }
 //==================================================
 

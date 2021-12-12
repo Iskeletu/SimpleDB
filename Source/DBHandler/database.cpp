@@ -1,8 +1,8 @@
 /*
 Database managment file.
 
-All work done in non-compressed database
-is handled by this file.
+All work done in the non-compressed database
+(.db) file is handled by this file.
 */
 
 
@@ -17,8 +17,8 @@ is handled by this file.
 #include "database.h"
 
 
-//Local Reference
-std::string basedir("./Data");                                                  //Default directory databases are loaded from.
+//Local Database Base Direcaroty Reference
+const std::string basedir("./Data");                                            //Default directory databases are loaded from.
 
 
 //=====================Namespace====================
@@ -130,7 +130,7 @@ void ReadDatabase(Database* db, int* database_size, int* last_insertion, std::ve
 
     ifile.close();                                                              //Closes file.
 
-    *newindex = Index::LoadIndex(db->GetName(), dbfile, *database_size);         //Generates a complete index for the database. //!(might slow down start up).
+    *newindex = Index::LoadIndex(db->GetName(), dbfile, *database_size);        //Generates a complete index for the database. //!(might slow down start up).
 }
 //==================================================
 
@@ -186,18 +186,34 @@ Database Database::LoadDatabase(std::string dbname)
 //==================================================
 
 
-//=================Get Path Function================
-std::string Database::GetDirectory()
-{ //Returns the full path of the database folder.
-    return member_path;
-}
-//==================================================
-
-
 //=================Get Name Function================
 std::string Database::GetName()
 { //Returns the name of the database folder.
     return member_name;
+}
+//==================================================
+
+
+//=================Get Size Function================
+int Database::GetSize()
+{ //Returns size of the database.
+    return member_size;
+}
+//==================================================
+
+
+//================Get Index Function================
+std::vector<Index>* Database::GetIndex()
+{ //Returns the database index.
+    return &member_index;
+}
+//==================================================
+
+
+//=================Get Path Function================
+std::string Database::GetDirectory()
+{ //Returns the full path of the database folder.
+    return member_path;
 }
 //==================================================
 
@@ -254,55 +270,118 @@ void Database::InsertKeyValue(Datacell* newcell)
 
 //=================Search Key-Value=================
 bool Database::SearchKeyValue(Datacell* existingcell)
-{ //Searchs and loads key value from database file, returns true if informed key existis within the database file and false if not.
-    //Extracts key location from index vector.
-    std::vector<int> search_result = Index::GetValuePosition(&member_index, stoi((existingcell->GetKey()).erase(0,4)));
+{ //Searchs and loads key value from database file, returns true if informed key exists within the database file and false if not.
+    //Extracts index vector key location if it exists, recieves -1 if it does not.
+    int search_result = Index::IsValidKey(&member_index, stoi((existingcell->GetKey()).erase(0,4)));
 
     //Checks if key exist within the index file.
-    if(search_result[0] != -1 && search_result[1] != -1 && search_result[2] != -1)
-    { //Key exisits, reads value from file and returns true.
+    if(search_result != -1)
+    { //Key exists, reads value from file and returns true.
         std::string dbfile(member_path + "/" + member_name + ".db");            //!This will not work on windows.
-        std::string value;
+        std::string value; value.resize(member_index[search_result].GetValueSize());
 
         std::ifstream ifile(dbfile, std::ios::binary);                          //Opes file as input.
-        ifile.seekg(search_result[0]);                                          //Sets read point to desired value.
-        value.resize(search_result[1]);
-        ifile.read(&value[0], search_result[1]);                                //Reads value to "value" string.
+        ifile.seekg(member_index[search_result].GetValuePosition());            //Sets read point to desired value.
+        ifile.read(&value[0], member_index[search_result].GetValueSize());      //Reads value to "value" string.
         ifile.close();                                                          //Closes file.
 
         //Updates existing cell.
-        existingcell->UpdateValues(existingcell->GetKey(), search_result[2], value);
+        existingcell->UpdateValues(existingcell->GetKey(), member_index[search_result].GetSortingKey(), value);
 
         return true;
     }
     else
-    { //key does not exist, return false.
+    { //Key does not exist, return false.
         return false;
     }
 }
 //==================================================
 
 
-//=================Update Key-Value=================
-bool Database::UpdateKeyValue(Datacell* existingcell)
-{ //Updates a value stored in an existing key inside the database.
-    bool cell_exists = false;
-
-    //TODO
-
-    return cell_exists;
-}
-//==================================================
-
-
 //=================Remove Key-Value=================
-bool Database::RemoveKeyValue(Datacell* existingcell)
-{ //Delets an existing key stored inside the database.
-    bool cell_exists = false;
+/*? Complex Function:
+This function removes the desied key frpom the index, it then uses
+the remaining values to create a temporary (.temp) file with the 
+contents of main .db files with the exception of the key deleted.
+When the writing is done, this function replaces the existing .db
+file with the temporary file, the database then reloads itself
+(mainly to update index value positions).
+*/
+bool Database::RemoveKeyValue(Database* db, Datacell* existingcell)
+{ //Deletes an existing key stored inside the database, returns true if informed key exists within the database file and false if not.
+    //Local references
+    std::string dbname = db->GetName();
+    std::string filewithoutextension = ((db->GetDirectory()) + "/" + dbname);      //!This will not work on windows.
+    std::vector<Index>* index = db->GetIndex();
+    int dbsize = (db->GetSize() - 1);
 
-    //TODO
+    //Extracts index vector key location if it exists, recieves -1 if it does not.
+    int key = stoi((existingcell->GetKey()).erase(0,4));
+    int search_result = Index::IsValidKey(index, key);
 
-    return cell_exists;
+    //Checks if key exist within the index file.
+    if(search_result != -1)
+    { //Key exists, deletes key and its values from file and returns true.
+        //? Check function documentation above.
+        size_t string_size;
+        std::string tempstring;
+        int tempint;
+
+        //Opens database file as input and creates temporary file as output.
+        std::ifstream ifile((filewithoutextension + ".db"), std::ios::binary);   
+        std::ofstream ofile((filewithoutextension + ".temp"), std::ios::binary);
+
+        //Updates datacell information (Same as value search).
+        string_size = (*index)[search_result].GetValueSize();
+        tempstring.resize(string_size);
+        ifile.seekg((*index)[search_result].GetValuePosition());
+        ifile.read(&tempstring[0], string_size);
+        existingcell->UpdateValues(existingcell->GetKey(), (*index)[search_result].GetSortingKey(), tempstring);
+
+        Index::RemoveIndexKey(index, key);                                      //Removes key from index.
+        Index::SortIndex(index, 1);                                             //Sorts index by main key values.
+
+        //Header writing to temporary file (Same as database creation).
+        string_size = dbname.size();
+        ofile.write((char*)&string_size, sizeof(size_t));
+        ofile.write(&dbname[0], string_size);
+        ofile.write((char*)&dbsize, sizeof(int));
+
+        for(int i = 1; i < index->size(); i++)
+        { //Writes index information to temporary file.
+            //Key-value writing to temporary file (Same as key insertion).
+            string_size = (*index)[i].GetKeySize();
+            ofile.write((char*)&string_size, sizeof(size_t));
+
+            tempstring = ("key_" + std::to_string((*index)[i].GetKey()));
+            ofile.write(&tempstring[0], string_size);
+
+            tempint = (*index)[i].GetSortingKey();
+            ofile.write((char*)&tempint, sizeof(int));
+
+            string_size = (*index)[i].GetValueSize();
+            ofile.write((char*)&string_size, sizeof(size_t));
+
+            tempstring.resize(string_size);
+            ifile.seekg((*index)[i].GetValuePosition());
+            ifile.read(&tempstring[0], string_size);
+            ofile.write(&tempstring[0], string_size);
+        }
+
+        //Closes files.
+        ifile.close();
+        ofile.close();
+
+        //Replaces main database file with the newly generated temporary file.
+        fs::rename(filewithoutextension + ".temp", filewithoutextension + ".db");
+
+        *db = Database::LoadDatabase(dbname);
+        return true;
+    }
+    else
+    { //Key does not exist, return false.
+        return false;
+    }
 }
 //==================================================
 
@@ -323,7 +402,13 @@ void Database::Erase()
 
 
 //!delete
-void Database::DebugIndex()
+#include <iostream>
+void Database::Debug()
 {
+    system("clear");
+    std::cout << "Normal index." << std::endl;
     Index::PrintIndex(member_index);
+    std::cin.get();
+
+    system("clear");
 }

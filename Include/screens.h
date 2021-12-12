@@ -25,7 +25,7 @@ namespace screens
     void    ClearScreen                     (void);
 
     //Database Related Functions
-    void    PrintDatacell                   (Datacell* existingcell);
+    void    PrintDatacell                   (Datacell* oldcell, Datacell* existingcell, int type);
     void    PrintInvalidKeyScreen           (std::string* key);
 };
 //==================================================

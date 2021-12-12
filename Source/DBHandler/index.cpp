@@ -46,10 +46,41 @@ Index::Index(size_t key_size, int key, int sorting_key, size_t value_size, size_
 //==================================================
 
 
-//===================Index Get Key==================
+//===================Get Index Key==================
+int Index::GetKey()
+{ //Returns the index main key value.
+    return member_key;
+}
+//==================================================
+
+
+//================Get Key String Size===============
+size_t Index::GetKeySize()
+{ //Returns the index key string size value.
+    return member_key_size;
+}
+//==================================================
+
+
+//===============Get Index Sorting Key==============
 int Index::GetSortingKey()
-{ //Returns the sorting key value.
+{ //Returns the index sorting key value.
     return member_sorting_key;
+}
+//==================================================
+
+
+//================Get Value Position================
+size_t Index::GetValuePosition()
+{ //Returns the value of the position of the value string within the database file.
+    return member_value_position;
+}
+//==================================================
+
+//==================Get Value Size==================
+size_t Index::GetValueSize()
+{ //Returns the value string size.
+    return member_value_size;
 }
 //==================================================
 
@@ -105,7 +136,7 @@ std::vector<Index> Index::LoadIndex(std::string dbname, std::string dbpath, int 
     ifile.close();                                                              //Closes file.
 
     newindex[0].member_value_position = read_position;                          //Updates header reference to the end of the file.
-    Index::SortIndex(&newindex);                                                //Sorts the fully loaded index.
+    Index::SortIndex(&newindex, 2);                                             //Sorts the fully loaded index vector by sorting key values.
 
     return newindex;
 }
@@ -113,9 +144,9 @@ std::vector<Index> Index::LoadIndex(std::string dbname, std::string dbpath, int 
 
 
 //===================Index Sorter===================
-void Index::SortIndex(std::vector<Index>* dbindex)
-{
-    qcks::QuickSort(dbindex, 0, (dbindex->size() - 1));
+void Index::SortIndex(std::vector<Index>* dbindex, int type)
+{ //Calls for index sorting.
+    qcks::Sort(dbindex, type);
 }
 //==================================================
 
@@ -141,12 +172,12 @@ void Index::InsertIndexKey(std::vector<Index>* dbindex, Datacell* newmember)
         (valuepos)
     ));
 
-    Index::SortIndex(dbindex);                                                  //Sorts fully loaded index.
+    Index::SortIndex(dbindex, 2);                                               //Sorts fully loaded index vector by sorting key values.
     //Updates header reference to end of the file.
 }
 //==================================================
 
-#include <iostream>
+
 //=================Valid Key Checker================
 int Index::IsValidKey(std::vector<Index>* dbindex, int key)
 { //Returns the position of the key within the Index vector if it exist or -1 if is does not exist.
@@ -186,29 +217,6 @@ void Index::RemoveIndexKey(std::vector<Index>* dbindex, int key)
 //==================================================
 
 
-//================Get Value Position================
-std::vector<int> Index::GetValuePosition(std::vector<Index>* dbindex, int key)
-{ ///Returns the position of the value within the database file and it's string size if it exist or {-1, -1, -1} if is does not exist.
-    std::vector<int> value;
-    value.push_back(Index::IsValidKey(dbindex, key));
-
-    //Checks if key exits within the index vector.
-    if(value[0] != -1)
-    { //Key exists within the index vector.
-        value.push_back((*dbindex)[value[0]].member_value_size);                //Inserts value string size to the second position of the interger vector.
-        value.push_back((*dbindex)[value[0]].member_sorting_key);               //Inserts sorting key value to the third position of the interger vector.
-        value[0] = ((*dbindex)[value[0]].member_value_position);                //Sets first integer vector value to value position within the database file.
-        return value;
-    }
-    else
-    { //Key does not exists whitin the index vector, returns a {-1, -1} integer vector.
-        value.push_back(-1); value.push_back(-1);
-        return value;
-    }
-}
-//==================================================
-
-
 
 
 
@@ -243,12 +251,3 @@ void Index::PrintIndex (std::vector<Index> loadedindex)
         std::cout << "Value position = " << loadedindex[i].member_value_position << std::endl << std::endl;
     }
 }
-
-
-/*
-header size has to be 4
-key size has to be 5+
-key is undefined
-sorting key is undefined
-value size is undefined
-*/

@@ -8,6 +8,7 @@ data for easier insertion in the database.
 screens.cpp is dependant on this file.
 index.cpp is dependant on this file.
 database.cpp is dependant on this file.
+dbhandler.cpp is dependant on this file.
 */
 
 

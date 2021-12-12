@@ -14,7 +14,7 @@
 //=====================Functions====================
 namespace qcks
 { //Short for "Quick-Sort".
-    void QuickSort (std::vector<Index>* dbindex, int start, int end);
+    void    Sort    (std::vector<Index>* dbindex, int type);
 };
 //==================================================
 

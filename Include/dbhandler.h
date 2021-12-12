@@ -9,6 +9,7 @@
 
 //Dependeies
 #include "database.h"
+#include "datacell.h"
 
 
 //======================Classes=====================
@@ -19,6 +20,8 @@ class SimpleDB
 
         static Database     CreateDB                (std::string& dbname);
         static Database     LoadDB                  (std::string& dbname);
+        static bool         RemoveDBKey             (Database* db, Datacell* existingcell);
+        static bool         UpdateDBKey             (Database* db, Datacell* oldcell, Datacell* newcell);
 };
 //==================================================
 
@@ -26,7 +29,6 @@ class SimpleDB
 //=====================Functions====================
 namespace dbh
 {//Short for "Database Handler".
-    bool                    IsValidKey              (std::string key, Database* db);
     bool                    CompressDatabase        (Database* db, int* type);
     bool                    DecompressDatabase      (Database* db, int* type);
 };

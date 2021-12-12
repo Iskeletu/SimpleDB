@@ -17,6 +17,8 @@ to the database.
 //Header Files
 #include "commandhandler.h"
 #include "screens.h"
+#include "index.h"
+#include "datacell.h"
 
 
 //Local Reference
@@ -91,135 +93,215 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
 //Slave function to "ArgumentFormmatter".
     std::vector<std::string> formatted_expression;
 
-
-    if(expression->rfind("=", 0) == 0)
-    { //Initial check, confirms if the expression is formatted correctly for any argument implemented.
+    if(expression->rfind("=", 0) == 0 && expression->size() > 1)
+    { //Initial check, confirms if the expression is formatted correctly for any argument implemented and has enough characters.
         expression->erase(0, 1);                                                //Removes "=" from "expression" string.
 
-        if(expression->length() > 2)
-        { //Second check, "expression" string needs to have more than 2 characters remaining.
-            switch(*type)
-            { //Third check, confirm if value types are correct and has enough parametes for it's respective argument.
-                /*
-                Type 1 = expression for '--insert' argument.
-                Type 2 = expression for '--remove', '--search' and '--update' argument.
-                Type 3 = expression for '--list' and '--reverse-list' arguments.
-                Type 4 = expression for '--compress' and '--decompress' arguments.
-                */
-                case 1:
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly for type 1.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
+        switch(*type)
+        { //Third check, confirm if value types are correct and has enough parametes for it's respective argument.
+            /*
+            Type 1 = expression for '--insert' argument.
+            Type 2 = expression for '--remove' and '--search' argument.
+            Type 3 = expression for '--update' argument.
+            Type 4 = expression for '--list' and '--reverse-list' arguments.
+            Type 5 = expression for '--compress' and '--decompress' arguments.
+            */
+            case 1:
+                if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                { //Checks if expression is formatted correctly for type 1.
+                    expression->erase(0, 1); expression->pop_back();            //Removes "<>" from expression;
 
-                        //Confirms if expression has enough parameters for type 1.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+                    //Confirms if expression has enough parameters for type 1.
+                    *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
 
-                        if(formatted_expression.size() != 2)
-                        { //Does not have the right amount of parameters for type 1.
-                            *valid_flag = false;
-                        }
-                        else
-                        { //Confirm if the value types of the parameters are correct for type 1.
-                            //Confirms if the first parameter is a positive integer.
-                            if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
-                            { //Confirms if the first parameter is a positive integer.
-                                //Convert first parameter into a integer variable.
-                                int parameter_scan = std::stoi(formatted_expression[0]);
-
-                                if(parameter_scan <= 0)
-                                { //First parameter is an integer but it's value is not higher than 0.
-                                    *valid_flag = false;                        //Sets valid expression flag to invalid.
-                                }
-                            }
-                            else
-                            { //First parameter is not an integer.
-                                *valid_flag = false;                            //Sets valid expression flag to invalid.
-                            }
-                            //? Second parameter can be any value.
-                        }
-                    }
-                break;
-
-                case 2:
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly for type 2.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
-
-                        //Confirms if expression has enough parameters for type 2.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-
-                        if(formatted_expression.size() != 1)
-                        { //Does not have the right amount of parameters for type 2.
-                            *valid_flag = false;                                //Sets valid expression flag to invalid.
-                        }
-                        else
-                        { //Confirm if the value types of the parameters are correct for type 1.
-                            std::string temp = formatted_expression[0];
-                            temp.erase(0,4);
-
-                            //Confirms if the parameter is in the "key_*integer*" format.
-                            if(temp.empty())
-                            { //The parameter does not have enough characters to be valid.
-                                *valid_flag = false;                            //Sets valid expression flag to invalid.
-                            }
-                            else if(temp.find_first_not_of( "0123456789" ) == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
-                            { //Confirms if the parameter is in the right format.
-                                //Convert parameter into a integer variable.
-                                int parameter_scan = std::stoi(temp);
-
-                                if(parameter_scan <= 0)
-                                { //The parameter is formatted correctly but it's value is invalid.
-                                    *valid_flag = false;                        //Sets valid expression flag to invalid.
-                                }
-                            }
-                            else
-                            { //First parameter is not int the "key_*integer*" format.
-                                *valid_flag = false;                            //Sets valid expression flag to invalid.
-                            }
-                            //? Second parameter can be any value.
-                        }
-                    }
-                break;
-
-                case 3: //TODO
-                    if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
-                    { //Checks if expression is formatted correctly for type 3.
-                        expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
-
-                        //Confirms if expression has enough parameters for type 3.
-                        *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
-                        if(formatted_expression.size() != 1)
-                        { //Does not have the right amount of parameters for type 3.
-                            *valid_flag = false;                                //Sets valid expression flag to invalid.
-                        }
-                    }
-                break;
-
-                case 4: //TODO
-                    //Checks if expression is formatted correctly for type 4.
-                    if(*expression == "huffman" || *expression == "lzw")
-                    { //Expresion is valid for type 4.
-                        *valid_flag = true;                                     //Sets valid expression flag to valid.
-                        formatted_expression.push_back(*expression);            //Inserts expression into formatted expression string vector.
+                    if(formatted_expression.size() != 2)
+                    { //Does not have the right amount of parameters for type 1.
+                        *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                        break;
                     }
                     else
-                    { //Expresion is not valid for type 4.
-                        *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                    { //Confirm if the value types of the parameters are correct for type 1.
+                        //Confirms if the first parameter is a positive integer.
+                        if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
+                        { //Confirms if the first parameter is a positive integer.
+                            //Convert first parameter into a integer variable.
+                            int parameter_scan = std::stoi(formatted_expression[0]);
+
+                            if(parameter_scan <= 0)
+                            { //First parameter is an integer but it's value is not higher than 0.
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
+                                break;
+                            }
+                        }
+                        else
+                        { //First parameter is not an integer.
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
+                            break;
+                        }
+                        //? Second parameter can be any value.
                     }
-                break;
-            }
+                }
+                else
+                { //Expression is not formatted correctly.
+                    formatted_expression.push_back("notformatted");             //Sets the first string of the formatted expression string vector as "notformatted".
+                    *valid_flag = false;                                        //Sets valid expression flag to invalid.
+                    break;
+                }
+            break;
+
+            case 2:
+                if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                { //Checks if expression is formatted correctly for type 2.
+                    expression->erase(0, 1); expression->pop_back();            //Removes "<>" from expression;
+
+                    //Confirms if expression has enough parameters for type 2.
+                    *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+
+                    if(formatted_expression.size() != 1)
+                    { //Does not have the right amount of parameters for type 2.
+                        *valid_flag = false;                                //Sets valid expression flag to invalid.
+                        break;
+                    }
+                    else
+                    { //Confirm if the value types of the parameters are correct for type 1.
+                        std::string temp = formatted_expression[0];
+                        temp.erase(0,4);
+
+                        //Confirms if the parameter is in the "key_*integer*" format.
+                        if(temp.empty())
+                        { //The parameter does not have enough characters to be valid.
+                            *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            break;
+                        }
+                        else if(temp.find_first_not_of( "0123456789" ) == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
+                        { //Confirms if the parameter is in the right format.
+                            //Convert parameter into a integer variable.
+                            int parameter_scan = std::stoi(temp);
+
+                            if(parameter_scan <= 0)
+                            { //The parameter is formatted correctly but it's value is invalid.
+                                *valid_flag = false;                        //Sets valid expression flag to invalid.
+                                break;
+                            }
+                        }
+                        else
+                        { //The parameter is not int the "key_*integer*" format.
+                            *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            break;
+                        }
+                    }
+                }
+                else
+                { //Expression is not formatted correctly.
+                    formatted_expression.push_back("notformatted");             //Sets the first string of the formatted expression string vector as "notformatted".
+                    *valid_flag = false;                                        //Sets valid expression flag to invalid.
+                    break;
+                }
+            break;
+            
+            case 3:
+                if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                { //Checks if expression is formatted correctly for type 3.
+                    expression->erase(0, 1); expression->pop_back();            //Removes "<>" from expression;
+
+                    //Confirms if expression has enough parameters for type 3.
+                    *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+                    if(formatted_expression.size() != 3)
+                    { //Does not have the right amount of parameters for type 3.
+                        *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                        break;
+                    }
+                    else
+                    { //Confirm if the value types of the parameters are correct for type 1.
+                        std::string temp = formatted_expression[0];
+                        temp.erase(0,4);
+
+                        //Confirms if the first parameter is in the "key_*integer*" format.
+                        if(temp.empty())
+                        { //The parameter does not have enough characters to be valid.
+                            *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            break;
+                        }
+                        else if(temp.find_first_not_of( "0123456789" ) == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
+                        { //Confirms if the parameter is in the right format.
+                            //Convert parameter into a integer variable.
+                            int parameter_scan = std::stoi(temp);
+
+                            if(parameter_scan <= 0)
+                            { //The parameter is formatted correctly but it's value is invalid.
+                                *valid_flag = false;                        //Sets valid expression flag to invalid.
+                                break;
+                            }
+
+                            //Confirms if the second parameter is an integer.
+                            if(formatted_expression[1].find_first_not_of( "0123456789" ) != std::string::npos)
+                            { //The second parameter is not an integer.
+                                *valid_flag = false;                        //Sets valid expression flag to invalid.
+                                break;
+                            }
+                        }
+                        else
+                        { //First parameter is not int the "key_*integer*" format.
+                            *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            break;
+                        }
+                        //? The third parameter can be any value.
+                    }
+                }
+                else
+                { //Expression is not formatted correctly.
+                    formatted_expression.push_back("notformatted");         //Sets the first string of the formatted expression string vector as "notformatted".
+                    *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                }
+            break;
+
+            case 4: //TODO
+                if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
+                { //Checks if expression is formatted correctly for type 4.
+                    expression->erase(0, 1); expression->pop_back();            //Removes "<>" from expression;
+
+                    //Confirms if expression has enough parameters for type 4.
+                    *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
+                    if(formatted_expression.size() != 1)
+                    { //Does not have the right amount of parameters for type 4.
+                        *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                        break;
+                    }
+                }
+                else
+                { //Expression is not formatted correctly.
+                    formatted_expression.push_back("notformatted");         //Sets the first string of the formatted expression string vector as "notformatted".
+                    *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                    break;
+                }
+            break;
+
+            case 5:
+                formatted_expression.push_back(*expression);                    //Inserts expression into formatted expression string vector.
+
+                //Checks if expression is formatted correctly for type 5.
+                if(*expression == "huffman" || *expression == "lzw")
+                { //Expresion is valid for type 5.
+                    *valid_flag = true;                                     //Sets valid expression flag to valid.
+                    break;
+                }
+                else
+                { //Expresion is not valid for type 5.
+                    *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                    break;
+                }
+            break;
         }
     }
     else if(expression->empty())
-    { //Sets expression to "null" if it's empty.
+    { //Expression is blank, sets formatted expression first member with a "null" string.
         *expression = "null";
         formatted_expression.push_back(*expression);                            //Sets the first string of the formatted expression string vector as "null".
         *valid_flag = false;                                                    //Sets valid expression flag to invalid.
     }
     else
-    { //Expression is not blank but is not formatted correctly.
-        formatted_expression.push_back(*expression);                            //Sets the first string of the formatted expression string vector as teh entire expression.    
-        formatted_expression.push_back("notformatted");                         //Adds a "notformated" flag at the end of the vector.
+    { //Expression is not blank but is not formatted correctly. 
+        formatted_expression.push_back("notformatted");                         //Sets the first string of the formatted expression string vector as "notformatted".
         *valid_flag = false;                                                    //Sets valid expression flag to invalid.
     }
 
@@ -256,37 +338,37 @@ std::vector<std::string> ArgumentFormatter(std::string* argument, std::string* e
         case 3:
             *expression = argument->erase(0, 8);
             *argument = "--search";
-            type--;
+            type = 2;                                                           //Redefines type for expression verifier.
         break;
 
         case 4:
             *expression = argument->erase(0, 8);
             *argument = "--update";
-            type = 2;
+            type  = 3;                                                           //Redefines type for expression verifier.
         break;
         
         case 5:
             *expression = argument->erase(0, 6);
             *argument = "--list";
-            type = 3;
+            type = 4;                                                           //Redefines type for expression verifier.
         break;
 
         case 6:
             *expression = argument->erase(0, 14);
             *argument = "--reverse-list";
-            type = 3;
+            type = 4;                                                           //Redefines type for expression verifier.
         break;
 
         case 7:
             *expression = argument->erase(0, 10);
             *argument = "--compress";
-            type = 4;
+            type = 5;                                                           //Redefines type for expression verifier.
         break;
 
         case 8:
             *expression = argument->erase(0, 12);
             *argument = "--decompress";
-            type = 4;
+            type = 5;                                                           //Redefines type for expression verifier.
         break;
     }
 
@@ -364,22 +446,22 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 1, &valid_expression);
 
                 //Checks if expression is valid for "--insert" (has enough and parameters and the right value types).
-                if (valid_expression)
+                if(valid_expression)
                 { //Expression is valid for "--insert".
                     int sorting_key = std::stoi(formatted_expression[0]);       //Converts first member of the formatted expression vector to an integer.
 
                     //Creates Datacell with the values extracted from the expression vector.
                     Datacell newcell = Datacell::CreateDatacell(db->NewUniqueKey(), sorting_key, formatted_expression[1]);
-                    db->InsertKeyValue(&newcell);                           //Inserts datacell to database file.
+                    db->InsertKeyValue(&newcell);                               //Inserts datacell to database file.
 
-                    screens::PrintDatacell(&newcell);                           //Confirms insertion in terminal.      
+                    screens::PrintDatacell(nullptr, &newcell, 1);               //Confirms insertion in terminal.      
                 }
                 else
                 { //Expression is not valid for "--insert".
                     //Checks what error message needs to be displayed.
                     int type = 1;
 
-                    if(formatted_expression.back() != "notformatted")
+                    if(formatted_expression[0] != "notformatted")
                     {
                         if(formatted_expression[0] == "null")
                         { //Missing expression.
@@ -402,15 +484,29 @@ bool cli::ReadCommand(cli::Command command, Database* db)
             else if(argument.rfind("--remove", 0) == 0)
             { //"--remove" argument.
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
-                formatted_expression = ArgumentFormatter(&argument, &expression, 2, &valid_expression);
+                formatted_expression = ArgumentFormatter(&argument, &expression, 3, &valid_expression);
 
                 //Checks if expression is valid for "--remove" (has enough and parameters and the right value types).
-                if (valid_expression)
+                if(valid_expression)
                 { //Expression is valid for "--remove".
-                    //TODO proceed
+                    //Creates Datacell with the key value extracted from the expression vector.
+                    Datacell existingcell = Datacell::CreateDatacell(formatted_expression[0], 0, "null");
+
+                    //Completes the Datacell with data from the database file.
+                    bool is_successful = SimpleDB::RemoveDBKey(db, &existingcell);
+
+                    //Checks if search was successful.
+                    if(is_successful)
+                    { //Search was successful, prints value to terminal.
+                        screens::PrintDatacell(nullptr, &existingcell, 3);      //Prints successful search to terminal. 
+                    }
+                    else
+                    { //Search was not successful, prints invalid key error.
+                        screens::PrintInvalidKeyScreen(&(formatted_expression[0]));
+                    }
                 }
                 else
-                { //Expression is not valid for "--remove".
+                { //Expression is not valid for "--search".
                     //Checks what error message needs to be displayed.
                     int type = 1;
 
@@ -418,7 +514,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                     {
                         if(formatted_expression[0] == "null")
                         { //Missing expression.
-                            type++;
+                            type = 2;
                         }
                         else if(formatted_expression.size() > 1)
                         { //Expression has more than enough parameters.
@@ -436,7 +532,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 3, &valid_expression);
 
                 //Checks if expression is valid for "--search (has enough and parameters and the right value types).
-                if (valid_expression)
+                if(valid_expression)
                 { //Expression is valid for "--search".
                     //Creates Datacell with the key value extracted from the expression vector.
                     Datacell existingcell = Datacell::CreateDatacell(formatted_expression[0], 0, "null");
@@ -447,7 +543,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                     //Checks if search was successful.
                     if(is_successful)
                     { //Search was successful, prints value to terminal.
-                        screens::PrintDatacell(&existingcell);
+                        screens::PrintDatacell(nullptr, &existingcell, 2);      //Prints successful search to terminal. 
                     }
                     else
                     { //Search was not successful, prints invalid key error.
@@ -480,10 +576,30 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Formats the third member of the command vector as an expression and saves to a previously created expression vector.
                 formatted_expression = ArgumentFormatter(&argument, &expression, 4, &valid_expression);
 
-                //Checks if expression is valid for "--update" (has enough and parameters and the right value types).
-                if (valid_expression)
+                //Checks if expression is valid for "--update (has enough and parameters and the right value types).
+                if(valid_expression)
                 { //Expression is valid for "--update".
-                    //TODO proceed
+                    //Creates Datacell with the key value extracted from the expression vector and a partially blank datacell with the same key.
+                    Datacell newcell = Datacell::CreateDatacell(formatted_expression[0], std::stoi(formatted_expression[1]), formatted_expression[2]);
+                    Datacell oldcell = Datacell::CreateDatacell(formatted_expression[0], 0, "null");
+
+                    bool is_successful = db->SearchKeyValue(&oldcell);          //Gets value from updated datacell before update.
+
+                    //Updates key from database file with datacell data if the key search was successful.
+                    if(is_successful)
+                    {
+                        is_successful = SimpleDB::UpdateDBKey(db, &oldcell, &newcell);
+                    }
+
+                    //Checks if update was successful.
+                    if(is_successful)
+                    { //Update was successful, prints values to terminal.
+                        screens::PrintDatacell(&oldcell, &newcell, 4);          //Prints successful update to terminal. 
+                    }
+                    else
+                    { //Update was not successful, prints invalid key error.
+                        screens::PrintInvalidKeyScreen(&(formatted_expression[0]));
+                    }
                 }
                 else
                 { //Expression is not valid for "--update".
@@ -494,9 +610,13 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                     {
                         if(formatted_expression[0] == "null")
                         { //Missing expression.
-                            type++;
+                            type = 2;
                         }
-                        else if(formatted_expression.size() > 1)
+                        else if(formatted_expression.size() < 3)
+                        { //Expression has not enough parameters.
+                            type = 3;
+                        }
+                        else if(formatted_expression.size() > 3)
                         { //Expression has more than enough parameters.
                             type = 4;
                         }
@@ -512,7 +632,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 5, &valid_expression);
 
                 //Checks if expression is valid for "--list" (has enough and parameters and the right value types).
-                if (valid_expression)
+                if(valid_expression)
                 { //Expression is valid for "--list".
                     //TODO proceed
                 }
@@ -543,7 +663,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 6, &valid_expression);
 
                 //Checks if expression is valid for "--reverse-list" (has enough and parameters and the right value types).
-                if (valid_expression)
+                if(valid_expression)
                 { //Expression is valid for "--reverse-list".
                     //TODO proceed
                 }
@@ -574,7 +694,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 7, &valid_expression);
 
                 //Checks if expression is valid for "--compress" (has enough and parameters and the right value types).
-                if (valid_expression)
+                if(valid_expression)
                 { //Expression is valid for "--compress".
                     //TODO proceed
                 }
@@ -605,7 +725,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 formatted_expression = ArgumentFormatter(&argument, &expression, 8, &valid_expression);
 
                 //Checks if expression is valid for "--decompress" (has enough and parameters and the right value types).
-                if (valid_expression)
+                if(valid_expression)
                 { //Expression is valid for "--decompress"".
                     //TODO proceed
                 }
@@ -672,9 +792,9 @@ bool cli::ReadCommand(cli::Command command, Database* db)
         }
     }
     else if(command.member_main_command == "debug") //!delete
-    {
-        db->DebugIndex();
-    }
+    { //!delete
+        db->Debug(); //!delete
+    } //!delete
     else
     { //Unknown command.
         screens::PrintUnknownCommandScreen(&(command.member_main_command));
