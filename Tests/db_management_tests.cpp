@@ -66,7 +66,7 @@ TEST_CASE("Create and delete a database", "[CreateDatabase, DeleteDatabase]")
 }
 //==================================================
 
-#include <iostream>
+
 //====================Load Test====================
 TEST_CASE("Load an existing database", "[LoadDatabase]")
 { //Creates a database, load into a second reference, checks the database exitence then deletes and confirm it does not exist anymore.
@@ -87,8 +87,7 @@ TEST_CASE("Load an existing database", "[LoadDatabase]")
         Database db2(SimpleDB::LoadDB(dbname));                                 //Loads previouly created "test-db" database to db2.
 
         //Checks if db2 database file exists.
-        std::cout << (db2.GetDirectory() + "/" + db2.GetName() + ".db") << std::endl;
-        REQUIRE(fs::is_directory(fs::status(db2.GetDirectory() + "/" + db2.GetName() + ".db")));
+        REQUIRE(fs::exists(fs::status(db2.GetDirectory() + "/" + db2.GetName() + ".db")));
 
         db2.Erase();                                                             //Deletes test database via db2 reference.
         REQUIRE(!(fs::exists(fs::status(db2.GetDirectory()))));                  //Checks if database directory does not exist.
