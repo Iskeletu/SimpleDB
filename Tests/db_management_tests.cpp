@@ -23,7 +23,7 @@ namespace fs = std::filesystem;
 //==================================================
 
 #include<iostream>
-//================Create-Delete Test================
+//===============Create & Delete Test===============
 TEST_CASE("Create and delete a database", "[CreateDatabase, DeleteDatabase]")
 { //Creates a database, checks if it exists then deletes and confirm it does not exist anymore.
     SECTION("Default settings")
