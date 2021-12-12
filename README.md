@@ -4,7 +4,7 @@
 # SimpleDB
 
 SimpleDB is a simple C++ key-value database project.  
-SimpleDB uses features of the lastest stable specification (C++17).  
+SimpleDB uses features from C++17 specification.  
   
 Test cases are made using [Catch2](https://github.com/catchorg/Catch2) framework. See [Test Cases](#Test-Cases) for
 more information on the tests.  
@@ -83,6 +83,7 @@ TODO
     - Much faster data sorting.
 * Huffman and LZW compression/decompression:
     - Less disk space usage.
+    - Not yet implemented*.
 
 ## Compiling
 
