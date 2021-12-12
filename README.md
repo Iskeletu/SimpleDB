@@ -9,7 +9,7 @@ SimpleDB uses features of the lastest stable specification (C++17).
 Test cases are made using [Catch2](https://github.com/catchorg/Catch2) framework. See [Test Cases](#Test-Cases) for
 more information on the tests.  
   
-SimplesDB was testes an is guareteed to run properly on the following specificatios:
+SimplesDB has been tested on the following specificatios:
 ```bash
 OS:             Ubuntu 20.04.3 LTS
 Release:        20.04
@@ -23,9 +23,9 @@ Windows is currently not supported.
 SimpleDB will create a default ```.\Data\``` directory for database storage within the top level project folder.  
   
 The default database name is called "SimpleDB", a subfolder with that name will be created shortly after.  
-All storeage will be done as binary in "SimpleDB.db" file whitin ```.\Data\SimpleDB\```.  
+All storage will be done as binary in "SimpleDB.db" file whitin ```.\Data\SimpleDB\```.  
   
-If the file is not manually deleted all subsequent startups will load the files and read relevant data to primary memory.  
+If the file is not manually deleted all subsequent startups will load the file and read relevant data to primary memory.  
   
 After creating a new datase file or loading an existing one the following message will be displayed:
 ```
@@ -51,7 +51,7 @@ Does not support expressions.
 SimpleDB > simpledb [arg]=<exp>
 ```
 Supports expressions.  
-Requires as least one of the following arguments:  
+Requires one of the following arguments:  
   
 TODO
 
@@ -76,13 +76,13 @@ TODO
 
 * Custom command line interface:
     - As user friendly as a terminal interface can be.
-    - Multi step opretions are easier and painless.
+    - Multi step operations are easier and painless.
     - Informational feedback.
 * Primary memory indexation:
     - Much faster search operations on secondary memory.
     - Much faster data sorting.
 * Huffman and LZW compression/decompression:
-    - lower disk space usage.
+    - Less disk space usage.
 
 ## Compiling
 
@@ -102,17 +102,17 @@ cd ./SimpleDB/
 TODO
 ```
 
-The executable file for either cases will be found at `.\Build\build`.  
+The executable file for either case will be found at `.\Build\build`.  
   
 Run with:
 ```bash
 .\Build\build
 ```
-No arguments necessary, all interactions can be done within the custom CLI.
+No arguments required, all interactions can be done within the custom CLI.
 
 ## Templates
 
-This repository has a `template.db` file at ```./Template/Template.md``` template with 100 unique key each with a unique value and random sorting keys, see [TEMPLATE](https://github.com/Iskeletu/SimpleDB/blob/main/Template/TEMPLATE.md) for more information.
+This repository has a `template.db` file located at ```./Template/Template.db``` template with 100 unique keys each with its own unique value and a random sorting keys, see [TEMPLATE](https://github.com/Iskeletu/SimpleDB/blob/main/Template/TEMPLATE.md) for more information.
 
 ## Test Cases
 
