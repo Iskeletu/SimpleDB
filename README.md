@@ -95,6 +95,8 @@ Building project with **Make** is implemented and you can build this repository 
 
 ### Building with Make:
 
+For both building cases a `./Build/` directory needs to be created at the project root folder.
+  
 For standard compilation use the following commands:
 ```bash
 cd ./SimpleDB/

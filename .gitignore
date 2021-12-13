@@ -24,5 +24,3 @@ Tests/build
 
 #Make Files
 !CMake/
-!Build/
-Build/*
