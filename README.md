@@ -91,15 +91,14 @@ TODO
 
 Building project with **Make** is implemented and you can build this repository as following:
 
-**OBS:: Needs Make and g++ compiler installed.**
-
 ### Building with Make:
 
 For both building cases a `./Build/` directory needs to be created at the project root folder.
   
 For standard compilation use the following commands:
 ```bash
-cd ./SimpleDB/
+cd ./SimpleDB/ (*or equivalent to be at porject root directory)
+mkdir Build
 cd ./Cmake/MainBuild/
 make
 cd ../../
@@ -107,7 +106,8 @@ cd ../../
 
 For tests compilation use the following commands:
 ```bash
-cd ./SimpleDB/
+cd ./SimpleDB/ (*or equivalent to be at porject root directory)
+mkdir Build
 cd ./Cmake/TestsBuild/
 make
 cd ../../
@@ -152,7 +152,7 @@ Has three test cases:
 * Insertion and update (1 assertion):
     - Stores and updates the value of the same key then confirms if the retrieved value matches with the local value used for the update.
 
-### Compression/Decompression test
+### Compression/Decompression tests
 
 TODO  
   
