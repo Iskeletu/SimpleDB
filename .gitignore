@@ -22,5 +22,7 @@ Tests/build
 #Template files
 !Template/
 
-#CMake Files
+#Make Files
 !CMake/
+!Build/
+Build/*
