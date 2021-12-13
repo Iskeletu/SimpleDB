@@ -83,7 +83,7 @@ TODO
     - Much faster data sorting.
 * Huffman and LZW compression/decompression:
     - Less disk space usage.
-    - Not yet implemented*.
+    - TODO.
 * Make building:
     - Works out of the box, no configuration or IDE necessary.
 
@@ -127,7 +127,36 @@ This repository has a `template.db` file located at ```./Template/Template.db```
 
 ## Test Cases
 
-TODO
+### Database managment tests
+
+Has two test cases:
+
+* Database creation and deletion (4 assertions):
+    - Creates and checks if the database object has a valid reference.
+    - Checks if the recently created database folder has one file.
+    - Checks if the the file is a .db file.
+    - Deletes and checks if database direcoty no longer exists.
+* Database loading (2 assertions):
+    - Checks if the loaded database object has a valid reference to an existent file.
+    - Deletes the database from the second object reference method and checks if the direcoty no longer exists.
+
+### Key-Value tests
+
+Has three test cases:
+
+* Insertion and search (1 assertion):
+    - Stores and retrives a value from the database and checks if both values match.
+* Insertion and removal (2 assertions):
+    - Stores a value and confirms that the stored key existis within the database file.
+    - Removes its key from within the database and checks if the value is no longer stored in the database file.
+* Insertion and update (1 assertion):
+    - Stores and updates the value of the same key then confirms if the retrieved value matches with the local value used for the update.
+
+### Compression/Decompression test
+
+TODO  
+  
+Tests have a total of 5 cases and 10 assertions, the tests can be run from the "tests" build, see [Building](#Building) for more information.
 
 ## License
 

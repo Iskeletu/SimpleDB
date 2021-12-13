@@ -76,7 +76,7 @@ TEST_CASE("Load an existing database", "[LoadDatabase]")
     1 - The loaded database has a valid re-
     ference to an existent file.
 
-    4 - The database folder does not exist
+    2 - The database folder does not exist
     after calling "delete" method from the
     loaded database.
     */
