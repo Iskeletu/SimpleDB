@@ -395,20 +395,3 @@ void Database::Erase()
     }
 }
 //==================================================
-
-
-
-
-
-
-//!delete
-#include <iostream>
-void Database::Debug()
-{
-    system("clear");
-    std::cout << "Normal index." << std::endl;
-    Index::PrintIndex(member_index);
-    std::cin.get();
-
-    system("clear");
-}

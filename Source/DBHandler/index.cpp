@@ -215,39 +215,3 @@ void Index::RemoveIndexKey(std::vector<Index>* dbindex, int key)
     }
 }
 //==================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//!function for test only purpose
-#include <iostream>
-void Index::PrintIndex (std::vector<Index> loadedindex)
-{
-    int indexsize = loadedindex.size();
-
-    std::cout << "Header size = " << loadedindex[0].member_key_size << std::endl << std::endl;
-
-
-    for(int i = 1; i < indexsize; i++)
-    {   
-        std::cout << "Index [" << i << "]:" << std::endl;
-        std::cout << "Key size = " << loadedindex[i].member_key_size << std::endl;
-        std::cout << "Key = " << loadedindex[i].member_key << std::endl;
-        std::cout << "sorting key = " << loadedindex[i].member_sorting_key << std::endl;
-        std::cout << "Value size = " << loadedindex[i].member_value_size << std::endl;
-        std::cout << "Value position = " << loadedindex[i].member_value_position << std::endl << std::endl;
-    }
-}

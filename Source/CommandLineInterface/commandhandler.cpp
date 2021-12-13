@@ -791,10 +791,6 @@ bool cli::ReadCommand(cli::Command command, Database* db)
             screens::PrintArgumentErrorScreen(&(command.member_main_command), &argument, 4);
         }
     }
-    else if(command.member_main_command == "debug") //!delete
-    { //!delete
-        db->Debug(); //!delete
-    } //!delete
     else
     { //Unknown command.
         screens::PrintUnknownCommandScreen(&(command.member_main_command));

@@ -26,7 +26,7 @@ class Database
         void                    InsertKeyValue      (Datacell* newcell);
         bool                    SearchKeyValue      (Datacell* existingcell);
         void                    Erase               (void);
-            void Debug(void); //!delete
+
         static Database         CreateDatabase      (std::string dbname);
         static Database         LoadDatabase        (std::string dbname);
         static bool             RemoveKeyValue      (Database* db, Datacell* existingcell);

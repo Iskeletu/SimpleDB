@@ -71,8 +71,5 @@ int main(void)
         exit_flag = cli::ReadCommand(command, &db);                             //Checks for exit flag.
     }
     //==================================================
-
-
-    //TODO save and exit sequence
 }
 //==================================================

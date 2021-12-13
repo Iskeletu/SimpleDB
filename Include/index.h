@@ -32,7 +32,7 @@ class Index
         static int                      IsValidKey          (std::vector<Index>* dbindex, int key);
         static void                     RemoveIndexKey      (std::vector<Index>* dbindex, int key);
         static std::vector<int>         SearchKey           (std::vector<Index>* dbindex, int key);
-            static void PrintIndex (std::vector<Index> loadedindex); //!delete
+
     protected:
         size_t member_key_size;
         int member_key;

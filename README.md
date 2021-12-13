@@ -84,30 +84,38 @@ TODO
 * Huffman and LZW compression/decompression:
     - Less disk space usage.
     - Not yet implemented*.
+* Make building:
+    - Works out of the box, no configuration or IDE necessary.
 
-## Compiling
+## Building
 
-Compiling with CMake is implemented and you can build this repository as following:
+Building project with **Make** is implemented and you can build this repository as following:
 
-### Building with CMake:
+**OBS:: Needs Make and g++ compiler installed.**
+
+### Building with Make:
 
 For standard compilation use the following commands:
 ```bash
 cd ./SimpleDB/
-TODO
+cd ./Cmake/MainBuild/
+make
+cd ../../
 ```
 
 For tests compilation use the following commands:
 ```bash
 cd ./SimpleDB/
-TODO
+cd ./Cmake/TestsBuild/
+make
+cd ../../
 ```
 
 The executable file for either case will be found at `.\Build\build`.  
   
 Run with:
 ```bash
-.\Build\build
+./Build/build
 ```
 No arguments required, all interactions can be done within the custom CLI.
 
