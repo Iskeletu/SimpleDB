@@ -169,18 +169,18 @@ Building project with **Make** is implemented and you can build this repository 
   
 **For standard compilation use the following commands:**
 ```bash
-cd ./SimpleDB/ (*or equivalent to be at porject root directory)
+cd ./SimpleDB/ (*or equivalent to be at project root directory)
 mkdir Build
-cd ./Cmake/MainBuild/
+cd ./Make/MainBuild/
 make
 cd ../../
 ```
 
 **For tests compilation use the following commands:**
 ```bash
-cd ./SimpleDB/ (*or equivalent to be at porject root directory)
+cd ./SimpleDB/ (*or equivalent to be at project root directory)
 mkdir Build
-cd ./Cmake/TestsBuild/
+cd ./Make/TestsBuild/
 make
 cd ../../
 ```
