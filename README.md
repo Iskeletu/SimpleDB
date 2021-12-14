@@ -105,7 +105,7 @@ simpledb --list=<Key(Operator)[Integer]>
 ```bash
 simpledb --reverse-list=<Key(Operator)[Integer]>
 ```
-Lists values based on their sorting key value ('--list' in ascending order and '--reverse-list' in descending order) and the mathematical operator inputted (see [Opeartors](###Implemented_Mathematical_Operators:) for more information).  
+Lists values based on their sorting key value ('--list' in ascending order and '--reverse-list' in descending order) and the mathematical operator inputted (see [Operators](#implemented-mathematical-operators) for more information).  
 Example -> `simpledb --list=<key<=7>` will print to terminal all values from key with a sorting value that is less or equal to seven, `simpledb --reverse-list=<key<=7>` will do the same but the list will be reversed.
 
 ### Implemented Mathematical Operators:
@@ -122,7 +122,7 @@ simpledb --compress=[Identifier]
 ```bash
 simpledb --decompress=[Identifier]
 ```
-Compresses or decompresses the database file based on the identifier inputted (see [Identifiers](###Identifiers:) for more information).  
+Compresses or decompresses the database file based on the identifier inputted (see [Identifiers](#identifiers) for more information).  
 Example -> `simpledb --compress=huffman` will create a compressed ".hff" file in the database directory, `simpledb --decompress=lzw` will search for a .lzw file and replace the database file with its contents after decompressing it.
 
 ### Identifiers:
