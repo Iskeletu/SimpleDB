@@ -165,7 +165,7 @@ Does not support arguments nor expressions, initializes save and exit sequence.
 ## Building
 Building project with **Make** is implemented and you can build this repository as following:
 
-### Building with Make:
+### Building With Make:
   
 **For standard compilation use the following commands:**
 ```bash
@@ -196,7 +196,7 @@ This repository has a `template.db` file located at ```./Template/Template.db```
 
 ## Test Cases
 In total tests have 5 cases and 10 assertions, the tests can be run from the "tests" build (see [Building](#Building) for more information), the tests are as following:
-### Database managment tests
+### Database managment Tests
 Has two test cases:
 * **Database creation and deletion (4 assertions):**
     - Creates and checks if the database object has a valid reference.
@@ -207,7 +207,7 @@ Has two test cases:
     - Checks if the loaded database object has a valid reference to an existent file.
     - Deletes the database from the second object reference method and checks if the directory no longer exists.
 
-### Key-Value tests
+### Key-Value Tests
 Has three test cases:
 * **Insertion and search (1 assertion):**
     - Stores and retrive a value from the database and checks if both the local value and the search value match.
