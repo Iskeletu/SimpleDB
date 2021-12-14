@@ -13,7 +13,6 @@
 #Source files
 !Include/
 !Source/
-Source/build
 
 #Tests files
 !Tests/
@@ -23,4 +22,6 @@ Tests/build
 !Template/
 
 #Make Files
-!CMake/
+!Make/
+!Build/
+Build/build
