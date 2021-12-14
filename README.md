@@ -192,7 +192,7 @@ The executable file for either case will be found at `./Build/build`, See [BUILD
 No arguments required, all interactions can be done within the custom CLI.
 
 ## Templates
-This repository has a `template.db` file located at ```./Template/Template.db```, this template has 100 unique keys each with its own unique value and a random sorting keys, see [TEMPLATE](./TEMPLATE.md) for more information.
+This repository has a `template.db` file located at ```./Template/Template.db```, this template has 100 unique keys each with its own unique value and a random sorting keys, see [TEMPLATE](./Template/TEMPLATE.md) for more information.
 
 ## Test Cases
 In total tests have 5 cases and 10 assertions, the tests can be run from the "tests" build (see [Building](#Building) for more information), the tests are as following:
