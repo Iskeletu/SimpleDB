@@ -97,30 +97,88 @@ void screens::PrintHelpScreen(std::string* argument, int type)
 
         case 2:
             std::cout << "+----------------------------------------------+" << std::endl;
-            std::cout << "|  Comando: 'HELP'                             |" << std::endl;
+            std::cout << "|  Comando: 'help'                             |" << std::endl;
             std::cout << "|    Exibe a lista de comandos disponíveis pa- |" << std::endl;
-            std::cout << "|    ra execução                               |" << std::endl;
+            std::cout << "|    ra execução.                              |" << std::endl;
             std::cout << "|                                              |" << std::endl;
-            std::cout << "|  *Aceita os seguintes argumentos:            |" << std::endl;
-            std::cout << "|    -> 'HELP': Motra essa tela.               |" << std::endl;
-            std::cout << "|    -> 'SIMPLEDB': Mostra informações sobre   |" << std::endl;
+            std::cout << "|  *Aceita um dos seguintes argumentos:        |" << std::endl;
+            std::cout << "|    -> 'help': Motra essa tela.               |" << std::endl;
+            std::cout << "|    -> 'simpledb': Mostra informações sobre   |" << std::endl;
             std::cout << "|    o comando 'simpledb'.                     |" << std::endl;
-            std::cout << "|    -> 'CLEAR': Mostra informações sobre o    |" << std::endl;
+            std::cout << "|    -> 'clear': Mostra informações sobre o    |" << std::endl;
             std::cout << "|    comando 'clear'.                          |" << std::endl;
-            std::cout << "|    -> 'EXIT': Mostra informações sobre o co- |" << std::endl;
+            std::cout << "|    -> 'exit': Mostra informações sobre o co- |" << std::endl;
             std::cout << "|    mando 'exit'.                             |" << std::endl;
             std::cout << "+----------------------------------------------+" << std::endl << std::endl;
         break;
     
-        case 3: //TODO
+        case 3:
             std::cout << "+----------------------------------------------+" << std::endl;
-            std::cout << "|  TODO.                                       |" << std::endl;
+            std::cout << "|  Comando: 'SIMPLEDB'                         |" << std::endl;
+            std::cout << "|    Realiza operaçõs no arquivo do banco de   |" << std::endl;
+            std::cout << "|    dados.                                    |" << std::endl;
+            std::cout << "|                                              |" << std::endl;
+            std::cout << "|  *Requer um dos seguintes argumentos:        |" << std::endl;
+            std::cout << "|    -> '--insert': Realiza uma operação de    |" << std::endl;
+            std::cout << "|    inserção de chave no arquivo do banco de  |" << std::endl;
+            std::cout << "|    dados. Requer uma expressão no formato:   |" << std::endl;
+            std::cout << "|      -> '=<[Chave_de_Ordenação],[String]>'   |" << std::endl;
+            std::cout << "|    -> '--remove': Realiza uma operação de    |" << std::endl;
+            std::cout << "|    remoção de chave no arquivo do banco de   |" << std::endl;
+            std::cout << "|    dados. Requer uma expressão no formato:   |" << std::endl;
+            std::cout << "|      -> '=<[Chave]>'                         |" << std::endl;
+            std::cout << "|    -> '--search': Realiza uma operação de    |" << std::endl;
+            std::cout << "|    busca de valor relacionado a uma chave no |" << std::endl;
+            std::cout << "|    arquivo do banco de dados. Requer uma ex- |" << std::endl;
+            std::cout << "|    pressão no formato:                       |" << std::endl;
+            std::cout << "|      -> '=<[Chave]>'                         |" << std::endl;
+            std::cout << "|    -> '--update': Realiza uma operação de    |" << std::endl;
+            std::cout << "|    atualização de valores relacionados a uma |" << std::endl;
+            std::cout << "|    chave no arquivo do banco de dados. Re-   |" << std::endl;
+            std::cout << "|    quer uma expressão no formato:            |" << std::endl;
+            std::cout << "|      -> '=<[Chave]>,[Chave-Ordenação],-'     |" << std::endl;
+            std::cout << "|      [String]>                               |" << std::endl;
+            std::cout << "|    -> '--list': Lista as chaves inseridas no |" << std::endl;
+            std::cout << "|    arquivo do banco de dados de acordo com o |" << std::endl;
+            std::cout << "|    valor de sua chave de ordenação em ordem  |" << std::endl;
+            std::cout << "|    crescente. Requer uma expressão no se-    |" << std::endl;
+            std::cout << "|    guinte formato:                           |" << std::endl;
+            std::cout << "|      -> '=<key(Operador_Matemático)-         |" << std::endl;
+            std::cout << "|      [Número_Inteiro]'                       |" << std::endl;
+            std::cout << "|    -> '--reverse-list': Lista as chaves in-  |" << std::endl;
+            std::cout << "|    seridas no arquivo do banco de dados de   |" << std::endl;
+            std::cout << "|    acordo com o valor de sua chave de orde-  |" << std::endl;
+            std::cout << "|    nação em ordem decrescente. Requer uma    |" << std::endl;
+            std::cout << "|    expressão no seguinte formato:            |" << std::endl;
+            std::cout << "|      -> '=<key(Operador_Matemático)-         |" << std::endl;
+            std::cout << "|      [Número_Inteiro]'                       |" << std::endl;
+            std::cout << "|    -> '--compress': Comprime o arquivo do    |" << std::endl;
+            std::cout << "|    bando de dados de acordo com um dos se-   |" << std::endl;
+            std::cout << "|    guintes identificadores:                  |" << std::endl;
+            std::cout << "|      -> '=huffman': Método de compressão     |" << std::endl;
+            std::cout << "|      Huffman.                                |" << std::endl;
+            std::cout << "|      -> '=lzw': Método de compressão LZW.    |" << std::endl;
+            std::cout << "|    -> '--decompress': Descomprime um arquivo |" << std::endl;
+            std::cout << "|    de banco de dados préviamente comprimido  |" << std::endl;
+            std::cout << "|    de acordo com um dos seguintes identifi-  |" << std::endl;
+            std::cout << "|    cadores:                                  |" << std::endl;
+            std::cout << "|      -> '=huffman': Método de descompressão  |" << std::endl;
+            std::cout << "|      Huffman.                                |" << std::endl;
+            std::cout << "|      -> '=lzw': Método de descompressão LZW. |" << std::endl;
+            std::cout << "|                                              |" << std::endl;
+            std::cout << "|  *Lista de operadores matemáticos implemen-  |" << std::endl;
+            std::cout << "|  tados:                                      |" << std::endl;
+            std::cout << "|    -> (=)                                    |" << std::endl;
+            std::cout << "|    -> (>)                                    |" << std::endl;
+            std::cout << "|    -> (<)                                    |" << std::endl;
+            std::cout << "|    -> (>=)                                   |" << std::endl;
+            std::cout << "|    -> (<=)                                   |" << std::endl;
             std::cout << "+----------------------------------------------+" << std::endl << std::endl;
         break;
     
         case 4:
             std::cout << "+----------------------------------------------+" << std::endl;
-            std::cout << "|  Comando: 'CLEAR'                            |" << std::endl;
+            std::cout << "|  Comando: 'clear'                            |" << std::endl;
             std::cout << "|    Limpa o hitórico de mensagens do termi-   |" << std::endl;
             std::cout << "|    nal.                                      |" << std::endl;
             std::cout << "|                                              |" << std::endl;
@@ -130,7 +188,7 @@ void screens::PrintHelpScreen(std::string* argument, int type)
     
         case 5:
             std::cout << "+----------------------------------------------+" << std::endl;
-            std::cout << "|  Comando: 'EXIT'                             |" << std::endl;
+            std::cout << "|  Comando: 'exit'                             |" << std::endl;
             std::cout << "|    Inicializa sequência de finalização e     |" << std::endl;
             std::cout << "|    encerra o SimpleDB.                       |" << std::endl;
             std::cout << "|                                              |" << std::endl;
