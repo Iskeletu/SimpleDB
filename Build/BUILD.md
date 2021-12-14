@@ -29,6 +29,7 @@ Compiles the following files:
 * dbhandler.cpp
 * huffman.cpp
 * index.cpp
+* key-value_tests.cpp
 * lzw.cpp
 * quicksort.cpp
-* key-value_tests.cpp
+* screens.cpp
