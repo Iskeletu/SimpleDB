@@ -183,7 +183,7 @@ make
 cd ../../
 ```
 
-The executable file for either case will be found at `./Build/build`.  
+The executable file for either case will be found at `./Build/build`, See [BUILD](https://github.com/Iskeletu/SimpleDB/blob/main/Build/BUILD.md) for more information.  
   
 **Run with:**
 ```bash
