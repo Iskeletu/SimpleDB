@@ -12,25 +12,16 @@
 #include "datacell.h"
 
 
-//======================Classes=====================
-class SimpleDB
-{
-    public:
-        SimpleDB();
-
-        static Database     CreateDB                (std::string& dbname);
-        static Database     LoadDB                  (std::string& dbname);
-        static bool         RemoveDBKey             (Database* db, Datacell* existingcell);
-        static bool         UpdateDBKey             (Database* db, Datacell* oldcell, Datacell* newcell);
-};
-//==================================================
-
-
 //=====================Functions====================
 namespace dbh
 {//Short for "Database Handler".
-    bool                    CompressDatabase        (Database* db, int* type);
-    bool                    DecompressDatabase      (Database* db, int* type);
+    Database    CreateDB                (std::string& dbname);
+    Database    LoadDB                  (std::string& dbname);
+    bool        RemoveDBKey             (Database* db, Datacell* existingcell);
+    bool        UpdateDBKey             (Database* db, Datacell* oldcell, Datacell* newcell);
+    bool        PrintList               (Database* db, int value, int print_type, int operator_type);
+    bool        CompressDatabase        (Database* db, int* type);
+    bool        DecompressDatabase      (Database* db, int* type);
 };
 //==================================================
 

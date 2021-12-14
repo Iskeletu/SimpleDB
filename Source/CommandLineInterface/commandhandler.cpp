@@ -22,7 +22,7 @@ to the database.
 
 
 //Local Reference
-Database cli_db_reference("null", "null", Index::CreateIndex("null"));          //Local reference to the database.
+Database cli_db_reference("null", "null", Index::CreateIndex("null"));          //Local reference a database.
 
 
 //====================Constructor===================
@@ -122,7 +122,7 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                     else
                     { //Confirm if the value types of the parameters are correct for type 1.
                         //Confirms if the first parameter is a positive integer.
-                        if(formatted_expression[0].find_first_not_of( "0123456789" ) == std::string::npos)
+                        if(formatted_expression[0].find_first_not_of("0123456789") == std::string::npos)
                         { //Confirms if the first parameter is a positive integer.
                             //Convert first parameter into a integer variable.
                             int parameter_scan = std::stoi(formatted_expression[0]);
@@ -152,14 +152,14 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
             case 2:
                 if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                 { //Checks if expression is formatted correctly for type 2.
-                    expression->erase(0, 1); expression->pop_back();            //Removes "<>" from expression;
+                    expression->erase(0, 1); expression->pop_back();        //Removes "<>" from expression;
 
                     //Confirms if expression has enough parameters for type 2.
                     *valid_flag = ExpressionFormatter(*expression, &formatted_expression);
 
                     if(formatted_expression.size() != 1)
                     { //Does not have the right amount of parameters for type 2.
-                        *valid_flag = false;                                //Sets valid expression flag to invalid.
+                        *valid_flag = false;                                    //Sets valid expression flag to invalid.
                         break;
                     }
                     else
@@ -170,23 +170,23 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                         //Confirms if the parameter is in the "key_*integer*" format.
                         if(temp.empty())
                         { //The parameter does not have enough characters to be valid.
-                            *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
                             break;
                         }
-                        else if(temp.find_first_not_of( "0123456789" ) == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
+                        else if(temp.find_first_not_of("0123456789") == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
                         { //Confirms if the parameter is in the right format.
-                            //Convert parameter into a integer variable.
+                            //Converts parameter into an integer variable.
                             int parameter_scan = std::stoi(temp);
 
                             if(parameter_scan <= 0)
-                            { //The parameter is formatted correctly but it's value is invalid.
-                                *valid_flag = false;                        //Sets valid expression flag to invalid.
+                            { //The parameter is formatted correctly but its value is invalid.
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
                                 break;
                             }
                         }
                         else
                         { //The parameter is not int the "key_*integer*" format.
-                            *valid_flag = false;                            //Sets valid expression flag to invalid.
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
                             break;
                         }
                     }
@@ -212,7 +212,7 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                         break;
                     }
                     else
-                    { //Confirm if the value types of the parameters are correct for type 1.
+                    { //Confirm if the value types of the parameters are correct for type 3.
                         std::string temp = formatted_expression[0];
                         temp.erase(0,4);
 
@@ -222,9 +222,9 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                             *valid_flag = false;                            //Sets valid expression flag to invalid.
                             break;
                         }
-                        else if(temp.find_first_not_of( "0123456789" ) == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
+                        else if(temp.find_first_not_of("0123456789") == std::string::npos && formatted_expression[0].rfind("key_", 0) == 0)
                         { //Confirms if the parameter is in the right format.
-                            //Convert parameter into a integer variable.
+                            //Converts parameter into a integer variable.
                             int parameter_scan = std::stoi(temp);
 
                             if(parameter_scan <= 0)
@@ -233,8 +233,8 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                                 break;
                             }
 
-                            //Confirms if the second parameter is an integer.
-                            if(formatted_expression[1].find_first_not_of( "0123456789" ) != std::string::npos)
+                            //Confirms if the second parameter is a non-nule integer.
+                            if(formatted_expression[1].find_first_not_of("0123456789") != std::string::npos)
                             { //The second parameter is not an integer.
                                 *valid_flag = false;                        //Sets valid expression flag to invalid.
                                 break;
@@ -255,7 +255,7 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                 }
             break;
 
-            case 4: //TODO
+            case 4:
                 if((*expression)[0] == '<' && (*expression)[expression->length()-1] == '>')
                 { //Checks if expression is formatted correctly for type 4.
                     expression->erase(0, 1); expression->pop_back();            //Removes "<>" from expression;
@@ -267,11 +267,96 @@ std::vector<std::string> ExpressionVerifier(std::string* expression, int* type, 
                         *valid_flag = false;                                    //Sets valid expression flag to invalid.
                         break;
                     }
+                    else
+                    { //Confirm if the value types of the parameters are correct for type 4.
+                        if(formatted_expression[0].rfind("key", 0) == 0 && formatted_expression[0].size() > 4)
+                        { //Checks if expression starts with valid characters.
+                            formatted_expression[0].erase(0, 3);
+
+                            bool valid_operator = false;
+                            char main_operator = ((formatted_expression[0])[0]);
+                            char optional_operator = ((formatted_expression[0])[1]);
+
+                            //Operator checker
+                            if(main_operator == '=')
+                            { //Operator is "=".
+                                formatted_expression[0].erase(0, 1);
+                                formatted_expression.push_back(formatted_expression[0]);
+                                formatted_expression[0] = "=";
+                                valid_operator = true;
+                            }
+                            else if(main_operator == '>' && optional_operator != '=')
+                            { //Operator is ">".
+                                formatted_expression[0].erase(0, 1);
+                                formatted_expression.push_back(formatted_expression[0]);
+                                formatted_expression[0] = ">";
+                                valid_operator = true;
+                            }
+                            else if(main_operator == '<' && optional_operator != '=')
+                            { //Operator is "<".
+                                formatted_expression[0].erase(0, 1);
+                                formatted_expression.push_back(formatted_expression[0]);
+                                formatted_expression[0] = "<";
+                                valid_operator = true;
+                            }
+                            else if(main_operator == '>' && optional_operator == '=')
+                            { //Operator is ">=".
+                                formatted_expression[0].erase(0, 2);
+                                formatted_expression.push_back(formatted_expression[0]);
+                                formatted_expression[0] = ">=";
+                                valid_operator = true;
+                            }
+                            else if(main_operator == '<' && optional_operator == '=')
+                            { //Operator is "<=".
+                                formatted_expression[0].erase(0, 2);
+                                formatted_expression.push_back(formatted_expression[0]);
+                                formatted_expression[0] = "<=";
+                                valid_operator = true;
+                            }
+                            else
+                            { //Expression does not have a valid operator.
+                                //Undoes expression formattion attempt.
+                                formatted_expression.clear();
+                                formatted_expression.push_back(*expression);
+                                *valid_flag = false;                            //Sets valid expression flag to invalid.
+                                break;
+                            }
+
+                            //Checks if last parameter is a non nule integer.
+                            if(formatted_expression[1].find_first_not_of("0123456789") == std::string::npos)
+                            { //Last parameter is an integer.
+                                int temp = std::stoi(formatted_expression[1]);
+
+                                //Checks if last parameter is higher than 0;
+                                if(temp <= 0)
+                                { //Last parameter is an integer but is not higher than 0;
+                                    //Undoes expression formattion attempt.
+                                    formatted_expression.clear();
+                                    formatted_expression.push_back(*expression);
+                                    *valid_flag = false;                        //Sets valid expression flag to invalid.
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        else if(formatted_expression.size() == 0)
+                        { //Expression is blank, sets formatted expression first member with a "null" string.
+                            *expression = "null";
+                            formatted_expression.push_back(*expression);
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
+                            break;
+                        }
+                        else
+                        { //Expression is not formatted correctly for type 4.
+                            *valid_flag = false;                                //Sets valid expression flag to invalid.
+                            break;
+                        }
+                    }
                 }
                 else
                 { //Expression is not formatted correctly.
-                    formatted_expression.push_back("notformatted");         //Sets the first string of the formatted expression string vector as "notformatted".
-                    *valid_flag = false;                                    //Sets valid expression flag to invalid.
+                    formatted_expression.push_back("notformatted");             //Sets the first string of the formatted expression string vector as "notformatted".
+                    *valid_flag = false;                                        //Sets valid expression flag to invalid.
                     break;
                 }
             break;
@@ -344,7 +429,7 @@ std::vector<std::string> ArgumentFormatter(std::string* argument, std::string* e
         case 4:
             *expression = argument->erase(0, 8);
             *argument = "--update";
-            type  = 3;                                                           //Redefines type for expression verifier.
+            type  = 3;                                                          //Redefines type for expression verifier.
         break;
         
         case 5:
@@ -493,7 +578,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                     Datacell existingcell = Datacell::CreateDatacell(formatted_expression[0], 0, "null");
 
                     //Completes the Datacell with data from the database file.
-                    bool is_successful = SimpleDB::RemoveDBKey(db, &existingcell);
+                    bool is_successful = dbh::RemoveDBKey(db, &existingcell);
 
                     //Checks if search was successful.
                     if(is_successful)
@@ -588,7 +673,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                     //Updates key from database file with datacell data if the key search was successful.
                     if(is_successful)
                     {
-                        is_successful = SimpleDB::UpdateDBKey(db, &oldcell, &newcell);
+                        is_successful = dbh::UpdateDBKey(db, &oldcell, &newcell);
                     }
 
                     //Checks if update was successful.
@@ -634,7 +719,37 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks if expression is valid for "--list" (has enough and parameters and the right value types).
                 if(valid_expression)
                 { //Expression is valid for "--list".
-                    //TODO proceed
+                    int type;
+
+                    if(formatted_expression[0] == "=")
+                    {
+                        type = 1;
+                    }
+                    else if(formatted_expression[0] == ">")
+                    {
+                        type = 2;
+                    }
+                    else if(formatted_expression[0] == "<")
+                    {
+                        type = 3;
+                    }
+                    else if(formatted_expression[0] == ">=")
+                    {
+                        type = 4;
+                    }
+                    else if(formatted_expression[0] == "<=")
+                    {
+                        type = 5;
+                    }
+
+                    screens::LogToScreen("Lista para (chave de ordenação " + formatted_expression[0] + " " + formatted_expression[1] + "):");
+                    bool printed = dbh::PrintList(db, std::stoi(formatted_expression[1]), 1, type);
+
+                    //Checks if any datacell was printed to screen,
+                    if(!printed)
+                    { //No datacell was printed, printd default message to screen.
+                        screens::LogToScreen("Nenhuma chave encontada para a expressão informada!");
+                    } 
                 }
                 else
                 { //Expression is not valid for "--list".
@@ -665,7 +780,38 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks if expression is valid for "--reverse-list" (has enough and parameters and the right value types).
                 if(valid_expression)
                 { //Expression is valid for "--reverse-list".
-                    //TODO proceed
+                    int type;
+
+                    if(formatted_expression[0] == "=")
+                    {
+                        type = 1;
+                    }
+                    else if(formatted_expression[0] == ">")
+                    {
+                        type = 2;
+                    }
+                    else if(formatted_expression[0] == "<")
+                    {
+                        type = 3;
+                    }
+                    else if(formatted_expression[0] == ">=")
+                    {
+                        type = 4;
+                    }
+                    else if(formatted_expression[0] == "<=")
+                    {
+                        type = 5;
+                    }
+
+                    screens::LogToScreen("Lista reversa para (chave de ordenação " + formatted_expression[0] + " " + formatted_expression[1] + "):");
+                    bool printed = dbh::PrintList(db, std::stoi(formatted_expression[1]), 2, type);
+
+                    //Checks if any datacell was printed to screen,
+                    if(!printed)
+                    { //No datacell was printed, printd default message to screen.
+                        screens::LogToScreen("Nenhuma chave encontada para a expressão informada!");
+                    }
+                    
                 }
                 else
                 { //Expression is not valid for "--reverse-list".
@@ -696,7 +842,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks if expression is valid for "--compress" (has enough and parameters and the right value types).
                 if(valid_expression)
                 { //Expression is valid for "--compress".
-                    //TODO proceed
+                    //TODO
                 }
                 else
                 { //Expression is not valid for "--compress".
@@ -727,7 +873,7 @@ bool cli::ReadCommand(cli::Command command, Database* db)
                 //Checks if expression is valid for "--decompress" (has enough and parameters and the right value types).
                 if(valid_expression)
                 { //Expression is valid for "--decompress"".
-                    //TODO proceed
+                    //TODO
                 }
                 else
                 { //Expression is not valid for "--decompress".

@@ -22,6 +22,7 @@ namespace screens
     void    PrintArgumentErrorScreen        (std::string* command, std::string* argument, int type);
     void    PrintExpressionErrorScreen      (std::string* command, std::string* argument, std::string* expression, int type);
     void    PrintDone                       (void);
+    void    LogToScreen                     (std::string PrintString);
     void    ClearScreen                     (void);
 
     //Database Related Functions

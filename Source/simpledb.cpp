@@ -42,13 +42,13 @@ int main(void)
 
     if(fs::exists("./Data/" + dbname + "/" + dbname + ".db"))                    //!This will not work on windows
     { //Loads db into blank reference if it's file exists.
-        db = SimpleDB::LoadDB(dbname);
+        db = dbh::LoadDB(dbname);
 
         std::cout << "Concluído!" << std::endl;
     }
     else
     { //Creates a new DB if there is none and loads to blank reference.
-        db = SimpleDB::CreateDB(dbname);
+        db = dbh::CreateDB(dbname);
 
         std::cout << "Erro: Falha ao carregar database (arquivo inexistente)!" << std::endl;
         std::cout << "Criando database..." << std::endl;

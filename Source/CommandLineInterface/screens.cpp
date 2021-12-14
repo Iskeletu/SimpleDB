@@ -226,6 +226,14 @@ void screens::PrintDone()
 //==================================================
 
 
+//==================String Printer==================
+void screens::LogToScreen(std::string PrintString)
+{ //Prints string to terminal.
+    std::cout << PrintString << std::endl << std::endl;
+}
+//==================================================
+
+
 //===============Clear Command Screen===============
 void screens::ClearScreen()
 { //Clears the screen and prints the last command done with a standard "done" message.
