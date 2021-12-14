@@ -105,10 +105,10 @@ simpledb --list=<Key(Operator)[Integer]>
 ```bash
 simpledb --reverse-list=<Key(Operator)[Integer]>
 ```
-Lists values based on their sorting key value ('--list' in ascending order and '--reverse-list' in descending order) and the mathematical operator inputted (see [Opeartors](#Implemented_Mathematical_Operators) for more information).  
+Lists values based on their sorting key value ('--list' in ascending order and '--reverse-list' in descending order) and the mathematical operator inputted (see [Operators](#implemented-mathematical-operators) for more information).  
 Example -> `simpledb --list=<key<=7>` will print to terminal all values from key with a sorting value that is less or equal to seven, `simpledb --reverse-list=<key<=7>` will do the same but the list will be reversed.
 
-**Implemented Mathematical Operators:**  
+### Implemented Mathematical Operators:
 -> (=): Sorting key value is equal to the value inputted by the user.   
 -> (>): Sorting key value is greater than the value inputted by the user.  
 -> (<): Sorting key value is less than the value inputted by the user.  
@@ -122,10 +122,10 @@ simpledb --compress=[Identifier]
 ```bash
 simpledb --decompress=[Identifier]
 ```
-Compresses or decompresses the database file based on the identifier inputted (see [Identifiers](#Identifiers) for more information).  
+Compresses or decompresses the database file based on the identifier inputted (see [Identifiers](#identifiers) for more information).  
 Example -> `simpledb --compress=huffman` will create a compressed ".hff" file in the database directory, `simpledb --decompress=lzw` will search for a .lzw file and replace the database file with its contents after decompressing it.
 
-**Identifiers:**  
+### Identifiers:
 -> [huffman]: Operation is set to compress the database file with Huffman algorithm or decompress a ".hff" file.   
 -> [lzw]: Operation is set to compress the database file with LZW algorithm or decompress a ".lzw" file. 
 
@@ -165,7 +165,7 @@ Does not support arguments nor expressions, initializes save and exit sequence.
 ## Building
 Building project with **Make** is implemented and you can build this repository as following:
 
-### Building with Make:
+### Building With Make:
   
 **For standard compilation use the following commands:**
 ```bash
@@ -183,7 +183,7 @@ make
 cd ../../
 ```
 
-The executable file for either case will be found at `./Build/build`.  
+The executable file for either case will be found at `./Build/build`, See [BUILD](./Build/BUILD.md) for more information.  
   
 **Run with:**
 ```bash
@@ -192,11 +192,11 @@ The executable file for either case will be found at `./Build/build`.
 No arguments required, all interactions can be done within the custom CLI.
 
 ## Templates
-This repository has a `template.db` file located at ```./Template/Template.db```, this template has 100 unique keys each with its own unique value and a random sorting keys, see [TEMPLATE](https://github.com/Iskeletu/SimpleDB/blob/main/Template/TEMPLATE.md) for more information.
+This repository has a `template.db` file located at ```./Template/Template.db```, this template has 100 unique keys each with its own unique value and a random sorting keys, see [TEMPLATE](./Template/TEMPLATE.md) for more information.
 
 ## Test Cases
 In total tests have 5 cases and 10 assertions, the tests can be run from the "tests" build (see [Building](#Building) for more information), the tests are as following:
-### Database managment tests
+### Database managment Tests
 Has two test cases:
 * **Database creation and deletion (4 assertions):**
     - Creates and checks if the database object has a valid reference.
@@ -207,7 +207,7 @@ Has two test cases:
     - Checks if the loaded database object has a valid reference to an existent file.
     - Deletes the database from the second object reference method and checks if the directory no longer exists.
 
-### Key-Value tests
+### Key-Value Tests
 Has three test cases:
 * **Insertion and search (1 assertion):**
     - Stores and retrive a value from the database and checks if both the local value and the search value match.
