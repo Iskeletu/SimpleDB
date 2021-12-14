@@ -40,7 +40,7 @@ int main(void)
 
     std::cout << "Carregando database..." << std::endl;
 
-    if(fs::exists("./Data/" + dbname + "/" + dbname + ".db"))                    //!This will not work on windows
+    if(fs::exists("./Data/" + dbname + "/" + dbname + ".db"))                   //!This will not work on windows
     { //Loads db into blank reference if it's file exists.
         db = dbh::LoadDB(dbname);
 
