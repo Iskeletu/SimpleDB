@@ -170,7 +170,6 @@ Building project with **Make** is implemented and you can build this repository 
 **For standard compilation use the following commands:**
 ```bash
 cd ./SimpleDB/ (*or equivalent to be at project root directory)
-mkdir Build
 cd ./Make/MainBuild/
 make
 cd ../../
@@ -179,7 +178,6 @@ cd ../../
 **For tests compilation use the following commands:**
 ```bash
 cd ./SimpleDB/ (*or equivalent to be at project root directory)
-mkdir Build
 cd ./Make/TestsBuild/
 make
 cd ../../
