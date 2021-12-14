@@ -2,7 +2,7 @@
 
 SimpleDB project has a defualt ".db" template that can be used for testing.
 
-## How to use
+## How to Use
 
 Rename the `template.db` within the current folder to `SimpleDB.db` and move the file to the directory `.{ProjectRoot}/Data/SimpleDB/`.
 
