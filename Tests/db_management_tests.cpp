@@ -43,7 +43,7 @@ TEST_CASE("Create and delete a database", "[CreateDatabase, DeleteDatabase]")
     SECTION("Default settings")
     {
         std::string dbname("test-db");
-        Database db(SimpleDB::CreateDB(dbname));                                //Creates "test-db" database.
+        Database db(dbh::CreateDB(dbname));                                     //Creates "test-db" database.
 
         REQUIRE(fs::is_directory(fs::status(db.GetDirectory())));               //Checks if database directory exists.
 
@@ -83,14 +83,14 @@ TEST_CASE("Load an existing database", "[LoadDatabase]")
     SECTION("Default settings")
     {
         std::string dbname("test-db");
-        Database db(SimpleDB::CreateDB(dbname));                                //Creates "test-db" database.
-        Database db2(SimpleDB::LoadDB(dbname));                                 //Loads previouly created "test-db" database to db2.
+        Database db(dbh::CreateDB(dbname));                                     //Creates "test-db" database.
+        Database db2(dbh::LoadDB(dbname));                                      //Loads previouly created "test-db" database to db2.
 
         //Checks if db2 database file exists.
         REQUIRE(fs::exists(fs::status(db2.GetDirectory() + "/" + db2.GetName() + ".db")));
 
-        db2.Erase();                                                             //Deletes test database via db2 reference.
-        REQUIRE(!(fs::exists(fs::status(db2.GetDirectory()))));                  //Checks if database directory does not exist.
+        db2.Erase();                                                            //Deletes test database via db2 reference.
+        REQUIRE(!(fs::exists(fs::status(db2.GetDirectory()))));                 //Checks if database directory does not exist.
     }
 }
 //==================================================

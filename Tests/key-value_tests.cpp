@@ -28,7 +28,7 @@ TEST_CASE("Store and retrive a value", "[setKeyValue, getKeyValue]")
     SECTION("Basic insert and search")
     {
         std::string dbname("test-db");
-        Database db(SimpleDB::CreateDB(dbname));                                //Creates "test-db" database.
+        Database db(dbh::CreateDB(dbname));                                     //Creates "test-db" database.
 
         //Defines local value for comparison.
         std::string value = "Tested-Value";
@@ -66,7 +66,7 @@ TEST_CASE("Store and remove a value", "[setKeyValue, getKeyValue]")
     SECTION("Basic insert and delete")
     {
         std::string dbname("test-db");
-        Database db(SimpleDB::CreateDB(dbname));                                //Creates "test-db" database.
+        Database db(dbh::CreateDB(dbname));                                     //Creates "test-db" database.
 
         //Creates a datacell for insertion.
         Datacell testcell = Datacell::CreateDatacell(db.NewUniqueKey(), 1, "Tested-Value");
@@ -74,7 +74,7 @@ TEST_CASE("Store and remove a value", "[setKeyValue, getKeyValue]")
         db.InsertKeyValue(&testcell);                                           //Inserts the datacell to database.
 
         REQUIRE(db.SearchKeyValue(&testcell));                                  //Checks if search return is true.
-        SimpleDB::RemoveDBKey(&db, &testcell);                                  //Removes key from database.
+        dbh::RemoveDBKey(&db, &testcell);                                       //Removes key from database.
         REQUIRE(!(db.SearchKeyValue(&testcell)));                               //Checks if search return is false.
 
         db.Erase();                                                             //Deletes previously created "test-db" database.
@@ -96,7 +96,7 @@ TEST_CASE("Store and update a value", "[setKeyValue, getKeyValue]")
     SECTION("Basic insert and update")
     {
         std::string dbname("test-db");
-        Database db(SimpleDB::CreateDB(dbname));                                //Creates "test-db" database.
+        Database db(dbh::CreateDB(dbname));                                     //Creates "test-db" database.
 
         //Defines local values for comparison.
         std::string value1 = "Tested-Value";
@@ -107,7 +107,7 @@ TEST_CASE("Store and update a value", "[setKeyValue, getKeyValue]")
         Datacell untestedcell = Datacell::CreateDatacell(testcell.GetKey(), 1, value2);
 
         db.InsertKeyValue(&testcell);                                           //Inserts the first datacell to database.
-        SimpleDB::UpdateDBKey(&db, &testcell, &untestedcell);                   //Updates key in database file to match the value stored in the second datacell.
+        dbh::UpdateDBKey(&db, &testcell, &untestedcell);                        //Updates key in database file to match the value stored in the second datacell.
         db.SearchKeyValue(&testcell);                                           //Reads value from database to the first datacell.
 
         REQUIRE(testcell.GetValue() == untestedcell.GetValue());                //Checks if values match.
